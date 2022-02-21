@@ -27,7 +27,7 @@ The charts allows you to manage the following resources:
 ## TL;DR
 
 ```console
-$ helm repo add denhaag https://github.com/Gemeente-DenHaag/helm-charts
+$ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 $ helm install my-release denhaag/generic
 ```
 
