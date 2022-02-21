@@ -24,6 +24,11 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
 
+      - name: Run lint
+        run: |
+          cd charts 
+          helm lint generic --set name=testapp --set image.repository=thisisarepo.com
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.1.0
         env:
