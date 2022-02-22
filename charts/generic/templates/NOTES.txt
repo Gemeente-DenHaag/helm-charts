@@ -11,7 +11,7 @@
 
 {{- if .Values.ingress.enabled }}
 🔹 The application URL is:
-  http{{ if $.Values.ingress.tls.enabled }}s{{ end }}://{{ .Values.ingress.hostname }}
+  http{{ if or ($.Values.ingress.tls) ($.Values.ingress.extraTls) }}s{{ end }}://{{ .Values.ingress.hostname }}
 {{- else if contains "ClusterIP" .Values.service.type }}
 🔹 Get the application URL by running these commands:
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "common.names.fullname" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
