@@ -27,7 +27,7 @@ app: no-name
 
 {{/* Validate that the container repository name is given */}}
 {{- define "app.validateValues.imageRepositoryGiven" -}}
-{{- if and (not .Values.image.repository) (has .Values.appKind (list "Deployment" "StatefulSet" "DaemonSet")) -}}
+{{- if and (not .Values.image.fullImage) (not .Values.image.repository) (has .Values.appKind (list "Deployment" "StatefulSet" "DaemonSet")) -}}
 app: no-image-repository
     You did not specify the application image repository. Please
     set image.repository.

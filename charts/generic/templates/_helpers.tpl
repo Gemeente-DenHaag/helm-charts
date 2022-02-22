@@ -2,9 +2,14 @@
 
 {{/*
 Return the proper App image name
+The image.fullImage property can be set from a pipeline
 */}}
 {{- define "app.image" -}}
-{{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- if .Values.image.fullImage -}}
+  {{- include "common.tplvalues.render" (dict "value" .Values.image.fullImage "context" $) | nindent 12 }}
+{{- else -}}
+  {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- end -}}
 {{- end -}}
 
 {{/*
