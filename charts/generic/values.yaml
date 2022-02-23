@@ -12,7 +12,7 @@ image:
   registry: ""
   repository: ""
   tag: latest
-  fullImage:  # use this from pipeline, includes registry, repo and tag
+  fullImage: [] # use this from pipeline, includes registry, repo and tag
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images

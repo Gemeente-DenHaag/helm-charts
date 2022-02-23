@@ -61,7 +61,8 @@ spec:
       {{- end }}
       containers:
         - name: {{ include "common.names.fullname" $ }}
-          image: {{ include "app.image" . }}
+          image: >-
+            {{- include "app.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
