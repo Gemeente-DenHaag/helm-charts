@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.7](https://img.shields.io/badge/Version-0.0.7-informational?style=flat-square)
+![Version: 0.0.8](https://img.shields.io/badge/Version-0.0.8-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -111,6 +111,7 @@ ingress:
 | ingress.apiVersion | string | `nil` |  |
 | ingress.certManager | bool | `false` |  |
 | ingress.enabled | bool | `false` |  |
+| ingress.existingTlsSecret | string | `""` |  |
 | ingress.hostname | string | `""` |  |
 | ingress.nginx.configurationSnippet | string | `nil` |  |
 | ingress.nginx.serverSnippet | string | `nil` |  |

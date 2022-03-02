@@ -59,3 +59,14 @@ app
 {{ $targetPort }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Set the tls secret
+*/}}
+{{- define "app.ingress.tlssecret" -}}
+{{- if .Values.ingress.existingTlsSecret -}}
+    {{ .Values.ingress.existingTlsSecret }}
+{{- else -}}
+    {{ printf "%s-tls" .Values.ingress.hostname }}
+{{- end -}}
+{{- end -}}
