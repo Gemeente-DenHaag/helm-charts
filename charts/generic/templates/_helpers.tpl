@@ -2,9 +2,14 @@
 
 {{/*
 Return the proper App image name
+The image.fullImage property can be set from a pipeline
 */}}
 {{- define "app.image" -}}
-{{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- if .Values.image.fullImage -}}
+  {{ include "common.tplvalues.render" (dict "value" .Values.image.fullImage "context" $) }}
+{{- else -}}
+  {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -52,5 +57,16 @@ Examples:
 app
 {{- else -}}
 {{ $targetPort }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set the tls secret
+*/}}
+{{- define "app.ingress.tlssecret" -}}
+{{- if .Values.ingress.existingTlsSecret -}}
+    {{ .Values.ingress.existingTlsSecret }}
+{{- else -}}
+    {{ printf "%s-tls" .Values.ingress.hostname }}
 {{- end -}}
 {{- end -}}
