@@ -6,7 +6,7 @@ The image.fullImage property can be set from a pipeline
 */}}
 {{- define "app.image" -}}
 {{- if .Values.image.fullImage -}}
-  {{- include "common.tplvalues.render" (dict "value" .Values.image.fullImage "context" $) | nindent 12 }}
+  {{ include "common.tplvalues.render" (dict "value" .Values.image.fullImage "context" $) }}
 {{- else -}}
   {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}

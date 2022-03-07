@@ -477,7 +477,7 @@ secrets: {}
 ##      - base64encode # optional - encode to base64
 ##      - base64decode # optional - decode from base64
 ##      secret: 
-##        name: testsecret # secretname to create in kubernetes
+##        name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
 ##        dataKey: TEST_SECRET #key to store in secret
 ##
 ## The above example will create 1 secret in Kubernetes from Azure keyvault

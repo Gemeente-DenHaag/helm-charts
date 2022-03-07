@@ -15,6 +15,6 @@ spec:
       type: {{ $values.objecttype }}
   {{- with $values.output }}
   output:
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 {{- end }}
