@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.11](https://img.shields.io/badge/Version-0.0.11-informational?style=flat-square)
+![Version: 0.0.12](https://img.shields.io/badge/Version-0.0.12-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -90,6 +90,7 @@ ingress:
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.maxReplicas | int | `10` |  |
 | autoscaling.minReplicas | int | `1` |  |
+| replicaCount | int | `1` |  |
 | checksums | list | `[]` |  |
 | command | list | `[]` |  |
 | commonAnnotations | object | `{}` |  |

@@ -30,6 +30,10 @@ image:
 ##
 name: ""
 
+## Specfies the required replicas
+##
+replicaCount: 1
+
 ## Specifies the application resource kind
 ##
 appKind: Deployment
