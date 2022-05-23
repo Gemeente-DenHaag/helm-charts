@@ -453,11 +453,21 @@ startupProbe:
 ##
 ## configMaps:
 ##   app:
-##     data: |
-##       dbURL = {{ .Values.dbUser }}@{{ .Values.dbPassword }}:{{ .Values.dbPort }}
+##     data:
+##       dbURL: {{ .Values.dbUser }}@{{ .Values.dbPassword }}:{{ .Values.dbPort }}
 ##
-## The above example will create app configMap
-## (prefixed with {{ template "app.fullname" $ }}-).
+## The above example will create a configMap with name common.names.fullname-app
+## 
+## configMaps:
+##   '{{ include "app.fullname" . }}':
+##     data:
+##       test.xml: |-
+##         <?xml version="1.0" encoding="UTF-8"?>
+##         <configuration>
+##           <property name="test"/>
+##         </configuration>
+##
+## The above example will create a configMap with name common.names.fullname
 ##
 configMaps: {}
 

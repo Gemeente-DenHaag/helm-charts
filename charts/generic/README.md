@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.12](https://img.shields.io/badge/Version-0.0.12-informational?style=flat-square)
+![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -52,8 +52,8 @@ secrets:
       TEST: this
 
 configMaps:
-  my.conf:
-    data: |
+  app:
+    data:
       test: this
       wow: cool
 
