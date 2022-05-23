@@ -3,7 +3,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "common.names.fullname" $ }}-{{ $nameSuffix }}
+  {{- $relname := include "common.names.fullname" $ -}}
+  {{- $renderdNameSuffix := include "common.tplvalues.render" ( dict "value" $nameSuffix "context" $ ) }}
+  {{- if eq $relname $renderdNameSuffix }}
+  name: {{ include "common.names.fullname" $ }}
+  {{- else }}
+  name: {{ include "common.names.fullname" $ }}-{{ $renderdNameSuffix }}
+  {{- end }}
   {{- with $values.annotations }}
   annotations:
   {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
