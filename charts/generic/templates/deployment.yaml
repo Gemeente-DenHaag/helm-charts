@@ -33,6 +33,9 @@ spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
       {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: {{- include "common.tplvalues.render" (dict "value" .Values.hostNetwork "context" $) | nindent 8 }}
+      {{- end }}
       {{- if .Values.hostAliases }}
       hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.hostAliases "context" $) | nindent 8 }}
       {{- end }}
@@ -60,6 +63,17 @@ spec:
       initContainers: {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 10 }}
       {{- end }}
       containers:
+        {{- if .Values.sidecar }}
+        - name: "{{ .Values.sidecar.name }}"
+          image: "{{ .Values.sidecar.repository }}:{{ .Values.sidecar.tag }}"
+          imagePullPolicy: {{ .Values.sidecar.pullPolicy }}
+          {{- if .Values.sidecar.args }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.sidecar.args "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.sidecar.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+        {{- end }}
         - name: {{ include "common.names.fullname" $ }}
           image: {{ include "app.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}

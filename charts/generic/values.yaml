@@ -25,7 +25,6 @@ image:
   # pullSecrets:
   #   - myRegistryKeySecretName
 
-
 ## Specifies the application name (required to be set)
 ##
 name: ""
@@ -55,6 +54,10 @@ command: []
 ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
 ##
 hostAliases: []
+
+## Controls whether the pod may use the node network namespace. 
+## ref: https://kubernetes.io/docs/concepts/security/pod-security-policy/#host-namespaces
+hostNetwork: false
 
 serviceAccount:
   ## Specifies whether a service account should be created
@@ -195,6 +198,25 @@ service:
   #   port: 8080
   #   nodePort: 30080
   ports: []
+
+## Add a simple sidecar to this deployment
+##
+## sidecar:
+##  name: netshoot
+##  repository: nicolaka/netshoot
+##  tag: latest
+##  args:
+##  - sleep
+##  - '999'
+##  containerSecurityContext:
+##   enabled: false
+##    runAsNonRoot: false
+##    allowPrivilegeEscalation: true
+##    capabilities:
+##      add:
+##      - NET_ADMIN
+##      - NET_RAW
+sidecar: {}
 
 ## Set up update strategy for Kibana installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to makesure the pods are destroyed first.
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy

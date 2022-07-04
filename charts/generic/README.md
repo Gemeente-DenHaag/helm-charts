@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square)
+![Version: 0.0.14](https://img.shields.io/badge/Version-0.0.14-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -103,6 +103,7 @@ ingress:
 | env | object | `{}` |  |
 | envFrom | list | `[]` |  |
 | hostAliases | list | `[]` |  |
+| hostNetwork | bool | `false` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `""` |  |
 | image.repository | string | `""` |  |
@@ -158,6 +159,11 @@ ingress:
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `nil` |  |
+| sidecar.name | string | `""` |  |
+| sidecar.repository | string | `""` |  |
+| sidecar.tag | string | `""` |  |
+| sidecar.args | list | `[]` |  |
+| sidecar.containerSecurityContext | object | `{}` |  |
 | startupProbe.enabled | bool | `false` |  |
 | startupProbe.failureThreshold | int | `6` |  |
 | startupProbe.initialDelaySeconds | int | `60` |  |
