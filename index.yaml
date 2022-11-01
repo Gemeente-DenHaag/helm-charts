@@ -2,6 +2,46 @@ apiVersion: v1
 entries:
   generic:
   - apiVersion: v2
+    created: "2022-11-01T10:25:37.969030083Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.1.x
+    description: Den Haag generic application Helm chart
+    digest: c2014c3872ea1b5e3517bad8551fe8e0cca99e4afab8266226dd0ad05830f517
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: generic
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.18/generic-0.0.18.tgz
+    version: 0.0.18
+  - apiVersion: v2
+    created: "2022-11-01T09:45:33.02439225Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.16.x
+    description: Den Haag generic application Helm chart
+    digest: 5e7ef72bddb1d744d5ee1c14e8cb94d978eb55a6a26f036906d3aad59ff88a04
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: generic
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.17/generic-0.0.17.tgz
+    version: 0.0.17
+  - apiVersion: v2
     created: "2022-11-01T09:37:37.901269254Z"
     dependencies:
     - name: common
