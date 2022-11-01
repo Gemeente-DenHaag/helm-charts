@@ -19,6 +19,7 @@ The charts allows you to manage the following resources:
   - HorizontalPodAutoscaler
   - Ingress
   - PersistentVolumeClaim
+  - PodDisruptionBudget
   - Secrets
   - Service
   - ServiceAccount
