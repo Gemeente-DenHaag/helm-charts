@@ -10,7 +10,7 @@
 
 image:
   registry: ""
-  repository: "blaat"
+  repository: ""
   tag: latest
   fullImage: [] # use this from pipeline, includes registry, repo and tag
   ## Specify a imagePullPolicy
@@ -27,7 +27,7 @@ image:
 
 ## Specifies the application name (required to be set)
 ##
-name: "blaat"
+name: ""
 
 ## Specfies the required replicas
 ##
