@@ -10,7 +10,7 @@
 
 image:
   registry: ""
-  repository: ""
+  repository: "blaat"
   tag: latest
   fullImage: [] # use this from pipeline, includes registry, repo and tag
   ## Specify a imagePullPolicy
@@ -27,7 +27,7 @@ image:
 
 ## Specifies the application name (required to be set)
 ##
-name: ""
+name: "blaat"
 
 ## Specfies the required replicas
 ##
@@ -536,6 +536,23 @@ syncAKV: {}
 ##   - secrets.yaml
 ##
 checksums: []
+
+## Add extra list of kubernetes objects to deploy (value evaluted as a template)
+##
+## - apiVersion: v1
+##   kind: Pod
+##   metadata:
+##     name: nginx
+##   spec:
+##    containers:
+##    - name: nginx
+##      image: nginx:1.14.2
+##      ports:
+##      - containerPort: 80
+##
+## The above example will create 1 extra object: pod
+##
+extraObjects: []
 
 tests:
   httpChecks:
