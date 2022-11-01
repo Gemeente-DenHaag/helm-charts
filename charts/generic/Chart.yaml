@@ -12,5 +12,5 @@ maintainers:
 name: generic
 sources:
 - https://github.com/Gemeente-DenHaag/helm-charts
-version: 0.0.15
+version: 0.0.16
 icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg

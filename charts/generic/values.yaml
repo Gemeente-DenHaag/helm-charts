@@ -10,7 +10,7 @@
 
 image:
   registry: ""
-  repository: "blaat"
+  repository: ""
   tag: latest
   fullImage: [] # use this from pipeline, includes registry, repo and tag
   ## Specify a imagePullPolicy
@@ -27,7 +27,7 @@ image:
 
 ## Specifies the application name (required to be set)
 ##
-name: "blaat"
+name: ""
 
 ## Specfies the required replicas
 ##
@@ -528,6 +528,13 @@ secrets: {}
 ## Supported vault object types: secret, certificate, key, multi-key-value-secret
 ##
 syncAKV: {}
+
+## PodDisruptionBudget configuration
+##
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  # maxUnavailable: 1
 
 ## Array of templates paths to automatically adds checksum annotation for
 ## (ex: checksum/secrets.yaml: **sha256sum**)
