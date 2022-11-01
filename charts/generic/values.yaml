@@ -529,6 +529,13 @@ secrets: {}
 ##
 syncAKV: {}
 
+## PodDisruptionBudget configuration
+##
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  # maxUnavailable: 1
+
 ## Array of templates paths to automatically adds checksum annotation for
 ## (ex: checksum/secrets.yaml: **sha256sum**)
 ##
