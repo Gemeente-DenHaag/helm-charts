@@ -8,6 +8,7 @@ Compile all warnings into a single message, and call fail.
 {{- $messages := append $messages (include "app.validateValues.noSecretsData" .) -}}
 {{- $messages := append $messages (include "app.validateValues.noConfigMapsData" .) -}}
 {{- $messages := append $messages (include "app.validateValues.ingressHasPortsProvided" .) -}}
+{{- $messages := append $messages (include "app.validateValues.noReplicaCountWhenAutoscalingEnabled" .) -}}
 {{- $messages := without $messages "" -}}
 {{- $message := join "\n" $messages -}}
 
@@ -71,5 +72,15 @@ app: no-configmaps-data
 app: no-service-ports-for-ingress
     You enabled ingress, but did not specify service port or ports. Please set
     service.port or service.ports.
+{{- end -}}
+{{- end -}}
+
+{{/* Validate that replicaCount is empty when hpa is enabled */}}
+{{- define "app.validateValues.noReplicaCountWhenAutoscalingEnabled" -}}
+{{- if and .Values.autoscaling.enabled (.Values.replicaCount) -}}
+app: no-replicaCount-when-autoscaling-enabled
+    You enabled autoscaling, but also have replicaCount set. Please set
+    replicaCount to empty to prevent weird hpa situations.
+    See url https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#migrating-deployments-and-statefulsets-to-horizontal-autoscaling
 {{- end -}}
 {{- end -}}
