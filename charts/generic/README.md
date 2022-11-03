@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.18](https://img.shields.io/badge/Version-0.0.18-informational?style=flat-square)
+![Version: 0.0.19](https://img.shields.io/badge/Version-0.0.19-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -80,7 +80,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | 1.x.x |
+| https://charts.bitnami.com/bitnami | common | 2.x.x |
 
 ## Values
 
@@ -89,8 +89,10 @@ ingress:
 | affinity | object | `{}` |  |
 | args | list | `[]` |  |
 | autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `10` |  |
-| autoscaling.minReplicas | int | `1` |  |
+| autoscaling.maxReplicas | int | `` |  |
+| autoscaling.minReplicas | int | `` |  |
+| autoscaling.metrics | list | `[]` |  |
+| autoscaling.behavior | list | `[]` |  |
 | replicaCount | int | `1` |  |
 | checksums | list | `[]` |  |
 | command | list | `[]` |  |

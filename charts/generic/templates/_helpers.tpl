@@ -70,3 +70,28 @@ Set the tls secret
     {{ printf "%s-tls" .Values.ingress.hostname }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the appropriate apiVersion for Horizontal Pod Autoscaler.
+This is modified version of common.capabilities.hpa.apiVersion. context has been removed
+*/}}
+{{- define "app.hpa.apiVersion" -}}
+{{- if semverCompare "<1.23-0" (include "common.capabilities.kubeVersion" .) -}}
+{{- if .beta2 -}}
+{{- print "autoscaling/v2beta2" -}}
+{{- else -}}
+{{- print "autoscaling/v2beta1" -}}
+{{- end -}}
+{{- else -}}
+{{- print "autoscaling/v2" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Dump a variable to json for debugging purposes and fail
+Example:
+  {{- template "app.var_dump" $myVar }}
+*/}}
+{{- define "app.var_dump" -}}
+{{- . | mustToPrettyJson | printf "\nThe JSON output of the dumped var is: \n%s" | fail }}
+{{- end -}}
