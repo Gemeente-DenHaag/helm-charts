@@ -1,15 +1,15 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.19](https://img.shields.io/badge/Version-0.0.19-informational?style=flat-square)
+![Version: 0.0.20](https://img.shields.io/badge/Version-0.0.20-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
-This chart is a generic chart for deploying multiple apps. 
+This chart is a generic chart for deploying multiple apps.
 
 ## Introduction
 
-This chart allows you to a generic deployment. 
-`name` and the `image.repository` are required to do a basic deployment. 
+This chart allows you to a generic deployment.
+`name` and the `image.repository` are required to do a basic deployment.
 
 The charts allows you to manage the following resources:
 
