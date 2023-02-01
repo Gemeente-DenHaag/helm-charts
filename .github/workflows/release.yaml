@@ -30,6 +30,7 @@ jobs:
           helm lint generic --set name=testapp --set image.repository=thisisarepo.com
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.1.0
+        uses: helm/chart-releaser-action@v1.5.0
         env:
+          charts_dir: charts
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
