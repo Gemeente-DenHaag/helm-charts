@@ -59,6 +59,11 @@ hostAliases: []
 ## ref: https://kubernetes.io/docs/concepts/security/pod-security-policy/#host-namespaces
 hostNetwork: false
 
+## Controls whether the container automatically mounts the ServiceAccount's API credentials
+## In the pod/v1 this defaults to true, so also in this helm chart. recommended: false
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+automountServiceAccountToken: true
+
 serviceAccount:
   ## Specifies whether a service account should be created
   ##
@@ -70,6 +75,10 @@ serviceAccount:
   ## If not set and create is true, a name is generated using the fullname template
   ##
   name:
+  ## Controls whether the container automatically mounts the ServiceAccount's API credentials
+  ## In the serviceaccount/v1 this defaults to true, so also in this helm chart. recommended: false
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+  automountServiceAccountToken: true
 
 ## Add labels to all the deployed resources
 ##
@@ -477,7 +486,7 @@ livenessProbe:
 readinessProbe:
   enabled: false
   initialDelaySeconds: 60
-  periodSeconds: 39
+  periodSeconds: 30
   timeoutSeconds: 5
   failureThreshold: 6
   successThreshold: 1

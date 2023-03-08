@@ -1,6 +1,6 @@
 # Den Haag generic application Helm chart
 
-![Version: 0.0.25](https://img.shields.io/badge/Version-0.0.25-informational?style=flat-square)
+![Version: 0.0.26](https://img.shields.io/badge/Version-0.0.26-informational?style=flat-square)
 
 Den Haag generic application Helm chart
 
@@ -88,6 +88,7 @@ ingress:
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | args | list | `[]` |  |
+| automountServiceAccountToken | bool | `true` | This is the default in pod/v1 api, recommended: false  |
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.maxReplicas | int | `` |  |
 | autoscaling.minReplicas | int | `` |  |
@@ -166,6 +167,7 @@ ingress:
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `nil` |  |
+| serviceAccount.automountServiceAccountToken | bool | `true` | This is the default in serviceaccount/v1 api, recommended: false  |
 | sidecar.name | string | `""` |  |
 | sidecar.repository | string | `""` |  |
 | sidecar.tag | string | `""` |  |
