@@ -30,15 +30,10 @@ jobs:
           cd charts 
           helm lint generic --set name=testapp --set image.repository=thisisarepo.com
 
-      # - name: 'Run chart-releaser generic'
-      #   if: github.ref_name == 'main'
-      #   uses: helm/chart-releaser-action@v1.5.0
-      #   with:
-      #     charts_dir: charts
-      #   env:
-      #     CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Publish Helm charts
-        uses: stefanprodan/helm-gh-pages@master
+      - name: 'Run chart-releaser generic'
+        # if: github.ref_name == 'main'
+        uses: helm/chart-releaser-action@v1.5.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: charts
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
