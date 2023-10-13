@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/lib-chart
 
 jobs:
   release:
@@ -22,13 +21,14 @@ jobs:
 
       - name: Add Helm dependency repos
         run: |
+          helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
 
       - name: Run lint
         run: |
           cd charts 
-          helm lint generic --set name=testapp --set image.repository=thisisarepo.com
+          helm lint generic --set name=testapp --set image.repository=thisisarepo.com --set ingress.hostname=test.denhaag.nl
 
       - name: 'Run chart-releaser generic'
         # if: github.ref_name == 'main'
@@ -36,4 +36,5 @@ jobs:
         with:
           charts_dir: charts
         env:
+          CR_SKIP_EXISTING: true
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
