@@ -3,7 +3,7 @@ entries:
   dh-lib:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-10-13T18:23:17.97710763Z"
+    created: "2023-10-13T21:19:41.398422657Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -11,15 +11,15 @@ entries:
       - bitnami-common
       version: 2.1.x
     description: A Helm chart for Kubernetes
-    digest: 06d9ea822e4dffe8f439ecddab5d2570e92839caae63e98e2b9478144a20beaf
+    digest: 0b5ae5ac41e526c4e6a2ee4e25e9938e90d1755b9b7627bfbda4745882bb84ab
     name: dh-lib
     type: library
     urls:
-    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-lib-0.1.0/dh-lib-0.1.0.tgz
+    - https://Gemeente-DenHaag.github.io/helm-charts/dh-lib-0.1.0.tgz
     version: 0.1.0
   generic:
   - apiVersion: v2
-    created: "2023-03-08T19:58:49.080616419Z"
+    created: "2023-10-13T21:19:41.401653268Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -27,7 +27,7 @@ entries:
       - bitnami-common
       version: 2.1.x
     description: Den Haag generic application Helm chart
-    digest: 7144b1ef10bdd5d11b0f7d5db15561490239f7f31e82b3e9cb39c7019de16ef6
+    digest: 1b3469a44503290e9468d550c3d007b413c63239e82fe9481fdcbc1a0a28cb2e
     icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
     maintainers:
     - email: menno.slingerland@denhaag.nl
@@ -36,7 +36,7 @@ entries:
     sources:
     - https://github.com/Gemeente-DenHaag/helm-charts
     urls:
-    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.26/generic-0.0.26.tgz
+    - https://Gemeente-DenHaag.github.io/helm-charts/generic-0.0.26.tgz
     version: 0.0.26
   - apiVersion: v2
     created: "2023-02-24T21:08:55.000919359Z"
@@ -518,4 +518,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.2/generic-0.0.2.tgz
     version: 0.0.2
-generated: "2023-10-13T18:23:17.977173535Z"
+generated: "2023-10-13T21:19:41.395899792Z"
