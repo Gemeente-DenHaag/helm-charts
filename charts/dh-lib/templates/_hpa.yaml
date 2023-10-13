@@ -1,0 +1,32 @@
+{{- define "dh-lib.autoscaling" -}}
+{{- if and .Values.autoscaling.enabled (eq .Values.appKind "Deployment") }}
+apiVersion: {{ include "app.hpa.apiVersion" . }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    app.kubernetes.io/component: controller
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.commonLabels "context" $) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  scaleTargetRef:
+    apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+    kind: Deployment
+    name: {{ template "common.names.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  {{- if .Values.autoscaling.metrics }}
+  metrics: 
+    {{- include "common.tplvalues.render" (dict "value" .Values.autoscaling.metrics "context" $) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.autoscaling.behavior }}  
+  behavior:
+    {{- include "common.tplvalues.render" (dict "value" .Values.autoscaling.behavior "context" $) | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end -}}

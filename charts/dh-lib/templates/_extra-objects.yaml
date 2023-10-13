@@ -1,0 +1,6 @@
+{{- define "dh-lib.extraObjects" -}}
+{{- range .Values.extraObjects }}
+---
+{{ include "common.tplvalues.render" (dict "value" . "context" $) }}
+{{- end }}
+{{- end -}}

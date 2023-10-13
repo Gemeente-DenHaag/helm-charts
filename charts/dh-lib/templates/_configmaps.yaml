@@ -1,0 +1,28 @@
+{{- define "dh-lib.configMaps" -}}
+{{- range $nameSuffix, $values := .Values.configMaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  {{- $relname := include "common.names.fullname" $ -}}
+  {{- $renderdNameSuffix := include "common.tplvalues.render" ( dict "value" $nameSuffix "context" $ ) }}
+  {{- if eq $relname $renderdNameSuffix }}
+  name: {{ include "common.names.fullname" $ }}
+  {{- else }}
+  name: {{ include "common.names.fullname" $ }}-{{ $renderdNameSuffix }}
+  {{- end }}
+  {{- with $values.annotations }}
+  annotations:
+  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "common.labels.standard" $ | nindent 4 }}
+  {{- with $values.labels }}
+  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+{{- with $values.data }}
+data:
+  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end -}}
