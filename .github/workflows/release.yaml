@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/lib-chart
 
 jobs:
   release:
@@ -29,8 +30,16 @@ jobs:
           cd charts 
           helm lint generic --set name=testapp --set image.repository=thisisarepo.com
 
-      - name: Run chart-releaser
+      - name: 'Run chart-releaser generic'
+        if: github.ref_name == 'main'
         uses: helm/chart-releaser-action@v1.5.0
         env:
           charts_dir: charts/generic
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: 'Run chart-releaser dh-lib'
+        if: github.ref_name == 'feature/lib-chart'
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          charts_dir: charts/dh-lib
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
