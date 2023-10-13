@@ -1,0 +1,22 @@
+{{- define "dh-lib.syncAKV" -}}
+{{- range $nameSuffix, $values := $.Values.syncAKV }}
+---
+apiVersion: spv.no/v2beta1
+kind: AzureKeyVaultSecret
+metadata:
+  name: {{ include "common.names.name" $ }}-{{ $nameSuffix }}
+spec:
+  vault:
+    name: {{ include "common.tplvalues.render" (dict "value" $values.vaultname "context" $) }}
+    object:
+      {{- if $values.contenttype }}
+      contentType: {{ include "common.tplvalues.render" (dict "value" $values.contenttype "context" $) }}
+      {{- end }}
+      name: {{ include "common.tplvalues.render" (dict "value" $values.objectname "context" $) }}
+      type: {{ include "common.tplvalues.render" (dict "value" $values.objecttype "context" $) }}
+  {{- with $values.output }}
+  output:
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end -}}
