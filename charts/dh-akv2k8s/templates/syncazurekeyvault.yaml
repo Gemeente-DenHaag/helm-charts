@@ -1,0 +1,23 @@
+{{- range $name, $values := $.Values.syncAKV }}
+---
+apiVersion: spv.no/v2beta1
+kind: AzureKeyVaultSecret
+metadata:
+  name:  {{ include "common.tplvalues.render" (dict "value" $name "context" $) }}
+spec:
+  vault:
+    name: {{ include "common.tplvalues.render" (dict "value" $values.vaultname "context" $) }}
+    object:
+      name: {{ include "common.tplvalues.render" (dict "value" $values.objectname "context" $) }}
+      type: {{ include "common.tplvalues.render" (dict "value" $values.objecttype "context" $) }}
+      {{- with $values.objectversion }}
+      version: {{ include "common.tplvalues.render" (dict "value" . "context" $) }}
+      {{- end }}
+      {{- with $values.objectcontenttype }}
+      contentType: {{ include "common.tplvalues.render" (dict "value" . "context" $) }}
+      {{- end }}     
+  {{- with $values.output }}
+  output:
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+{{- end }}
