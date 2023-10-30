@@ -1,4 +1,4 @@
-# gzac-sd-zgw-backend chart
+# dh-nl-portal-backend chart
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
