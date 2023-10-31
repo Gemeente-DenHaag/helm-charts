@@ -1,4 +1,4 @@
-# dh-nl-portal-backend chart
+# dh-nl-portal-backend
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
@@ -9,30 +9,6 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 | Name | Email | Url |
 | ---- | ------ | --- |
 | DenHaag | <ruben.van.duyneveldt@syntouch.nl> |  |
-
-
-## Introduction
-
-This chart allows you to deploy dh-nl-portal-backend.
-The charts allows you to manage the following resources:
-
-  - AzureKeyVaultSecret
-  - ConfigMaps
-  - Deployment
-  - HorizontalPodAutoscaler
-  - Ingress
-  - PersistentVolumeClaim
-  - PodDisruptionBudget
-  - Secrets
-  - Service
-  - ServiceAccount
-  
-
-## TL;DR
-
-```console
-$ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
-```
 
 ## Source Code
 
@@ -49,26 +25,11 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| args | list | `[]` |  |
+| appKind | string | `"Deployment"` |  |
 | automountServiceAccountToken | bool | `false` |  |
 | autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `` |  |
-| autoscaling.minReplicas | int | `` |  |
-| autoscaling.metrics | list | `[]` |  |
-| autoscaling.behavior | list | `[]` |  |
-| replicaCount | int | `1` |  |
-| checksums | list | `[]` |  |
-| command[0] | string | `"java"` |  |
-| command[1] | string | `"-XX:MinRAMPercentage=20.0"` |  |
-| command[2] | string | `"-XX:MaxRAMPercentage=80.0"` |  |
-| command[3] | string | `"-XshowSettings:vm"` |  |
-| command[4] | string | `"-Djava.security.egd=file:/dev/./urandom"` |  |
-| command[5] | string | `"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"` |  |
-| command[6] | string | `"-jar"` |  |
-| command[7] | string | `"/app.war"` |  |
 | commonAnnotations | object | `{}` |  |
 | commonLabels | object | `{}` |  |
-| configMaps | object | `{}` |  |
 | containerPorts | list | `[]` |  |
 | containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | containerSecurityContext.enabled | bool | `true` |  |
@@ -76,39 +37,39 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | dnsPolicy | string | `"ClusterFirst"` |  |
 | env | object | `{}` |  |
 | envFrom[0].secretRef.name | string | `"{{ include \"app.fullname\" . }}"` |  |
-| extraObjects | list | `[]` |  |
+| global.keycloackUrl | string | `"https://keycloak-zgw.test.denhaag.nl"` |  |
 | hostAliases | list | `[]` |  |
 | hostNetwork | bool | `false` |  |
 | image.fullImage | list | `[]` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"crzgwpweu01.azurecr.io"` |  |
-| image.repository | string | `"zgw/gzac-sd-zgw-backend"` |  |
-| image.tag | string | `"latest"` |  |
+| image.repository | string | `"zgw/dh-nl-portal-backend"` |  |
+| image.tag | string | `nil` |  |
 | ingress.annotations."nginx.ingress.kubernetes.io/force-ssl-redirect" | string | `"true"` |  |
 | ingress.annotations."nginx.ingress.kubernetes.io/use-regex" | string | `"true"` |  |
 | ingress.apiVersion | string | `nil` |  |
 | ingress.certManager | bool | `false` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.existingTlsSecret | string | `nil` |  |
-| ingress.extraPaths | object | `{}` |  |
+| ingress.extraPaths[0].backend.service.name | string | `"{{ include \"common.names.fullname\" . }}"` |  |
+| ingress.extraPaths[0].backend.service.port.name | string | `"app"` |  |
+| ingress.extraPaths[0].path | string | `"/api/(.*)"` |  |
+| ingress.extraPaths[0].pathType | string | `"Prefix"` |  |
 | ingress.hostname | string | `""` |  |
 | ingress.ingressClassName | string | `"nginx"` |  |
 | ingress.nginx.configurationSnippet | string | `nil` |  |
 | ingress.nginx.serverSnippet | string | `nil` |  |
-| ingress.path | string | `"/api(.*)"` |  |
+| ingress.path | string | `"/graphql"` |  |
 | ingress.pathType | string | `"Prefix"` |  |
 | ingress.tls | bool | `true` |  |
 | initContainers | list | `[]` |  |
-| appKind | string | `"Deployment"` |  |
 | livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.failureThreshold | int | `2` |  |
-| livenessProbe.httpGet.path | string | `"/api/v1/ping"` |  |
-| livenessProbe.httpGet.port | int | `8080` |  |
-| livenessProbe.initialDelaySeconds | int | `60` |  |
+| livenessProbe.initialDelaySeconds | int | `30` |  |
 | livenessProbe.periodSeconds | int | `30` |  |
 | livenessProbe.successThreshold | int | `1` |  |
+| livenessProbe.tcpSocket.port | int | `8080` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
-| name | string | `"gzac-sd-zgw-backend"` |  |
+| name | string | `"dh-nl-portal-backend"` |  |
 | nodeAffinityPreset.key | string | `""` |  |
 | nodeAffinityPreset.type | string | `""` |  |
 | nodeAffinityPreset.values | list | `[]` |  |
@@ -121,8 +82,6 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | podAnnotations | object | `{}` |  |
 | podAntiAffinityPreset | string | `"soft"` |  |
 | podDisruptionBudget.enabled | bool | `false` |  |
-| podDisruptionBudget.minAvailable | int | `` |  |
-| podDisruptionBudget.maxUnavailable | int | `` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext.enabled | bool | `true` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
@@ -137,45 +96,27 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | readinessProbe.successThreshold | int | `1` |  |
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | replicaCount | int | `1` |  |
-| resources.limits.cpu | int | `2` |  |
-| resources.limits.memory | string | `"3Gi"` |  |
+| resources.limits.cpu | int | `1` |  |
+| resources.limits.memory | string | `"2Gi"` |  |
 | resources.requests.cpu | string | `"500m"` |  |
-| resources.requests.memory | string | `"3Gi"` |  |
-| secrets | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| service.labels | object | `{}` |  |
+| resources.requests.memory | string | `"1Gi"` |  |
 | service.port | int | `8080` |  |
-| service.ports | list | `[]` |  |
 | service.targetPort | int | `8080` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automountServiceAccountToken | bool | `true` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `nil` |  |
-| sidecar.name | string | `""` |  |
-| sidecar.repository | string | `""` |  |
-| sidecar.tag | string | `""` |  |
-| sidecar.args | list | `[]` |  |
-| sidecar.containerSecurityContext | object | `{}` |  |
 | startupProbe.enabled | bool | `true` |  |
-| startupProbe.failureThreshold | int | `20` |  |
-| startupProbe.httpGet.path | string | `"/api/v1/ping"` |  |
-| startupProbe.httpGet.port | int | `8080` |  |
-| startupProbe.initialDelaySeconds | int | `30` |  |
+| startupProbe.failureThreshold | int | `15` |  |
+| startupProbe.initialDelaySeconds | int | `10` |  |
 | startupProbe.periodSeconds | int | `20` |  |
 | startupProbe.successThreshold | int | `1` |  |
+| startupProbe.tcpSocket.port | int | `8080` |  |
 | startupProbe.timeoutSeconds | int | `5` |  |
-| syncAKV.vaultname| string | `""` |  |
-| syncAKV.objectname| string | `""` |  |
-| syncAKV.objecttype| string | `""` |  |
-| syncAKV.output| object | `{}` |  |
-| tests.httpChecks.default | bool | `false` |  |
 | tolerations | list | `[]` |  |
 | topologySpreadConstraints | list | `[]` |  |
 | updateStrategy.type | string | `"RollingUpdate"` |  |
-| volumeMounts[0].mountPath | string | `"/tmp"` |  |
-| volumeMounts[0].name | string | `"tmpfs-1"` |  |
-| volumes[0].emptyDir | object | `{}` |  |
-| volumes[0].name | string | `"tmpfs-1"` |  |
 
-> **Tip**: You can use the default [values.yaml](values.yaml)
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.11.3](https://github.com/norwoodj/helm-docs/releases/v1.11.3)
