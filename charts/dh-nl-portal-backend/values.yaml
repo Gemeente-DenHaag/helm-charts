@@ -33,6 +33,10 @@ image:
 ##
 name: "dh-nl-portal-backend"
 
+##
+##
+command: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app.jar"]
+
 ## Specfies the required replicas
 ##
 replicaCount: 1
