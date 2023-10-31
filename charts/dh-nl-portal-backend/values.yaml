@@ -63,6 +63,22 @@ hostNetwork: false
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
 automountServiceAccountToken: false
 
+serviceAccount:
+  ## Specifies whether a service account should be created
+  ##
+  create: false
+  ## Annotations to add to the service account
+  ##
+  annotations: {}
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  ##
+  name:
+  ## Controls whether the container automatically mounts the ServiceAccount's API credentials
+  ## In the serviceaccount/v1 this defaults to true, so also in this helm chart. recommended: false
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+  automountServiceAccountToken: true
+
 ## Add labels to all the deployed resources
 ##
 commonLabels: {}
@@ -223,6 +239,24 @@ ingress:
           name: app
     path: /api/(.*)
     pathType: Prefix
+  
+    ## Adds location and server snippets annotations for ingress-nginx
+    ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet
+    ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet
+    ##
+    ## nginx:
+    ##   serverSnippet: |
+    ##     ## Redirect mobile
+    ##     set $agentflag 0;
+    ##     if ($http_user_agent ~* "(Mobile)" ){
+    ##       set $agentflag 1;
+    ##     }
+    ##     if ( $agentflag = 1 ) {
+    ##       return 301 https://m.example.com;
+    ##     }
+  nginx:
+    configurationSnippet:
+    serverSnippet:
 
 ##  We usually recommend not to specify default resources and to leave this as a conscious
 ##  choice for the user. This also increases chances charts run on environments with little
@@ -322,12 +356,34 @@ env: {}
 ## envFrom:
 ##   - configMapRef:
 ##       name: special-config
-##   - secretRef:
+##   - secretRef:ƒ
 ##       name: '{{ include "app.fullname" . }}-env'
 ##
 envFrom:
   - secretRef:
        name: '{{ include "app.fullname" . }}'
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+##
+persistence:
+  enabled: false
+  ## Application data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ##
+  ## If you want to reuse an existing claim, you can pass the name of the PVC using
+  ## the existingClaim variable
+  # existingClaim: your-claim
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  mountPath: /data
 
 ## Configure options for liveness and readiness probes
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
@@ -358,3 +414,10 @@ startupProbe:
   timeoutSeconds: 5
   failureThreshold: 15
   successThreshold: 1
+
+## PodDisruptionBudget configuration
+##
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  # maxUnavailable: 1
