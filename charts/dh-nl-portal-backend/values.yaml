@@ -94,7 +94,8 @@ podAnnotations: {}
 
 ## Extra labels to add to Pod
 ##
-podLabels: {}
+podLabels:
+  public-access: allow
 
 ## Add init containers to the pod
 ##
