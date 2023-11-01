@@ -14,56 +14,23 @@ global:
 
 image:
   registry: "crzgwpweu01.azurecr.io"
-  repository: "zgw/dh-nl-portal-backend"
-  tag: # There is no latest tag, so we cannot specify this
-  fullImage: [] # use this from pipeline, includes registry, repo and tag
+  repository: "zgw/klantportaal"
+  tag: 
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
-  pullPolicy: IfNotPresent
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  ##
-  # pullSecrets:
-  #   - myRegistryKeySecretName
+  pullPolicy: Always
 
 ## Specifies the application name (required to be set)
 ##
-name: "dh-nl-portal-backend"
-
-##
-##
-command: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app.jar"]
-
-## Specfies the required replicas
-##
-replicaCount: 1
+name: "klantportaal"
 
 ## Specifies the application resource kind
 ##
 appKind: Deployment
 
-## String to partially override common.names.fullname template (will maintain the release name)
-##
-# nameOverride:
-
-## String to fully override common.names.fullname template
-##
-# fullnameOverride:
-
-## Deployment pod host aliases
-## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
-##
-hostAliases: []
-
-## Controls whether the pod may use the node network namespace. 
-## ref: https://kubernetes.io/docs/concepts/security/pod-security-policy/#host-namespaces
-hostNetwork: false
-
 ## Controls whether the container automatically mounts the ServiceAccount's API credentials
-## In the pod/v1 this defaults to true, so also in this helm chart. recommended: false
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
 automountServiceAccountToken: false
 
@@ -83,45 +50,71 @@ serviceAccount:
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
   automountServiceAccountToken: true
 
-## Add labels to all the deployed resources
-##
-commonLabels: {}
-
-## Add annotations to all the deployed resources
-##
-commonAnnotations: {}
-
-## Pod annotations
-## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-##
-podAnnotations: {}
-
-## Extra labels to add to Pod
-##
-podLabels:
-  public-access: allow
-
-## Add init containers to the pod
-##
-initContainers: []
-## e.g.
-# - name: your-image-name
-# image: your-image
-# imagePullPolicy: Always
-# ports:
-# - name: portname
-#   containerPort: 1234
-
-## priorityClassName
-## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
-##
-priorityClassName: ''
-
 ## Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.
 ## By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
 ## to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
 ##
 dnsPolicy: ClusterFirst
+
+## An array to add env vars. For env variables for config.js see config: in values-(env).yaml
+## For example:
+## env:
+##  - name: TEST_VAR
+##    value: test
+##
+env:
+    - name: TZ
+      value: Europe/Amsterdam
+
+## This will generate the config.js to use in klantportaal
+configMaps:
+  '{{ include "app.fullname" . }}':
+    data:
+      config.js: |-
+        {{- range $k, $v := .Values.config }}
+        window.{{ $k}} = '{{ include "common.tplvalues.render" (dict "value" $v "context" $) }}';
+        {{- end }}
+
+# Volume for config.js and emptyDir for nginx tmp folder
+volumes:
+- name: config-js-vol
+  configMap:
+    name: '{{ include "app.fullname" . }}'
+- name: tmpfs-1
+  emptyDir: {}
+
+# Mount config.js to nginx path and mount tmp for nginx
+volumeMounts:
+  - mountPath: /usr/share/nginx/html/config.js
+    name: config-js-vol
+    subPath: config.js
+  - mountPath: /tmp
+    name: tmpfs-1
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+##
+persistence:
+  enabled: false
+  ## Application data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ##
+  ## If you want to reuse an existing claim, you can pass the name of the PVC using
+  ## the existingClaim variable
+  # existingClaim: your-claim
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  mountPath: /data
+
+checksums:
+  - configmaps.yaml
 
 ## Pod securityContext
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
@@ -147,16 +140,11 @@ podSecurityContext:
 ##
 containerSecurityContext:
   enabled: true
+  capabilities:
+    drop:
+    - ALL
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-
-## Application container ports definitions (for use with service.ports)
-##
-## containerPorts:
-##   - name: http
-##     containerPort: 8080
-##     protocol: TCP
-containerPorts: []
 
 ## Application service parameters
 ##
@@ -171,6 +159,7 @@ service:
   ##
   port: 8080
   targetPort: 8080
+
 
 ## Set up update strategy for Kibana installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to makesure the pods are destroyed first.
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
@@ -193,10 +182,6 @@ ingress:
   enabled: true
   hostname: ""
 
-  ## Set this to true in order to add the corresponding annotations for cert-manager
-  ##
-  certManager: false
-
   ## Ingress Path type
   ##
   pathType: Prefix
@@ -207,17 +192,17 @@ ingress:
   ##
   apiVersion:
 
-  # ## The Path to Nginx. You may need to set this to '/*' in order to use this
-  # ## with ALB ingress controllers.
-  # ##
-  path: /graphql
+  ## The Path to Nginx. You may need to set this to '/*' in order to use this
+  ## with ALB ingress controllers.
+  ##
+  path: /(.*)
 
-  # ## Ingress annotations done as key:value pairs
-  # ## For a full list of possible ingress annotations, please see
-  # ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
-  # ##
-  # ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
-  # ##
+  ## Ingress annotations done as key:value pairs
+  ## For a full list of possible ingress annotations, please see
+  ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
+  ##
+  ## If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set
+  ##
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -228,37 +213,20 @@ ingress:
   ##
   tls: true
 
-  ## Any additional arbitrary paths that may need to be added to the ingress under the main host.
-  ## For example: The ALB ingress controller requires a special rule for handling SSL redirection.
-  ## extraPaths:
-  ## - path: /*
-  ##   backend:
-  ##     serviceName: ssl-redirect
-  ##     servicePort: use-annotation
+  ## Adds location and server snippets annotations for ingress-nginx
+  ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet
+  ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet
   ##
-  extraPaths:
-  - backend:
-      service:
-        name: '{{ include "common.names.fullname" . }}'
-        port:
-          name: app
-    path: /api/(.*)
-    pathType: Prefix
-  
-    ## Adds location and server snippets annotations for ingress-nginx
-    ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet
-    ## Ref: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet
-    ##
-    ## nginx:
-    ##   serverSnippet: |
-    ##     ## Redirect mobile
-    ##     set $agentflag 0;
-    ##     if ($http_user_agent ~* "(Mobile)" ){
-    ##       set $agentflag 1;
-    ##     }
-    ##     if ( $agentflag = 1 ) {
-    ##       return 301 https://m.example.com;
-    ##     }
+  ## nginx:
+  ##   serverSnippet: |
+  ##     ## Redirect mobile
+  ##     set $agentflag 0;
+  ##     if ($http_user_agent ~* "(Mobile)" ){
+  ##       set $agentflag 1;
+  ##     }
+  ##     if ( $agentflag = 1 ) {
+  ##       return 301 https://m.example.com;
+  ##     }
   nginx:
     configurationSnippet:
     serverSnippet:
@@ -270,12 +238,12 @@ ingress:
 ##
 resources:
   limits:
-    cpu: 1
-    memory: 2Gi
-  requests:
     cpu: 500m
-    memory: 1Gi
-  
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
 ## Autoscaling configuration
 ##
 ## Example:
@@ -302,10 +270,6 @@ resources:
 ##
 autoscaling:
   enabled: false
-
-nodeSelector: {}
-tolerations: []
-topologySpreadConstraints: []
 
 ## Pod affinity preset
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
@@ -347,77 +311,39 @@ nodeAffinityPreset:
 ##
 affinity: {}
 
-## An array to add env vars
-## For example:
-## env:
-##  - name: TEST_VAR
-##    value: test
-##
-env: {}
-
-## Array of sources to populate environment variables in the container from
-## Ref: https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core
-##
-## envFrom:
-##   - configMapRef:
-##       name: special-config
-##   - secretRef:ƒ
-##       name: '{{ include "app.fullname" . }}-env'
-##
-envFrom:
-  - secretRef:
-       name: '{{ include "app.fullname" . }}'
-
-## Enable persistence using Persistent Volume Claims
-## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-##
-##
-persistence:
-  enabled: false
-  ## Application data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  ##   GKE, AWS & OpenStack)
-  ##
-  # storageClass: "-"
-  ##
-  ## If you want to reuse an existing claim, you can pass the name of the PVC using
-  ## the existingClaim variable
-  # existingClaim: your-claim
-  accessMode: ReadWriteOnce
-  size: 10Gi
-  mountPath: /data
-
 ## Configure options for liveness and readiness probes
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
 ## Note: probes are disabled by default and have no checks defined
 ##
 livenessProbe:
   enabled: true
-  tcpSocket:
+  httpGet:
+    path: /index.html
     port: 8080
-  initialDelaySeconds: 30
+  initialDelaySeconds: 10
   periodSeconds: 30
-  timeoutSeconds: 5
+  timeoutSeconds: 2
   failureThreshold: 2
   successThreshold: 1
 readinessProbe:
-  enabled: false
-  initialDelaySeconds: 60
+  enabled: true
+  httpGet:
+    path: /index.html
+    port: 8080
+  initialDelaySeconds: 5
   periodSeconds: 30
-  timeoutSeconds: 5
-  failureThreshold: 6
+  timeoutSeconds: 2
+  failureThreshold: 2
   successThreshold: 1
 startupProbe:
-  enabled: true
-  tcpSocket:
+  enabled: false
+  httpGet:
+    path: /index.html
     port: 8080
-  initialDelaySeconds: 10
-  periodSeconds: 20
+  initialDelaySeconds: 5
+  periodSeconds: 30
   timeoutSeconds: 5
-  failureThreshold: 15
+  failureThreshold: 2
   successThreshold: 1
 
 ## PodDisruptionBudget configuration
