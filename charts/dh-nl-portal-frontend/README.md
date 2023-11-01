@@ -37,6 +37,7 @@ A Helm chart to deploy dh-nl-portal-frontend to Kubernetes
 | dnsPolicy | string | `"ClusterFirst"` |  |
 | env[0].name | string | `"TZ"` |  |
 | env[0].value | string | `"Europe/Amsterdam"` |  |
+| global.keycloakUrl | string | `"https://keycloak-zgw.test.denhaag.nl"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.registry | string | `"crzgwpweu01.azurecr.io"` |  |
 | image.repository | string | `"zgw/klantportaal"` |  |
