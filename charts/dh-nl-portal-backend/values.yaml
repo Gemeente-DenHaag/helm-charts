@@ -10,7 +10,7 @@
 
 # Testing with global values
 global:
-  keycloackUrl: "https://keycloak-zgw.test.denhaag.nl"
+  keycloakUrl: "https://keycloak-zgw.test.denhaag.nl"
 
 image:
   registry: "crzgwpweu01.azurecr.io"
