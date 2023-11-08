@@ -23,6 +23,21 @@ entries:
     version: 0.0.1
   dh-lib:
   - apiVersion: v2
+    created: "2023-11-08T09:02:54.656089793Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.1.x
+    description: A Helm library chart for Kubernetes
+    digest: ced8213fe7cf3e550f6cdb0e2377fa3ecd7a5c1cefcb47aa7f9870ee5ae12c77
+    name: dh-lib
+    type: library
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-lib-0.1.4/dh-lib-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
     created: "2023-10-13T22:00:49.95004368Z"
     dependencies:
     - name: common
@@ -686,4 +701,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd-zgw-frontend-0.1.0/gzac-sd-zgw-frontend-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-03T14:46:24.42539398Z"
+generated: "2023-11-08T09:02:54.656197714Z"
