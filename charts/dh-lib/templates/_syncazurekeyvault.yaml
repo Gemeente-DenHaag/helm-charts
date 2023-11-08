@@ -4,7 +4,7 @@
 apiVersion: spv.no/v2beta1
 kind: AzureKeyVaultSecret
 metadata:
-  name: {{ include "common.names.name" $ }}-{{ $nameSuffix }}
+  name: {{ include "app.fullname" $ }}-{{ $nameSuffix }}
 spec:
   vault:
     name: {{ include "common.tplvalues.render" (dict "value" $values.vaultname "context" $) }}
