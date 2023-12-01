@@ -1,6 +1,6 @@
 # dh-nl-portal-backend
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
@@ -18,7 +18,7 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.3 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.5 |
 
 ## Values
 
@@ -28,6 +28,13 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 | appKind | string | `"Deployment"` |  |
 | automountServiceAccountToken | bool | `false` |  |
 | autoscaling.enabled | bool | `false` |  |
+| command[0] | string | `"java"` |  |
+| command[1] | string | `"-XX:MinRAMPercentage=20.0"` |  |
+| command[2] | string | `"-XX:MaxRAMPercentage=80.0"` |  |
+| command[3] | string | `"-XshowSettings:vm"` |  |
+| command[4] | string | `"-Djava.security.egd=file:/dev/./urandom"` |  |
+| command[5] | string | `"-jar"` |  |
+| command[6] | string | `"/opt/app.jar"` |  |
 | commonAnnotations | object | `{}` |  |
 | commonLabels | object | `{}` |  |
 | containerPorts | list | `[]` |  |
@@ -35,9 +42,9 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 | containerSecurityContext.enabled | bool | `true` |  |
 | containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | dnsPolicy | string | `"ClusterFirst"` |  |
-| env | object | `{}` |  |
+| env | list | `[]` |  |
 | envFrom[0].secretRef.name | string | `"{{ include \"app.fullname\" . }}"` |  |
-| global.keycloackUrl | string | `"https://keycloak-zgw.test.denhaag.nl"` |  |
+| global.keycloakUrl | string | `"https://keycloak-zgw.test.denhaag.nl"` |  |
 | hostAliases | list | `[]` |  |
 | hostNetwork | bool | `false` |  |
 | image.fullImage | list | `[]` |  |
@@ -82,7 +89,7 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 | podAnnotations | object | `{}` |  |
 | podAntiAffinityPreset | string | `"soft"` |  |
 | podDisruptionBudget.enabled | bool | `false` |  |
-| podLabels | object | `{}` |  |
+| podLabels.public-access | string | `"allow"` |  |
 | podSecurityContext.enabled | bool | `true` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.runAsGroup | int | `1000` |  |
