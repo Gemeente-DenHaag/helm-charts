@@ -1,6 +1,6 @@
 # Den Haag Helm library chart
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square)
 
 Den Haag Helm library chart
 
@@ -103,7 +103,7 @@ ingress:
 | containerSecurityContext.enabled | bool | `false` |  |
 | containerSecurityContext.runAsUser | int | `1000` |  |
 | dnsPolicy | string | `"ClusterFirst"` |  |
-| env | object | `{}` |  |
+| env | object | `[]` |  |
 | envFrom | list | `[]` |  |
 | extraObjects | list | `[]` |  |
 | hostAliases | list | `[]` |  |
