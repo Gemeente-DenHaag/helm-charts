@@ -30,6 +30,20 @@ hostNetwork: false
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
 automountServiceAccountToken: false
 
+## Application service parameters
+##
+service:
+  ## Kubernetes service type and port number
+  ##
+  type: 
+  # clusterIP: None
+
+  ## Specify the default service port and targetPort
+  ## Note: port or ports must be provided to enable service!
+  ##
+  port: 
+  targetPort: 
+
 serviceAccount:
   ## Specifies whether a service account should be created
   ##
@@ -256,6 +270,39 @@ env: []
 envFrom:
 - secretRef:
       name: '{{ include "app.fullname" . }}'
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+##
+persistence:
+  enabled: false
+  ## Application data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ##
+  ## If you want to reuse an existing claim, you can pass the name of the PVC using
+  ## the existingClaim variable
+  # existingClaim: your-claim
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  mountPath: /data
+
+## Configure options for liveness and readiness probes
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
+## Note: probes are disabled by default and have no checks defined
+##
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+startupProbe:
+  enabled: false
 
 ## Array to add volumes
 ## Ref: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume
