@@ -1,6 +1,6 @@
 # gzac-generic-backend
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 A Helm chart to deploy gzac-generic-backend to Kubernetes
 
@@ -18,7 +18,7 @@ A Helm chart to deploy gzac-generic-backend to Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.4 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.5 |
 
 ## Values
 
@@ -44,15 +44,20 @@ A Helm chart to deploy gzac-generic-backend to Kubernetes
 | hostNetwork | bool | `false` |  |
 | image.fullImage | list | `[]` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.registry | string | `nil` |  |
-| image.repository | string | `nil` |  |
-| image.tag | string | `nil` |  |
+| image.registry | string | `""` |  |
+| image.repository | string | `""` |  |
+| image.tag | string | `"latest"` |  |
 | ingress | object | `{}` |  |
 | initContainers | list | `[]` |  |
-| name | string | `nil` |  |
+| livenessProbe.enabled | bool | `false` |  |
+| name | string | `""` |  |
 | nodeAffinityPreset.key | string | `""` |  |
 | nodeAffinityPreset.type | string | `""` |  |
 | nodeAffinityPreset.values | list | `[]` |  |
+| persistence.accessMode | string | `"ReadWriteOnce"` |  |
+| persistence.enabled | bool | `false` |  |
+| persistence.mountPath | string | `"/data"` |  |
+| persistence.size | string | `"10Gi"` |  |
 | podAffinityPreset | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podAntiAffinityPreset | string | `"soft"` |  |
@@ -64,13 +69,18 @@ A Helm chart to deploy gzac-generic-backend to Kubernetes
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
 | priorityClassName | string | `""` |  |
+| readinessProbe.enabled | bool | `false` |  |
 | replicaCount | int | `1` |  |
 | secrets | object | `{}` |  |
+| service.port | string | `nil` |  |
+| service.targetPort | string | `nil` |  |
+| service.type | string | `nil` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automountServiceAccountToken | bool | `true` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `nil` |  |
 | sidecar | object | `{}` |  |
+| startupProbe.enabled | bool | `false` |  |
 | syncAKV | object | `{}` |  |
 | tests.httpChecks.default | bool | `false` |  |
 | updateStrategy.type | string | `"RollingUpdate"` |  |
