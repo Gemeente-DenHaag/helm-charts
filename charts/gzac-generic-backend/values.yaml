@@ -1,0 +1,373 @@
+image:
+  registry:
+  repository:
+  tag:
+  fullImage: []
+  pullPolicy: IfNotPresent
+
+## Specifies the application name (required to be set)
+##
+name:
+
+## Specfies the required replicas
+##
+replicaCount: 1
+
+## Specifies the application resource kind
+##
+appKind: Deployment
+
+## Deployment pod host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: []
+
+## Controls whether the pod may use the node network namespace. 
+## ref: https://kubernetes.io/docs/concepts/security/pod-security-policy/#host-namespaces
+hostNetwork: false
+
+## Controls whether the container automatically mounts the ServiceAccount's API credentials
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+automountServiceAccountToken: false
+
+serviceAccount:
+  ## Specifies whether a service account should be created
+  ##
+  create: false
+  ## Annotations to add to the service account
+  ##
+  annotations: {}
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  ##
+  name:
+  ## Controls whether the container automatically mounts the ServiceAccount's API credentials
+  ## In the serviceaccount/v1 this defaults to true, so also in this helm chart. recommended: false
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+  automountServiceAccountToken: true
+
+## Add labels to all the deployed resources
+##
+commonLabels: {}
+
+## Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## Pod annotations
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
+podAnnotations: {}
+
+## Extra labels to add to Pod
+##
+podLabels: {}
+
+## Add init containers to the pod
+##
+initContainers: []
+## e.g.
+# - name: your-image-name
+# image: your-image
+# imagePullPolicy: Always
+# ports:
+# - name: portname
+#   containerPort: 1234
+
+## priorityClassName
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+##
+priorityClassName: ''
+
+## Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.
+## By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
+## to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
+##
+dnsPolicy: ClusterFirst
+
+## Pod securityContext
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+##
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+
+## Container security context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+##
+## containerSecurityContext:
+##   capabilities:
+##     drop:
+##     - ALL
+##   readOnlyRootFilesystem: true
+##   runAsNonRoot: true
+##   runAsUser: 1001
+##   allowPrivilegeEscalation: false
+##
+containerSecurityContext:
+  enabled: true
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+
+## Application container ports definitions (for use with service.ports)
+##
+## containerPorts:
+##   - name: http
+##     containerPort: 8080
+##     protocol: TCP
+containerPorts: []
+
+## Add a simple sidecar to this deployment
+##
+## sidecar:
+##  name: netshoot
+##  repository: nicolaka/netshoot
+##  tag: latest
+##  args:
+##  - sleep
+##  - '999'
+##  containerSecurityContext:
+##   enabled: false
+##    runAsNonRoot: false
+##    allowPrivilegeEscalation: true
+##    capabilities:
+##      add:
+##      - NET_ADMIN
+##      - NET_RAW
+sidecar: {}
+
+## Set up update strategy for Kibana installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to makesure the pods are destroyed first.
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+## Example:
+# updateStrategy:
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxSurge: 25%
+#    maxUnavailable: 25%
+updateStrategy:
+  type: RollingUpdate
+
+## Configure the ingress resource that allows you to access the
+## app installation. Set up the URL
+## ref: http://kubernetes.io/docs/user-guide/ingress/
+##
+ingress: {}
+
+##  We usually recommend not to specify default resources and to leave this as a conscious
+##  choice for the user. This also increases chances charts run on environments with little
+##  resources, such as Minikube. If you do want to specify resources, uncomment the following
+##  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+##
+# resources:
+#   limits:
+#     cpu: 2000m
+#     memory: 2Gi
+#   requests:
+#     cpu: 500m
+#     memory: 2Gi
+
+## Autoscaling configuration
+##
+## Example:
+## autoscaling:
+##   enabled: true
+##   minReplicas: 1
+##   maxReplicas: 10
+##   metrics:
+##     - type: Resource
+##       resource:
+##         name: cpu
+##         target:
+##           type: Utilization
+##           averageUtilization: 80
+##     - type: Resource
+##       resource:
+##        name: memory
+##        target:
+##           type: AverageValue
+##           averageValue: 1800Mi
+##   behavior:
+##     scaleDown:
+##       stabilizationWindowSeconds: 300
+##
+autoscaling:
+  enabled: false
+
+## Pod affinity preset
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAffinityPreset: ""
+
+## Pod anti-affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAntiAffinityPreset: soft
+
+## Node affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+## Allowed values: soft, hard
+##
+nodeAffinityPreset:
+  ## Node affinity type
+  ## Allowed values: soft, hard
+  ##
+  type: ""
+  ## Node label key to match
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## Node label values to match
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+
+## Affinity for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set
+##
+affinity: {}
+
+## An array to add env vars
+## For example:
+## env:
+##  - name: TEST_VAR
+##    value: test
+##
+env: []
+
+## Array of sources to populate environment variables in the container from
+## Ref: https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core
+##
+## envFrom:
+##   - configMapRef:
+##       name: special-config
+##   - secretRef:
+##       name: '{{ include "app.fullname" . }}-env'
+##
+envFrom:
+- secretRef:
+      name: '{{ include "app.fullname" . }}'
+
+## Array to add volumes
+## Ref: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume
+## - name: storage
+##   persistentVolumeClaim:
+##     claimName: claimName
+##
+# fix for readOnlyRootFilesystem /tmp/spring.log
+volumes:
+- name: tmpfs-1
+  emptyDir: {}
+
+## Array to add volume mounts (normally used with volumes)
+## Ref: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2
+## - mountPath: /parentdir/subdir
+##   name: storage
+##   subPath: dirUnderMountPath/subdir
+##
+volumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-1
+
+## Populate сonfigMaps for the application
+##
+## configMaps:
+##   app:
+##     data:
+##       dbURL: {{ .Values.dbUser }}@{{ .Values.dbPassword }}:{{ .Values.dbPort }}
+##
+## The above example will create a configMap with name common.names.fullname-app
+## 
+## configMaps:
+##   '{{ include "app.fullname" . }}':
+##     data:
+##       test.xml: |-
+##         <?xml version="1.0" encoding="UTF-8"?>
+##         <configuration>
+##           <property name="test"/>
+##         </configuration>
+##
+## The above example will create a configMap with name common.names.fullname
+##
+configMaps: {}
+
+## Populate secrets for the application
+##
+## secrets:
+##   db:
+##     stringData:
+##       DB_USER: '{{ .Values.dbUser }}'
+##       DB_PASSWORD: '{{ .Values.dbPassword }}'
+##   b64:
+##     data:
+##       DB_HOST: base64-encoded-value
+##
+## The above example will create two secrets db and b64
+## (prefixed with {{ template "app.fullname" $ }}-).
+##
+secrets: {}
+
+## Sync objects from Azure keyvault to Kubernetes as secrets
+##
+##   sync-1:
+##    vaultname: azurekeyvaltname # name of the azure keyvault
+##    objectname: test-secret # secretname stored in AKV
+##    objecttype: secret # objecttype in AKV
+##    output: 
+##      transform: # optional transformers executed in listed order
+##      - trim # optional - trims empty space
+##      - base64encode # optional - encode to base64
+##      - base64decode # optional - decode from base64
+##      secret: 
+##        name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
+##        dataKey: TEST_SECRET #key to store in secret
+##
+## The above example will create 1 secret in Kubernetes from Azure keyvault
+## Supported vault object types: secret, certificate, key, multi-key-value-secret
+##
+syncAKV: {}
+
+# PodDisruptionBudget configuration
+##
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  # maxUnavailable: 1
+
+## Array of templates paths to automatically adds checksum annotation for
+## (ex: checksum/secrets.yaml: **sha256sum**)
+##
+## checksums:
+##   - secrets.yaml
+##
+checksums: []
+
+## Add extra list of kubernetes objects to deploy (value evaluted as a template)
+##
+## - apiVersion: v1
+##   kind: Pod
+##   metadata:
+##     name: nginx
+##   spec:
+##    containers:
+##    - name: nginx
+##      image: nginx:1.14.2
+##      ports:
+##      - containerPort: 80
+##
+## The above example will create 1 extra object: pod
+##
+extraObjects: []
+
+tests:
+  httpChecks:
+    default: false
