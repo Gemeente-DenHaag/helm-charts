@@ -1,13 +1,13 @@
 image:
-  registry:
-  repository:
-  tag:
+  registry: ""
+  repository: ""
+  tag: latest
   fullImage: []
   pullPolicy: IfNotPresent
 
 ## Specifies the application name (required to be set)
 ##
-name:
+name: ""
 
 ## Specfies the required replicas
 ##
