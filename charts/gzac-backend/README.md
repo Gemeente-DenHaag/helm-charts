@@ -1,8 +1,8 @@
-# gzac-generic-backend
+# gzac-backend
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
-A Helm chart to deploy gzac-generic-backend to Kubernetes
+A Helm chart to deploy gzac-backend to Kubernetes
 
 ## Maintainers
 

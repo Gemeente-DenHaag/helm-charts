@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gzac-generic-backend
-description: A Helm chart to deploy gzac-generic-backend to Kubernetes
+name: gzac-backend
+description: A Helm chart to deploy gzac-backend to Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
