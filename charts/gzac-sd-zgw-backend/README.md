@@ -1,6 +1,6 @@
 # gzac-sd-zgw-backend chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to deploy gzac-sd-zgw-backend to Kubernetes
 
@@ -42,7 +42,7 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.3 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.6 |
 
 ## Values
 

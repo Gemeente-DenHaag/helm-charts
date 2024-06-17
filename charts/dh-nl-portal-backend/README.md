@@ -1,6 +1,6 @@
 # dh-nl-portal-backend
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
@@ -18,7 +18,7 @@ A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.5 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.6 |
 
 ## Values
 
