@@ -1,8 +1,8 @@
-# gzac-fd-zgw-backend chart
+# gzac-alg-zgw-backend chart
 
 ![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
-A Helm chart to deploy gzac-fd-zgw-backend to Kubernetes
+A Helm chart to deploy gzac-alg-zgw-backend to Kubernetes
 
 ## Maintainers
 
@@ -13,7 +13,7 @@ A Helm chart to deploy gzac-fd-zgw-backend to Kubernetes
 
 ## Introduction
 
-This chart allows you to deploy gzac-fd-zgw-backend.
+This chart allows you to deploy gzac-alg-zgw-backend.
 The charts allows you to manage the following resources:
 
   - AzureKeyVaultSecret
@@ -82,7 +82,7 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | image.fullImage | list | `[]` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"crzgwpweu01.azurecr.io"` |  |
-| image.repository | string | `"zgw/gzac-fd-zgw-backend"` |  |
+| image.repository | string | `"zgw/gzac-alg-zgw-backend"` |  |
 | image.tag | string | `"latest"` |  |
 | ingress.apiVersion | string | `nil` |  |
 | ingress.certManager | bool | `false` |  |
@@ -106,7 +106,7 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 | livenessProbe.periodSeconds | int | `30` |  |
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
-| name | string | `"gzac-fd-zgw-backend"` |  |
+| name | string | `"gzac-alg-zgw-backend"` |  |
 | nodeAffinityPreset.key | string | `""` |  |
 | nodeAffinityPreset.type | string | `""` |  |
 | nodeAffinityPreset.values | list | `[]` |  |

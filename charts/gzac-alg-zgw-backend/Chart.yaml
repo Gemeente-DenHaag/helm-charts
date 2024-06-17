@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gzac-sd-zgw-frontend
-description: A Helm chart to deploy gzac-sd-zgw-frontend to Kubernetes
+name: gzac-alg-zgw-backend
+description: A Helm chart to deploy gzac-alg-zgw-backend to Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -24,7 +24,7 @@ version: 0.1.1
 # appVersion: "1.16.0"
 
 maintainers:
-- email: ruben.van.duyneveldt@syntouch.nl
+- email: menno.slingerland@denhaag.nl
   name: DenHaag
 
 sources:

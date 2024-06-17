@@ -1,14 +1,14 @@
-# gzac-sd-zgw-frontend
+# gzac-fd-zgw-frontend
 
 ![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
-A Helm chart to deploy gzac-sd-zgw-frontend to Kubernetes
+A Helm chart to deploy gzac-fd-zgw-frontend to Kubernetes
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| DenHaag | <ruben.van.duyneveldt@syntouch.nl> |  |
+| DenHaag | <menno.slingerland@denhaag.nl> |  |
 
 ## Source Code
 
@@ -38,16 +38,15 @@ A Helm chart to deploy gzac-sd-zgw-frontend to Kubernetes
 | env[0].value | string | `"Europe/Amsterdam"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"crzgwpweu01.azurecr.io"` |  |
-| image.repository | string | `"zgw/gzac-sd-zgw-frontend"` |  |
+| image.repository | string | `"zgw/gzac-fd-zgw-frontend"` |  |
 | image.tag | string | `nil` |  |
-| ingress.annotations."nginx.ingress.kubernetes.io/force-ssl-redirect" | string | `"true"` |  |
 | ingress.apiVersion | string | `nil` |  |
 | ingress.certManager | bool | `false` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.existingTlsSecret | string | `nil` |  |
 | ingress.extraPaths | string | `nil` |  |
 | ingress.hostname | string | `""` |  |
-| ingress.ingressClassName | string | `"nginx"` |  |
+| ingress.ingressClassName | string | `""` |  |
 | ingress.nginx.configurationSnippet | string | `nil` |  |
 | ingress.nginx.serverSnippet | string | `nil` |  |
 | ingress.path | string | `"/"` |  |
@@ -61,7 +60,7 @@ A Helm chart to deploy gzac-sd-zgw-frontend to Kubernetes
 | livenessProbe.periodSeconds | int | `30` |  |
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `2` |  |
-| name | string | `"gzac-sd-zgw-frontend"` |  |
+| name | string | `"gzac-fd-zgw-frontend"` |  |
 | nodeAffinityPreset.key | string | `""` |  |
 | nodeAffinityPreset.type | string | `""` |  |
 | nodeAffinityPreset.values | list | `[]` |  |
