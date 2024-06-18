@@ -700,6 +700,26 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-alg-zgw-backend-0.1.0/gzac-alg-zgw-backend-0.1.0.tgz
     version: 0.1.0
+  gzac-alg-zgw-frontend:
+  - apiVersion: v2
+    created: "2024-06-18T06:09:35.823168077Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.6
+    description: A Helm chart to deploy gzac-alg-zgw-frontend to Kubernetes
+    digest: df9190aeb27be5a32b2814224ca0beed940d41f6169ff9452e47cb04745590b3
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: gzac-alg-zgw-frontend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-alg-zgw-frontend-0.1.1/gzac-alg-zgw-frontend-0.1.1.tgz
+    version: 0.1.1
   gzac-fd-zgw-backend:
   - apiVersion: v2
     created: "2024-06-17T21:57:50.036419324Z"
@@ -818,4 +838,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd-zgw-frontend-0.1.1/gzac-sd-zgw-frontend-0.1.1.tgz
     version: 0.1.1
-generated: "2024-06-17T21:57:50.467186553Z"
+generated: "2024-06-18T06:09:35.823239971Z"
