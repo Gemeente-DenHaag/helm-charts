@@ -1,38 +1,63 @@
-# gzac-sd-zgw-backend chart
-
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+# gzac-sd-zgw-backend
 
 A Helm chart to deploy gzac-sd-zgw-backend to Kubernetes
+
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+
+## Additional Information
+
+### Example values.yaml
+
+```yaml
+name: gzac-sd-zgw-backend
+image:
+  repository: denhaag
+
+podAnnotations:
+  test: "true"
+
+checksums:
+  - /secrets.yaml
+
+secrets:
+  env:
+    stringData:
+      TEST: this
+
+configMaps:
+  app:
+    data:
+      test: this
+      wow: cool
+
+envFrom:
+  - secretRef:
+      name: 'testsecret'
+
+service:
+  port: 8000
+  targetPort: 80
+
+ingress:
+  enabled: true
+  hostname: nlportalbackend.denhaag.nl
+
+```
+
+## Installing the Chart
+
+To install the chart with the release name `gzac-sd-zgw-backend`:
+
+```console
+$ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
+$ helm install gzac-sd-zgw-backend denhaag/gzac-sd-zgw-backend
+```
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
 | DenHaag | <menno.slingerland@denhaag.nl> |  |
-
-
-## Introduction
-
-This chart allows you to deployo gzac-sd-zgw-backend.
-The charts allows you to manage the following resources:
-
-  - AzureKeyVaultSecret
-  - ConfigMaps
-  - Deployment
-  - HorizontalPodAutoscaler
-  - Ingress
-  - PersistentVolumeClaim
-  - PodDisruptionBudget
-  - Secrets
-  - Service
-  - ServiceAccount
-  
-
-## TL;DR
-
-```console
-$ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
-```
 
 ## Source Code
 
@@ -42,140 +67,1068 @@ $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.6 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.9 |
+
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| affinity | object | `{}` |  |
-| args | list | `[]` |  |
-| automountServiceAccountToken | bool | `false` |  |
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `` |  |
-| autoscaling.minReplicas | int | `` |  |
-| autoscaling.metrics | list | `[]` |  |
-| autoscaling.behavior | list | `[]` |  |
-| replicaCount | int | `1` |  |
-| checksums | list | `[]` |  |
-| command[0] | string | `"java"` |  |
-| command[1] | string | `"-XX:MinRAMPercentage=20.0"` |  |
-| command[2] | string | `"-XX:MaxRAMPercentage=80.0"` |  |
-| command[3] | string | `"-XshowSettings:vm"` |  |
-| command[4] | string | `"-Djava.security.egd=file:/dev/./urandom"` |  |
-| command[5] | string | `"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"` |  |
-| command[6] | string | `"-jar"` |  |
-| command[7] | string | `"/app.war"` |  |
-| commonAnnotations | object | `{}` |  |
-| commonLabels | object | `{}` |  |
-| configMaps | object | `{}` |  |
-| containerPorts | list | `[]` |  |
-| containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
-| containerSecurityContext.enabled | bool | `true` |  |
-| containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
-| dnsPolicy | string | `"ClusterFirst"` |  |
-| env | object | `{}` |  |
-| envFrom[0].secretRef.name | string | `"{{ include \"app.fullname\" . }}"` |  |
-| extraObjects | list | `[]` |  |
-| hostAliases | list | `[]` |  |
-| hostNetwork | bool | `false` |  |
-| image.fullImage | list | `[]` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.registry | string | `"crzgwpweu01.azurecr.io"` |  |
-| image.repository | string | `"zgw/gzac-sd-zgw-backend"` |  |
-| image.tag | string | `"latest"` |  |
-| ingress.annotations."nginx.ingress.kubernetes.io/force-ssl-redirect" | string | `"true"` |  |
-| ingress.annotations."nginx.ingress.kubernetes.io/use-regex" | string | `"true"` |  |
-| ingress.apiVersion | string | `nil` |  |
-| ingress.certManager | bool | `false` |  |
-| ingress.enabled | bool | `true` |  |
-| ingress.existingTlsSecret | string | `nil` |  |
-| ingress.extraPaths | object | `{}` |  |
-| ingress.hostname | string | `""` |  |
-| ingress.ingressClassName | string | `"nginx"` |  |
-| ingress.nginx.configurationSnippet | string | `nil` |  |
-| ingress.nginx.serverSnippet | string | `nil` |  |
-| ingress.path | string | `"/api(.*)"` |  |
-| ingress.pathType | string | `"Prefix"` |  |
-| ingress.tls | bool | `true` |  |
-| initContainers | list | `[]` |  |
-| appKind | string | `"Deployment"` |  |
-| livenessProbe.enabled | bool | `true` |  |
-| livenessProbe.failureThreshold | int | `2` |  |
-| livenessProbe.httpGet.path | string | `"/api/v1/ping"` |  |
-| livenessProbe.httpGet.port | int | `8080` |  |
-| livenessProbe.initialDelaySeconds | int | `60` |  |
-| livenessProbe.periodSeconds | int | `30` |  |
-| livenessProbe.successThreshold | int | `1` |  |
-| livenessProbe.timeoutSeconds | int | `5` |  |
-| name | string | `"gzac-sd-zgw-backend"` |  |
-| nodeAffinityPreset.key | string | `""` |  |
-| nodeAffinityPreset.type | string | `""` |  |
-| nodeAffinityPreset.values | list | `[]` |  |
-| nodeSelector | object | `{}` |  |
-| persistence.accessMode | string | `"ReadWriteOnce"` |  |
-| persistence.enabled | bool | `false` |  |
-| persistence.mountPath | string | `"/data"` |  |
-| persistence.size | string | `"10Gi"` |  |
-| podAffinityPreset | string | `""` |  |
-| podAnnotations | object | `{}` |  |
-| podAntiAffinityPreset | string | `"soft"` |  |
-| podDisruptionBudget.enabled | bool | `false` |  |
-| podDisruptionBudget.minAvailable | int | `` |  |
-| podDisruptionBudget.maxUnavailable | int | `` |  |
-| podLabels | object | `{}` |  |
-| podSecurityContext.enabled | bool | `true` |  |
-| podSecurityContext.fsGroup | int | `1000` |  |
-| podSecurityContext.runAsGroup | int | `1000` |  |
-| podSecurityContext.runAsNonRoot | bool | `true` |  |
-| podSecurityContext.runAsUser | int | `1000` |  |
-| priorityClassName | string | `""` |  |
-| readinessProbe.enabled | bool | `false` |  |
-| readinessProbe.failureThreshold | int | `6` |  |
-| readinessProbe.initialDelaySeconds | int | `60` |  |
-| readinessProbe.periodSeconds | int | `30` |  |
-| readinessProbe.successThreshold | int | `1` |  |
-| readinessProbe.timeoutSeconds | int | `5` |  |
-| replicaCount | int | `1` |  |
-| resources.limits.cpu | int | `2` |  |
-| resources.limits.memory | string | `"3Gi"` |  |
-| resources.requests.cpu | string | `"500m"` |  |
-| resources.requests.memory | string | `"3Gi"` |  |
-| secrets | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| service.labels | object | `{}` |  |
-| service.port | int | `8080` |  |
-| service.ports | list | `[]` |  |
-| service.targetPort | int | `8080` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automountServiceAccountToken | bool | `true` |  |
-| serviceAccount.create | bool | `false` |  |
-| serviceAccount.name | string | `nil` |  |
-| sidecar.name | string | `""` |  |
-| sidecar.repository | string | `""` |  |
-| sidecar.tag | string | `""` |  |
-| sidecar.args | list | `[]` |  |
-| sidecar.containerSecurityContext | object | `{}` |  |
-| startupProbe.enabled | bool | `true` |  |
-| startupProbe.failureThreshold | int | `20` |  |
-| startupProbe.httpGet.path | string | `"/api/v1/ping"` |  |
-| startupProbe.httpGet.port | int | `8080` |  |
-| startupProbe.initialDelaySeconds | int | `30` |  |
-| startupProbe.periodSeconds | int | `20` |  |
-| startupProbe.successThreshold | int | `1` |  |
-| startupProbe.timeoutSeconds | int | `5` |  |
-| syncAKV.vaultname| string | `""` |  |
-| syncAKV.objectname| string | `""` |  |
-| syncAKV.objecttype| string | `""` |  |
-| syncAKV.output| object | `{}` |  |
-| tests.httpChecks.default | bool | `false` |  |
-| tolerations | list | `[]` |  |
-| topologySpreadConstraints | list | `[]` |  |
-| updateStrategy.type | string | `"RollingUpdate"` |  |
-| volumeMounts[0].mountPath | string | `"/tmp"` |  |
-| volumeMounts[0].name | string | `"tmpfs-1"` |  |
-| volumes[0].emptyDir | object | `{}` |  |
-| volumes[0].name | string | `"tmpfs-1"` |  |
+<table>
+	<thead>
+		<th>Key</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>affinity</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>appKind</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Deployment"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>args</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>automountServiceAccountToken</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>autoscaling.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>checksums</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[0]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"java"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[1]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-XX:MinRAMPercentage=20.0"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[2]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-XX:MaxRAMPercentage=80.0"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[3]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-XshowSettings:vm"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[4]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-Djava.security.egd=file:/dev/./urandom"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[5]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[6]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"-jar"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[7]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/app.war"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>commonAnnotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>commonLabels</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>configMaps</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerPorts</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.allowPrivilegeEscalation</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.readOnlyRootFilesystem</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>dnsPolicy</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ClusterFirst"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>envFrom[0].secretRef.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ include \"app.fullname\" . }}"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>extraIngress.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>extraObjects</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>hostAliases</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>hostNetwork</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>image.fullImage</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>image.pullPolicy</td>
+			<td>string</td>
+			<td><pre lang="json">
+"IfNotPresent"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>image.registry</td>
+			<td>string</td>
+			<td><pre lang="json">
+"crzgwpweu01.azurecr.io"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"zgw/gzac-sd-zgw-backend"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"latest"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.annotations."nginx.ingress.kubernetes.io/force-ssl-redirect"</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.annotations."nginx.ingress.kubernetes.io/use-regex"</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.apiVersion</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.certManager</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.existingTlsSecret</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.extraPaths</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.hostname</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+"nginx"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.nginx.configurationSnippet</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.nginx.serverSnippet</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api(.*)"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.pathType</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Prefix"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.tls</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>initContainers</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.failureThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+2
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.httpGet.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api/v1/ping"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.httpGet.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.initialDelaySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+60
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.periodSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+30
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.successThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.timeoutSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+5
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"gzac-sd-zgw-backend"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeAffinityPreset.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeAffinityPreset.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeAffinityPreset.values</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeSelector</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>persistence.accessMode</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ReadWriteOnce"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>persistence.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>persistence.mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/data"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>persistence.size</td>
+			<td>string</td>
+			<td><pre lang="json">
+"10Gi"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podAffinityPreset</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podAnnotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podAntiAffinityPreset</td>
+			<td>string</td>
+			<td><pre lang="json">
+"soft"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podDisruptionBudget.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podLabels</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.fsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>priorityClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.failureThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+6
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.initialDelaySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+60
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.periodSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+30
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.successThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.timeoutSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+5
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>replicaCount</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>resources.limits.cpu</td>
+			<td>int</td>
+			<td><pre lang="json">
+2
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>resources.limits.memory</td>
+			<td>string</td>
+			<td><pre lang="json">
+"3Gi"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>resources.requests.cpu</td>
+			<td>string</td>
+			<td><pre lang="json">
+"500m"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>resources.requests.memory</td>
+			<td>string</td>
+			<td><pre lang="json">
+"3Gi"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>secrets</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.labels</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.ports</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.targetPort</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>service.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ClusterIP"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.automountServiceAccountToken</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.create</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>sidecar</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.failureThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+20
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.httpGet.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api/v1/ping"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.httpGet.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.initialDelaySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+30
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.periodSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+20
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.successThreshold</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.timeoutSeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+5
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>syncAKV</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>tests.httpChecks.default</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>tolerations</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>topologySpreadConstraints</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>updateStrategy.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+"RollingUpdate"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[0].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/tmp"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[0].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"tmpfs-1"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumes[0].emptyDir</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumes[0].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"tmpfs-1"
+</pre>
+</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
 
-> **Tip**: You can use the default [values.yaml](values.yaml)
+
+
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
