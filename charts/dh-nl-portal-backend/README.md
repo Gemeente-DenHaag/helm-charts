@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -204,8 +204,8 @@ checksums:
 		<tr>
 			<td>configMaps</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Populate сonfigMaps for the application.
@@ -258,9 +258,6 @@ containerPorts:
 			<td>object</td>
 			<td><pre lang="yaml">
 enabled: true
-# capabilities:
-#   drop:
-#   - ALL
 readOnlyRootFilesystem: true
 allowPrivilegeEscalation: false
 
@@ -295,7 +292,7 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 		<tr>
 			<td>env</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -314,7 +311,7 @@ env:
 		<tr>
 			<td>envFrom</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -416,7 +413,7 @@ extraHosts:
 
 </pre>
 </td>
-			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.<br>
+			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
 For example: The ALB ingress controller requires a special rule for handling SSL redirection.
 
 <details>
@@ -424,10 +421,13 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 
 ```yaml
 extraPaths:
-- path: /*
-  backend:
-    serviceName: ssl-redirect
-    servicePort: use-annotation
+- path: /api/*
+  pathType: Prefix
+  backend:   
+    service:
+      name: '{{ include "common.names.fullname" . }}'
+      port:
+        name: app
 ```
 </details></td>
 		</tr>
@@ -556,6 +556,9 @@ The above example will create 1 extra object: pod
 			<td>global</td>
 			<td>object</td>
 			<td><pre lang="yaml">
+imageRegistry: ""
+imagePullSecrets: []
+storageClass: ""
 keycloakUrl: "https://keycloak-zgw.test.denhaag.nl"
 
 </pre>
@@ -725,10 +728,13 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 
 ```yaml
 extraPaths:
-- path: /*
-  backend:
-    serviceName: ssl-redirect
-    servicePort: use-annotation
+- path: /api/*
+  pathType: Prefix
+  backend:   
+    service:
+      name: '{{ include "common.names.fullname" . }}'
+      port:
+        name: app
 ```
 </details></td>
 		</tr>
@@ -1060,10 +1066,9 @@ minAvailable: 1
 		<tr>
 			<td>podLabels</td>
 			<td>object</td>
-			<td><pre lang="json">
-{
-  "public-access": "allow"
-}
+			<td><pre lang="yaml">
+public-access: allow
+
 </pre>
 </td>
 			<td>Extra labels to add to Pod.</td>
@@ -1513,7 +1518,7 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 		<tr>
 			<td>volumeMounts</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -1533,7 +1538,7 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 		<tr>
 			<td>volumes</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -1554,6 +1559,8 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 </table>
 
 
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
 
 
 ----------------------------------------------
