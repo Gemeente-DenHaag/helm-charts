@@ -37,7 +37,7 @@ appKind: Deployment
 
 # -- (list) Override default container command (useful when using custom images)
 # @notationType -- yaml
-command: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-jar","/app.war"]
+command: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-jar","/opt/app/valtimo.war"]
 
 # -- Override default container args (useful when using custom images)
 args: []
