@@ -2,14 +2,14 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 ## Additional Information
 
 ### Example values.yaml
 
 ```yaml
-name: my-release
+name: dh-lib
 image:
   repository: denhaag
 
@@ -40,18 +40,28 @@ service:
 
 ingress:
   enabled: true
-  hostname: test.denhaag.nl
+  hostname: nlportalbackend.denhaag.nl
 
 ```
 
 ## Installing the Chart
 
-To install the chart with the release name `my-release`:
+To install the chart with the release name `dh-lib`:
 
 ```console
 $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
-$ helm install my-release denhaag/chartname
+$ helm install dh-lib denhaag/dh-lib
 ```
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| DenHaag | <menno.slingerland@denhaag.nl> |  |
+
+## Source Code
+
+* <https://github.com/Gemeente-DenHaag/helm-charts>
 
 ## Requirements
 
@@ -165,7 +175,7 @@ checksums:
 		<tr>
 			<td>command</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -192,8 +202,8 @@ checksums:
 		<tr>
 			<td>configMaps</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Populate сonfigMaps for the application.
@@ -283,7 +293,7 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 		<tr>
 			<td>env</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -302,7 +312,7 @@ env:
 		<tr>
 			<td>envFrom</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -324,8 +334,8 @@ ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernet
 		<tr>
 			<td>extraIngress.annotations</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Ingress annotations done as key:value pairs.<br> For a full list of possible ingress annotations, please see<br> If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br> ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a></td>
@@ -369,7 +379,7 @@ null
 		<tr>
 			<td>extraIngress.extraHosts</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -389,11 +399,11 @@ extraHosts:
 		<tr>
 			<td>extraIngress.extraPaths</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
-			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.<br>
+			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
 For example: The ALB ingress controller requires a special rule for handling SSL redirection.
 
 <details>
@@ -401,17 +411,20 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 
 ```yaml
 extraPaths:
-- path: /*
-  backend:
-    serviceName: ssl-redirect
-    servicePort: use-annotation
+- path: /api/*
+  pathType: Prefix
+  backend:   
+    service:
+      name: '{{ include "common.names.fullname" . }}'
+      port:
+        name: app
 ```
 </details></td>
 		</tr>
 		<tr>
 			<td>extraIngress.extraTls</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -437,6 +450,15 @@ ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#t
 </pre>
 </td>
 			<td>When the ingress is enabled, a host pointing to this will be created.</td>
+		</tr>
+		<tr>
+			<td>extraIngress.ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Set the ingressclassname</td>
 		</tr>
 		<tr>
 			<td>extraIngress.nameSuffix</td>
@@ -599,7 +621,7 @@ false
 			<td>image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"latest"
+null
 </pre>
 </td>
 			<td>Set image tag.</td>
@@ -607,8 +629,8 @@ false
 		<tr>
 			<td>ingress.annotations</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Ingress annotations done as key:value pairs.<br> For a full list of possible ingress annotations, please see:<br> If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br> ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a></td>
@@ -652,7 +674,7 @@ false
 		<tr>
 			<td>ingress.extraHosts</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -672,7 +694,7 @@ extraHosts:
 		<tr>
 			<td>ingress.extraPaths</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -684,17 +706,20 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 
 ```yaml
 extraPaths:
-- path: /*
-  backend:
-    serviceName: ssl-redirect
-    servicePort: use-annotation
+- path: /api/*
+  pathType: Prefix
+  backend:   
+    service:
+      name: '{{ include "common.names.fullname" . }}'
+      port:
+        name: app
 ```
 </details></td>
 		</tr>
 		<tr>
 			<td>ingress.extraTls</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -720,6 +745,15 @@ ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#t
 </pre>
 </td>
 			<td>When the ingress is enabled, a host pointing to this will be created.</td>
+		</tr>
+		<tr>
+			<td>ingress.ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Set the ingressclassname</td>
 		</tr>
 		<tr>
 			<td>ingress.nginx</td>
@@ -748,7 +782,7 @@ nginx:
     }
 ```
 </details>
-ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a>
+ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a><br>
 ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet">[link]</a></td>
 		</tr>
 		<tr>
@@ -1001,8 +1035,8 @@ minAvailable: 1
 		<tr>
 			<td>podLabels</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Extra labels to add to Pod.</td>
@@ -1096,8 +1130,8 @@ false
 		<tr>
 			<td>resources</td>
 			<td>object</td>
-			<td><pre lang="json">
-{}
+			<td><pre lang="yaml">
+map[]
 </pre>
 </td>
 			<td>Set resources for the Pod.
@@ -1402,7 +1436,7 @@ false
 		<tr>
 			<td>tolerations</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -1455,7 +1489,7 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 		<tr>
 			<td>volumeMounts</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -1475,7 +1509,7 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 		<tr>
 			<td>volumes</td>
 			<td>list</td>
-			<td><pre lang="json">
+			<td><pre lang="yaml">
 []
 </pre>
 </td>
@@ -1496,6 +1530,8 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 </table>
 
 
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
 
 
 ----------------------------------------------

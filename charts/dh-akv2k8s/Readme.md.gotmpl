@@ -8,38 +8,18 @@
 ### Example values.yaml
 
 ```yaml
-name: {{ template "chart.name" . }}
-image:
-  repository: denhaag
-
-podAnnotations:
-  test: "true"
-
-checksums:
-  - /secrets.yaml
-
-secrets:
-  env:
-    stringData:
-      TEST: this
-
-configMaps:
-  app:
-    data:
-      test: this
-      wow: cool
-
-envFrom:
-  - secretRef:
-      name: 'testsecret'
-
-service:
-  port: 8000
-  targetPort: 80
-
-ingress:
-  enabled: true
-  hostname: nlportalbackend.denhaag.nl
+sync-1:
+ vaultname: azurekeyvaltname # name of the azure keyvault
+ objectname: test-secret # secretname stored in AKV
+ objecttype: secret # objecttype in AKV
+ output: 
+   transform: # optional transformers executed in listed order
+   - trim # optional - trims empty space
+   - base64encode # optional - encode to base64
+   - base64decode # optional - decode from base64
+   secret: 
+     name: testsecret # secretname to create in kubernetes or use '\{\{ include "app.fullname" . \}\}' as value
+     dataKey: TEST_SECRET #key to store in secret
 
 ```
 
