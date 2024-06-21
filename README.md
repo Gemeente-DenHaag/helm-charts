@@ -3,7 +3,7 @@
 [dh-lib](charts/dh-lib/)\
 [dh-nl-portal-backend](charts/dh-nl-portal-backend/)\
 [dh-nl-portal-frontend](charts/dh-nl-portal-frontend/)\
-[generic chart](charts/generic/)\
+[generic](charts/generic/)\
 [gzac-alg-zgw-backend](charts/gzac-alg-zgw-backend/)\
 [gzac-alg-zgw-frontend](charts/gzac-alg-zgw-frontend/)\
 [gzac-fd-zgw-backend](charts/gzac-fd-zgw-backend/)\

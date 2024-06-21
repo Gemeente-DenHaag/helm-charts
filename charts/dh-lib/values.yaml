@@ -13,7 +13,7 @@ image:
   # -- Set image repository.
   repository: ""
   # -- Set image tag.
-  tag: latest
+  tag: 
   # -- Set image fullImage. Can be used the set the complete url.
   fullImage: [] # use this from pipeline, includes registry, repo and tag
   # -- Set image pullPolicy.<br>
@@ -35,7 +35,8 @@ replicaCount: 1
 # -- Specifies the application resource kind.
 appKind: Deployment
 
-# -- Override default container command (useful when using custom images)
+# -- (list) Override default container command (useful when using custom images)
+# @notationType -- yaml
 command: []
 
 # -- Override default container args (useful when using custom images)
@@ -83,7 +84,8 @@ commonAnnotations: {}
 # ref: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">[link]</a>
 podAnnotations: {}
 
-# -- Extra labels to add to Pod.
+# -- (object) Extra labels to add to Pod.
+# @notationType -- yaml
 podLabels: {}
 
 # -- Add init containers to the Pod.
@@ -164,30 +166,23 @@ containerPorts: []
 service:
   # -- Kubernetes service type and port number.
   type: ClusterIP
-
   # -- Specify the default service port and targetPort.<br>
   # Note: port or ports must be provided to enable service!<br>
   port:
   targetPort:
-
   # -- Specify the nodePort value for the LoadBalancer and NodePort service types.<br>
   # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport">[link]</a>
   nodePort:
-
   # -- Set the LoadBalancer service type to internal only.<br>
   # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer">[link]</a>
   loadBalancerIP:
-
   # -- Load Balancer sources.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service">[link]</a>
   loadBalancerSourceRanges: []
-
   # -- Provide any additional service annotations.<br>
   annotations: {}
-
   # -- Provide any additional service labels.<br>
   labels: {}
-
   # -- Expose additional ports.
   # @raw
   # <details>
@@ -252,37 +247,32 @@ ingress:
   # Set to true to enable ingress.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/ingress/">[link]</a>
   enabled: false
-
   # -- Set this to true in order to add the corresponding annotations for cert-manager.
   certManager: false
-
   # -- Ingress Path type.
   pathType: ImplementationSpecific
-
   # -- Override API Version (automatically detected if not set).
   apiVersion: ""
-
   # -- When the ingress is enabled, a host pointing to this will be created.
   hostname: ""
-
   # -- The Path for the ingress controller.
   path: /
-
-  # -- Ingress annotations done as key:value pairs.<br>
+  # -- Set the ingressclassname
+  ingressClassName: ""
+  # -- (object) Ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
   # For a full list of possible ingress annotations, please see:<br>
   # If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br>
   # ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a>
   annotations: {}
-
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}.<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
   tls: false
-
   # -- Specify a tls secret which already exists. tls must be set to true.
   existingTlsSecret: ""
-
-  # -- The list of additional hostnames to be covered with this ingress record.
+  # -- (list) The list of additional hostnames to be covered with this ingress record.
+  # @notationType -- yaml
   # @raw
   # Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array.
   #
@@ -296,8 +286,8 @@ ingress:
   # ```
   # </details>
   extraHosts: []
-
-  # -- Any additional arbitrary paths that may need to be added to the ingress under the main host.
+  # -- (list) Any additional arbitrary paths that may need to be added to the ingress under the main host.
+  # @notationType -- yaml
   # @raw
   # For example: The ALB ingress controller requires a special rule for handling SSL redirection.
   #
@@ -306,15 +296,18 @@ ingress:
   #
   # ```yaml
   # extraPaths:
-  # - path: /*
-  #   backend:
-  #     serviceName: ssl-redirect
-  #     servicePort: use-annotation
+  # - path: /api/*
+  #   pathType: Prefix
+  #   backend:    
+  #     service:
+  #       name: '{{ include "common.names.fullname" . }}'
+  #       port:
+  #         name: app
   # ```
   # </details>
   extraPaths: []
-
-  # -- The tls configuration for additional hostnames to be covered with this ingress record.
+  # -- (list) The tls configuration for additional hostnames to be covered with this ingress record.
+  # @notationType -- yaml
   # @raw
   #
   # <details>
@@ -329,7 +322,6 @@ ingress:
   # </details>
   # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">[link]</a>
   extraTls: []
-
   # -- (object) Adds location and server snippets annotations for ingress-nginx.
   # @notationType -- yaml
   # @raw
@@ -350,7 +342,7 @@ ingress:
   #     }
   # ```
   # </details>
-  # ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a>
+  # ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a><br>
   # ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet">[link]</a>
   nginx:
     configurationSnippet:
@@ -361,7 +353,6 @@ extraIngress:
   # Set to true to enable ingress.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/ingress/">[link]</a>
   enabled: false
-
   # -- Set the nameSuffix to extend the extraIngress name {{ include "common.names.fullname" . }}
   # @raw
   #
@@ -375,37 +366,32 @@ extraIngress:
   # ```
   # </details>
   nameSuffix: ""
-
   # -- Set this to true in order to add the corresponding annotations for cert-manager.
   certManager: false
-
   # -- Ingress Path type.
   pathType: ImplementationSpecific
-
   # -- Override API Version (automatically detected if not set).
   apiVersion: ""
-
   # -- When the ingress is enabled, a host pointing to this will be created.
   hostname: ""
-
   # -- The Path for the ingress controller.
   path: /
-
-  # -- Ingress annotations done as key:value pairs.<br>
+  # -- Set the ingressclassname
+  ingressClassName: ""
+  # -- (object) Ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
   # For a full list of possible ingress annotations, please see<br>
   # If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br>
   # ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a>
   annotations: {}
-
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
   tls: false
-
   # -- Specify a tls secret which already exists. tls must be set to true.
   existingTlsSecret:
-
-  # -- The list of additional hostnames to be covered with this ingress record.<br>
+  # -- (list) The list of additional hostnames to be covered with this ingress record.<br>
+  # @notationType -- yaml
   # @raw
   # Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array.
   #
@@ -419,8 +405,8 @@ extraIngress:
   # ```
   # </details>
   extraHosts: []
-
-  # -- Any additional arbitrary paths that may need to be added to the ingress under the main host.<br>
+  # -- (list) Any additional arbitrary paths that may need to be added to the ingress under the main host.
+  # @notationType -- yaml
   # @raw
   # For example: The ALB ingress controller requires a special rule for handling SSL redirection.
   #
@@ -429,15 +415,18 @@ extraIngress:
   #
   # ```yaml
   # extraPaths:
-  # - path: /*
-  #   backend:
-  #     serviceName: ssl-redirect
-  #     servicePort: use-annotation
+  # - path: /api/*
+  #   pathType: Prefix
+  #   backend:    
+  #     service:
+  #       name: '{{ include "common.names.fullname" . }}'
+  #       port:
+  #         name: app
   # ```
   # </details>
   extraPaths: []
-
-  # -- The tls configuration for additional hostnames to be covered with this ingress record.<br>
+  # -- (list) The tls configuration for additional hostnames to be covered with this ingress record.<br>
+  # @notationType -- yaml
   # @raw
   #
   # <details>
@@ -453,7 +442,8 @@ extraIngress:
   # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">[link]</a>
   extraTls: []
 
-# -- Set resources for the Pod.
+# -- (object) Set resources for the Pod.
+# @notationType -- yaml
 # @raw
 # We usually recommend not to specify default resources and to leave this as a conscious 
 # choice for the user. This also increases chances charts run on environments with little
@@ -512,7 +502,8 @@ autoscaling:
 # ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">[link]</a>
 nodeSelector: {}
 
-# -- A list of Kubernetes Tolerations, if required.<br>
+# -- (list) A list of Kubernetes Tolerations, if required.<br>
+# @notationType -- yaml
 # @raw
 #
 # <details>
@@ -570,7 +561,8 @@ nodeAffinityPreset:
 # ref: <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">[link]</a>
 affinity: {}
 
-# -- An array to add env vars.
+# -- (list) An array to add env vars.
+# @notationType -- yaml
 # @raw
 #
 # <details>
@@ -584,7 +576,8 @@ affinity: {}
 # </details>
 env: []
 
-# -- Array of sources to populate environment variables in the container from.
+# -- (list) Array of sources to populate environment variables in the container from.
+# @notationType -- yaml
 # @raw
 #
 # <details>
@@ -601,7 +594,8 @@ env: []
 # ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core">[link]</a>
 envFrom: []
 
-# -- Array to add volumes.
+# -- (list) Array to add volumes.
+# @notationType -- yaml
 # @raw
 #
 # <details>
@@ -616,7 +610,8 @@ envFrom: []
 # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a>
 volumes: []
 
-# -- Array to add volume mounts (normally used with volumes).
+# -- (list) Array to add volume mounts (normally used with volumes).
+# @notationType -- yaml
 # @raw
 #
 # <details>
@@ -682,7 +677,8 @@ startupProbe:
   failureThreshold: 6
   successThreshold: 1
 
-# -- Populate сonfigMaps for the application.
+# -- (object) Populate сonfigMaps for the application.
+# @notationType -- yaml
 # @raw
 #
 # <details>

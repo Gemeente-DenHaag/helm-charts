@@ -1,19 +1,25 @@
-## Sync objects from Azure keyvault to Kubernetes as secrets
-##
-##   sync-1:
-##    vaultname: azurekeyvaltname # name of the azure keyvault
-##    objectname: test-secret # secretname stored in AKV
-##    objecttype: secret # objecttype in AKV
-##    output: 
-##      transform: # optional transformers executed in listed order
-##      - trim # optional - trims empty space
-##      - base64encode # optional - encode to base64
-##      - base64decode # optional - decode from base64
-##      secret: 
-##        name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
-##        dataKey: TEST_SECRET #key to store in secret
-##
-## The above example will create 1 secret in Kubernetes from Azure keyvault
-## Supported vault object types: secret, certificate, key, multi-key-value-secret
-##
+# -- Sync objects from Azure keyvault to Kubernetes as secrets or certificates.
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# sync-1:
+#  vaultname: azurekeyvaltname # name of the azure keyvault
+#  objectname: test-secret # secretname stored in AKV
+#  objecttype: secret # objecttype in AKV
+#  output: 
+#    transform: # optional transformers executed in listed order
+#    - trim # optional - trims empty space
+#    - base64encode # optional - encode to base64
+#    - base64decode # optional - decode from base64
+#    secret: 
+#      name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
+#      dataKey: TEST_SECRET #key to store in secret
+#
+# ```
+# The above example will create 1 secret in Kubernetes from Azure keyvault
+# Supported vault object types: secret, certificate, key, multi-key-value-secret
+# </details>
 syncAKV: {}
