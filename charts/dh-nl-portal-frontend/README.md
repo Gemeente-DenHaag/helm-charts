@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-frontend to Kubernetes
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -305,6 +305,10 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 			<td><pre lang="yaml">
 - name: TZ
   value: Europe/Amsterdam
+- name: KEYCLOAK_URL
+  value: '{{ .Values.config.KEYCLOAK_URL }}'
+- name: NGINX_ENVSUBST_OUTPUT_DIR
+  value: /tmp/nginx/conf.d
 
 </pre>
 </td>
@@ -1544,6 +1548,8 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
   name: config-js-vol
   subPath: config.js
 - mountPath: /tmp
+  name: tmpfs-1
+- mountPath: /tmp/nginx/conf.d
   name: tmpfs-1
 
 </pre>

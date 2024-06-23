@@ -578,8 +578,12 @@ affinity: {}
 # ```
 # </details>
 env:
-    - name: TZ
-      value: Europe/Amsterdam
+  - name: TZ
+    value: Europe/Amsterdam
+  - name: KEYCLOAK_URL
+    value: '{{ .Values.config.KEYCLOAK_URL }}'
+  - name: NGINX_ENVSUBST_OUTPUT_DIR
+    value: /tmp/nginx/conf.d
 
 # -- Array of sources to populate environment variables in the container from.
 # @raw
@@ -638,6 +642,8 @@ volumeMounts:
     name: config-js-vol
     subPath: config.js
   - mountPath: /tmp
+    name: tmpfs-1
+  - mountPath: /tmp/nginx/conf.d
     name: tmpfs-1
 
 persistence:
