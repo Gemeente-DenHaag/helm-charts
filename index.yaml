@@ -1323,4 +1323,44 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd-zgw-frontend-0.1.1/gzac-sd-zgw-frontend-0.1.1.tgz
     version: 0.1.1
-generated: "2024-06-23T10:17:51.924070749Z"
+  smartdocuments-docengine:
+  - apiVersion: v2
+    created: "2024-06-25T07:08:13.978859461Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.9
+    description: A Helm chart to deploy smartdocuments-docengine to Kubernetes
+    digest: 57de517280b7d950cd5873f960b68b3889e2811f98780fd6ed1decfea4a88fcb
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: smartdocuments-docengine
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-docengine-0.1.0/smartdocuments-docengine-0.1.0.tgz
+    version: 0.1.0
+  smartdocuments-webapps:
+  - apiVersion: v2
+    created: "2024-06-25T07:08:14.108048151Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.9
+    description: A Helm chart to deploy smartdocuments-webapps to Kubernetes
+    digest: 9cd4735113e43a68565336d22310ba2c1417ead96b55521856b48facacc30380
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: smartdocuments-webapps
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-webapps-0.1.0/smartdocuments-webapps-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-06-25T07:08:14.108208059Z"
