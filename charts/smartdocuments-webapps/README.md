@@ -2,7 +2,7 @@
 
 A Helm chart to deploy smartdocuments-webapps to Kubernetes
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -1627,7 +1627,10 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 			<td><pre lang="yaml">
 - name: license-volume
   secret:
-    secretName: smartdocs-license
+    secretName: '{{ include "app.fullname" . }}'
+    items:
+        - key: sd_gem_den_haag_haven.license
+          path: sd_gem_den_haag_haven.license
 - name: tmpfs-1
   emptyDir: {}
 
