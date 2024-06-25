@@ -1,0 +1,65 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Additional Information
+
+### Example values.yaml
+
+```yaml
+name: {{ template "chart.name" . }}
+image:
+  repository: denhaag
+
+podAnnotations:
+  test: "true"
+
+checksums:
+  - /secrets.yaml
+
+secrets:
+  env:
+    stringData:
+      TEST: this
+
+configMaps:
+  app:
+    data:
+      test: this
+      wow: cool
+
+envFrom:
+  - secretRef:
+      name: 'testsecret'
+
+service:
+  port: 8000
+  targetPort: 80
+
+ingress:
+  enabled: true
+  hostname: nlportalbackend.denhaag.nl
+
+```
+
+## Installing the Chart
+
+To install the chart with the release name `{{ template "chart.name" . }}`:
+
+```console
+$ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
+$ helm install {{ template "chart.name" . }} denhaag/{{ template "chart.name" . }}
+```
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSectionHtml" . }}
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
+
+{{ template "helm-docs.versionFooter" . }}
