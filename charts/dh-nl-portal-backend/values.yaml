@@ -611,7 +611,9 @@ env: []
 # ```
 # </details>
 # ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core">[link]</a>
-envFrom: []
+envFrom:
+  - secretRef:
+      name: '{{ include "app.fullname" . }}'
 
 # -- (list) Array to add volumes.
 # @notationType -- yaml
@@ -627,7 +629,9 @@ envFrom: []
 # ```
 # </details>
 # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a>
-volumes: []
+volumes:
+  - name: tmpfs-1
+    emptyDir: {}
 
 # -- (list) Array to add volume mounts (normally used with volumes).
 # @notationType -- yaml
@@ -643,7 +647,41 @@ volumes: []
 # ```
 # </details>
 # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-volumeMounts: []
+volumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-1
+
+# -- (list) Array to add extra volumes.
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# extraVolumes:
+#   - name: tmpfs-2
+#     emptyDir: {}
+# ```
+# </details>
+# ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a>
+extraVolumes: []
+
+# -- (list) Array to add extra volume mounts (normally used with volumes).
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# extraVolumeMounts:
+#   - mountPath: /tmp
+#     name: tmpfs-2
+# ```
+# </details>
+# ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
+extraVolumeMounts: []
 
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
