@@ -2,7 +2,7 @@
 
 A Helm chart to deploy smartdocuments-webapps to Kubernetes
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -67,7 +67,7 @@ $ helm install smartdocuments-webapps denhaag/smartdocuments-webapps
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.9 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.11 |
 
 
 ## Values
@@ -579,6 +579,46 @@ The above example will create 1 extra object: pod
 </details></td>
 		</tr>
 		<tr>
+			<td>extraVolumeMounts</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volume mounts (normally used with volumes).
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-2
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
+		</tr>
+		<tr>
+			<td>extraVolumes</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volumes.
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumes:
+  - name: tmpfs-2
+    emptyDir: {}
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
+		</tr>
+		<tr>
 			<td>fullnameOverride</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -594,7 +634,6 @@ The above example will create 1 extra object: pod
 imageRegistry: ""
 imagePullSecrets: []
 storageClass: ""
-keycloakUrl: "https://keycloak-zgw.test.denhaag.nl"
 
 </pre>
 </td>
@@ -1601,8 +1640,6 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 			<td>volumeMounts</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- mountPath: /usr/local/tomcat/license
-  name: license-volume
 - mountPath: /tmp
   name: tmpfs-1
 
@@ -1625,12 +1662,6 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 			<td>volumes</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- name: license-volume
-  secret:
-    secretName: '{{ include "app.fullname" . }}'
-    items:
-        - key: sd_gem_den_haag_haven.license
-          path: sd_gem_den_haag_haven.license
 - name: tmpfs-1
   emptyDir: {}
 
