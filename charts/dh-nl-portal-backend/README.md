@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -68,7 +68,7 @@ $ helm install dh-nl-portal-backend denhaag/dh-nl-portal-backend
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.9 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.11 |
 
 
 ## Values
@@ -312,7 +312,9 @@ env:
 			<td>envFrom</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-[]
+- secretRef:
+    name: '{{ include "app.fullname" . }}'
+
 </pre>
 </td>
 			<td>Array of sources to populate environment variables in the container from.
@@ -542,6 +544,46 @@ true
 ```
 The above example will create 1 extra object: pod
 </details></td>
+		</tr>
+		<tr>
+			<td>extraVolumeMounts</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volume mounts (normally used with volumes).
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-2
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
+		</tr>
+		<tr>
+			<td>extraVolumes</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volumes.
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumes:
+  - name: tmpfs-2
+    emptyDir: {}
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
 		</tr>
 		<tr>
 			<td>fullnameOverride</td>
@@ -1519,7 +1561,9 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 			<td>volumeMounts</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-[]
+- mountPath: /tmp
+  name: tmpfs-1
+
 </pre>
 </td>
 			<td>Array to add volume mounts (normally used with volumes).
@@ -1539,7 +1583,9 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 			<td>volumes</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-[]
+- name: tmpfs-1
+  emptyDir: {}
+
 </pre>
 </td>
 			<td>Array to add volumes.
