@@ -2,7 +2,7 @@
 
 A Helm chart to deploy gzac-fd-zgw-frontend to Kubernetes
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -67,7 +67,7 @@ $ helm install gzac-fd-zgw-frontend denhaag/gzac-fd-zgw-frontend
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.9 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.11 |
 
 
 ## Values
@@ -547,6 +547,46 @@ true
 ```
 The above example will create 1 extra object: pod
 </details></td>
+		</tr>
+		<tr>
+			<td>extraVolumeMounts</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volume mounts (normally used with volumes).
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-2
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
+		</tr>
+		<tr>
+			<td>extraVolumes</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volumes.
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumes:
+  - name: tmpfs-2
+    emptyDir: {}
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
 		</tr>
 		<tr>
 			<td>fullnameOverride</td>
