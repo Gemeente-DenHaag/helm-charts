@@ -2,7 +2,7 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -67,7 +67,7 @@ $ helm install dh-lib denhaag/dh-lib
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | 2.1.x |
+| https://charts.bitnami.com/bitnami | common | 2.20.x |
 
 
 ## Values
@@ -532,6 +532,46 @@ false
 ```
 The above example will create 1 extra object: pod
 </details></td>
+		</tr>
+		<tr>
+			<td>extraVolumeMounts</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volume mounts (normally used with volumes).
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-2
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
+		</tr>
+		<tr>
+			<td>extraVolumes</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>Array to add extra volumes.
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraVolumes:
+  - name: tmpfs-2
+    emptyDir: {}
+```
+</details>
+ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
 		</tr>
 		<tr>
 			<td>fullnameOverride</td>
