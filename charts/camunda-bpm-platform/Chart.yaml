@@ -1,6 +1,6 @@
 apiVersion: v2
 name: camunda-bpm-platform
-description: A Helm chart to deploy dh-nl-portal-backend to Kubernetes
+description: A Helm chart to deploy camunda-bpm-platform to Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #

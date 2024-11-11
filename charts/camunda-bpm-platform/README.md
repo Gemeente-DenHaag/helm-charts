@@ -1,10 +1,48 @@
-# dh-nl-portal-backend
+# camunda-bpm-platform
 
-A Helm chart to deploy dh-nl-portal-backend to Kubernetes
+A Helm chart to deploy camunda-bpm-platform to Kubernetes
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
+
+### Example values.yaml
+
+```yaml
+name: camunda-bpm-platform
+image:
+  repository: denhaag
+
+podAnnotations:
+  test: "true"
+
+checksums:
+  - /secrets.yaml
+
+secrets:
+  env:
+    stringData:
+      TEST: this
+
+configMaps:
+  app:
+    data:
+      test: this
+      wow: cool
+
+envFrom:
+  - secretRef:
+      name: 'testsecret'
+
+service:
+  port: 8000
+  targetPort: 80
+
+ingress:
+  enabled: true
+  hostname: camunda.denhaag.nl
+
+```
 
 ## Installing the Chart
 
@@ -136,16 +174,6 @@ checksums:
 </details></td>
 		</tr>
 		<tr>
-			<td>command</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/opt/app.jar"]
-
-</pre>
-</td>
-			<td>Override default container command (useful when using custom images)</td>
-		</tr>
-		<tr>
 			<td>commonAnnotations</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -271,37 +299,12 @@ env:
 </details></td>
 		</tr>
 		<tr>
-			<td>envFrom</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-- secretRef:
-    name: '{{ include "app.fullname" . }}'
-
-</pre>
-</td>
-			<td>Array of sources to populate environment variables in the container from.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-envFrom:
-  - configMapRef:
-      name: special-config
-  - secretRef:
-      name: '{{ include "app.fullname" . }}-env'
-```
-</details>
-ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core">[link]</a></td>
-		</tr>
-		<tr>
 			<td>extraIngress.annotations</td>
 			<td>object</td>
 			<td><pre lang="yaml">
 kubernetes.io/ingress.class: 'azure/application-gateway-ext'
 appgw.ingress.kubernetes.io/ssl-redirect: 'true'
-appgw.ingress.kubernetes.io/health-probe-path: /
-appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
+appgw.ingress.kubernetes.io/health-probe-status-codes: "403"
 
 </pre>
 </td>
@@ -367,14 +370,7 @@ extraHosts:
 			<td>extraIngress.extraPaths</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- backend:
-    service:
-        name: '{{ include "common.names.fullname" . }}'
-        port:
-            name: app
-  path: /api/*
-  pathType: Prefix
-
+[]
 </pre>
 </td>
 			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
@@ -457,7 +453,7 @@ extraIngress:
 			<td>extraIngress.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/graphql"
+"/api*"
 </pre>
 </td>
 			<td>The Path for the ingress controller.</td>
@@ -563,7 +559,6 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 imageRegistry: ""
 imagePullSecrets: []
 storageClass: ""
-keycloakUrl: "https://keycloak-zgw.test.denhaag.nl"
 
 </pre>
 </td>
@@ -627,7 +622,7 @@ false
 			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"zgw/dh-nl-portal-backend"
+"zgw/camunda-bpm-platform"
 </pre>
 </td>
 			<td>Set image repository.</td>
@@ -647,8 +642,7 @@ null
 			<td><pre lang="yaml">
 kubernetes.io/ingress.class: 'azure/application-gateway-int'
 appgw.ingress.kubernetes.io/ssl-redirect: 'true'
-appgw.ingress.kubernetes.io/health-probe-path: /
-appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
+appgw.ingress.kubernetes.io/health-probe-status-codes: "403"
 
 </pre>
 </td>
@@ -714,14 +708,7 @@ extraHosts:
 			<td>ingress.extraPaths</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- backend:
-    service:
-        name: '{{ include "common.names.fullname" . }}'
-        port:
-            name: app
-  path: /api/*
-  pathType: Prefix
-
+[]
 </pre>
 </td>
 			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
@@ -815,7 +802,7 @@ ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-confi
 			<td>ingress.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/graphql"
+"/api*"
 </pre>
 </td>
 			<td>The Path for the ingress controller.</td>
@@ -878,10 +865,28 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>livenessProbe.httpGet.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api/v1/ping"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>livenessProbe.httpGet.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>livenessProbe.initialDelaySeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-30
+60
 </pre>
 </td>
 			<td></td>
@@ -905,15 +910,6 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>livenessProbe.tcpSocket.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
 			<td>livenessProbe.timeoutSeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
@@ -926,7 +922,7 @@ true
 			<td>name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"dh-nl-portal-backend"
+"camunda-bpm-platform"
 </pre>
 </td>
 			<td>Specifies the application name (required to be set).</td>
@@ -978,7 +974,7 @@ values: []
 			<td>persistence.accessMode</td>
 			<td>string</td>
 			<td><pre lang="json">
-"ReadWriteOnce"
+"ReadWriteMany"
 </pre>
 </td>
 			<td>Set accessMode for pvc.</td>
@@ -1014,7 +1010,7 @@ false
 			<td>persistence.size</td>
 			<td>string</td>
 			<td><pre lang="json">
-"10Gi"
+"1Gi"
 </pre>
 </td>
 			<td>Set size for pvc.</td>
@@ -1113,7 +1109,25 @@ true
 			<td>readinessProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-6
+20
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.httpGet.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api/v1/ping"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.httpGet.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
 </pre>
 </td>
 			<td></td>
@@ -1131,7 +1145,7 @@ true
 			<td>readinessProbe.periodSeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-30
+20
 </pre>
 </td>
 			<td></td>
@@ -1141,15 +1155,6 @@ true
 			<td>int</td>
 			<td><pre lang="json">
 1
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>readinessProbe.tcpSocket.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
 </pre>
 </td>
 			<td></td>
@@ -1177,11 +1182,11 @@ true
 			<td>object</td>
 			<td><pre lang="yaml">
 limits:
-    cpu: 1
-    memory: 2Gi
+    cpu: 2
+    memory: 3Gi
 requests:
     cpu: 500m
-    memory: 1Gi
+    memory: 3Gi
 
 </pre>
 </td>
@@ -1376,7 +1381,25 @@ false
 			<td>startupProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-15
+20
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.httpGet.path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/api/v1/ping"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>startupProbe.httpGet.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
 </pre>
 </td>
 			<td></td>
@@ -1385,7 +1408,7 @@ false
 			<td>startupProbe.initialDelaySeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-10
+30
 </pre>
 </td>
 			<td></td>
@@ -1404,15 +1427,6 @@ false
 			<td>int</td>
 			<td><pre lang="json">
 1
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>startupProbe.tcpSocket.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
 </pre>
 </td>
 			<td></td>
