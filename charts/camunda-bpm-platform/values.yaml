@@ -11,7 +11,7 @@ image:
   # -- Set image registry.
   registry: "crzgwpweu01.azurecr.io"
   # -- Set image repository.
-  repository: "zgw/gzac-fd-zgw-backend"
+  repository: "zgw/camunda-bpm-platform"
   # -- Set image tag.
   tag: 
   # -- Set image fullImage. Can be used the set the complete url.
@@ -26,7 +26,7 @@ image:
   pullSecrets: []
 
 # -- Specifies the application name (required to be set).
-name: "gzac-fd-zgw-backend"
+name: "camunda-bpm-platform"
 
 # -- Specfies the required replicas.<br>
 # Unset when using hpa.
