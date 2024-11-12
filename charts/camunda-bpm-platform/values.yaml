@@ -318,10 +318,37 @@ general:
 env:
   # -- Array of environment variables to configure application settings.<br>
   # Customize values as needed for the target environment.
+
   - name: CAMUNDA_HOST_URL
     # -- URL for Camunda host.<br>
     # Example: "http://camunda.example.com"<br>
     value: "{{ .Values.camunda.host }}"
+
+  - name: DB_DRIVER
+    # -- Database driver class name.<br>
+    # Example: "org.postgresql.Driver"<br>
+    value: "{{ .Values.database.driver }}"
+
+  - name: DB_URL
+    # -- JDBC URL for connecting to the database.<br>
+    # Example: "jdbc:postgresql://hostname:5432/dbname"<br>
+    value: "{{ .Values.database.url }}"
+
+  - name: DB_USERNAME
+    # -- Database username from Kubernetes secret.<br>
+    # Configured via a secret key reference.<br>
+    valueFrom:
+      secretKeyRef:
+        name: "{{ .Values.database.credentialsSecretName}}"
+        key: "{{ .Values.database.credentialsSecretKeys.username }}"
+
+  - name: DB_PASSWORD
+    # -- Database password from Kubernetes secret.<br>
+    # Configured via a secret key reference.<br>
+    valueFrom:
+      secretKeyRef:
+        name: "{{ .Values.database.credentialsSecretName}}"
+        key: "{{ .Values.database.credentialsSecretKeys.password }}"
 
   - name: KEYCLOAK_HOST
     # -- URL for Keycloak host.<br>
@@ -368,6 +395,23 @@ env:
       secretKeyRef:
         name: "{{ .Values.keycloak.clientSecret.name }}"
         key: "{{ .Values.keycloak.clientSecret.key }}"
+
+  - name: PLUGIN_IDENTITY_KEYCLOAK_USEGROUPPATHASCAMUNDAGROUPID
+    # -- Use Keycloak group path as Camunda group ID.<br>
+    # This setting maps Keycloak group paths to Camunda group IDs.<br>
+    # Example: "true" or "false"<br>
+    value: "true"
+
+  - name: PLUGIN_IDENTITY_KEYCLOAK_ADMINISTRATORGROUPNAME
+    # -- Name of the administrator group in Keycloak.<br>
+    # Example: "camunda_admin"<br>
+    value: "camunda_admin"
+
+  - name: PLUGIN_IDENTITY_KEYCLOAK_DISABLESSLCERTIFICATEVALIDATION
+    # -- Disable SSL certificate validation for Keycloak integration.<br>
+    # Example: "true" or "false"<br>
+    # Set this to "true" for testing environments where SSL validation is not required.
+    value: "true"
 
 command:
   # -- Command to start the Camunda application.<br>
@@ -427,3 +471,13 @@ keycloak:
   clientSecret:
     name: ""
     key: ""
+
+database:
+  # -- Configuration for database settings.<br>
+  driver: ""
+  url: ""
+  credentialsSecretEnabled: false
+  credentialsSecretName: ""
+  credentialsSecretKeys:
+    username: ""
+    password: ""
