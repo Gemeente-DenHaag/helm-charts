@@ -220,6 +220,23 @@ nodeAffinityPreset:
 # ref: <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">[link]</a>
 affinity: {}
 
+extraVolumes: []
+# -- (list) Array to add extra volume mounts (normally used with volumes).
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# extraVolumeMounts:
+#   - mountPath: /tmp
+#     name: tmpfs-2
+# ```
+# </details>
+# ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
+extraVolumeMounts: []
+
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a>
