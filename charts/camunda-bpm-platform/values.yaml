@@ -180,6 +180,9 @@ ingress:
   extraHosts: []
   extraPaths: []
   extraTls: []
+  nginx:
+    configurationSnippet:
+    serverSnippet:
 
 extraIngress:
   enabled: false
