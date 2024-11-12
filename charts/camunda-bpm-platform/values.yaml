@@ -220,6 +220,27 @@ nodeAffinityPreset:
 # ref: <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">[link]</a>
 affinity: {}
 
+volumes:
+  - name: tmpfs-1
+    emptyDir: {}
+# -- (list) Array to add volume mounts (normally used with volumes).
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# - mountPath: /parentdir/subdir
+#   name: storage
+#   subPath: dirUnderMountPath/subdir
+# ```
+# </details>
+# ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
+volumeMounts:
+  - mountPath: /tmp
+    name: tmpfs-1
+
 extraVolumes: []
 # -- (list) Array to add extra volume mounts (normally used with volumes).
 # @notationType -- yaml
