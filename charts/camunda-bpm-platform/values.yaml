@@ -75,9 +75,14 @@ ingress:
   certManager: false
   # -- Ingress Path type.
   pathType: Prefix
+  # -- Override API Version (automatically detected if not set).
+  apiVersion: ""
+  # -- When the ingress is enabled, a host pointing to this will be created.
+  hostname: ""
   # -- The Path for the ingress controller.
   path: /api*
-
+  # -- Set the ingressclassname
+  ingressClassName: ""
   # -- (object) Ingress annotations done as key:value pairs.<br>
   # @notationType -- yaml
   # For a full list of possible ingress annotations, please see:<br>
@@ -92,6 +97,89 @@ ingress:
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
   tls: true
   # -- Specify a tls secret which already exists. tls must be set to true.
+  existingTlsSecret: ""
+  # -- (list) The list of additional hostnames to be covered with this ingress record.
+  # @notationType -- yaml
+  # @raw
+  # Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array.
+  #
+  # <details>
+  # <summary>+Expand</summary>
+  #
+  # ```yaml
+  # extraHosts:
+  # - name: app.local
+  #   path: /
+  # ```
+  # </details>
+  extraHosts: []
+  # -- (list) Any additional arbitrary paths that may need to be added to the ingress under the main host.
+  # @notationType -- yaml
+  # @raw
+  # For example: The ALB ingress controller requires a special rule for handling SSL redirection.
+  #
+  # <details>
+  # <summary>+Expand</summary>
+  #
+  # ```yaml
+  # extraPaths:
+  # - path: /api/*
+  #   pathType: Prefix
+  #   backend:    
+  #     service:
+  #       name: '{{ include "common.names.fullname" . }}'
+  #       port:
+  #         name: app
+  # ```
+  # </details>
+  extraPaths: []
+  # -- (list) The tls configuration for additional hostnames to be covered with this ingress record.
+  # @notationType -- yaml
+  # @raw
+  #
+  # <details>
+  # <summary>+Expand</summary>
+  #
+  # ```yaml
+  # extraTls:
+  # - hosts:
+  #     - app.local
+  #   secretName: app.local-tls
+  # ```
+  # </details>
+  # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">[link]</a>
+  extraTls: []
+  # -- (object) Adds location and server snippets annotations for ingress-nginx.
+  # @notationType -- yaml
+  # @raw
+  #
+  # <details>
+  # <summary>+Expand</summary>
+  #
+  # ```yaml
+  # nginx:
+  #   serverSnippet: |
+  #     ## Redirect mobile
+  #     set $agentflag 0;
+  #     if ($http_user_agent ~* "(Mobile)" ){
+  #       set $agentflag 1;
+  #     }
+  #     if ( $agentflag = 1 ) {
+  #       return 301 https://m.example.com;
+  #     }
+  # ```
+  # </details>
+  # ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a><br>
+  # ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet">[link]</a>
+  nginx:
+    configurationSnippet:
+    serverSnippet:
+
+extraIngress:
+  # -- Configure a second ingress resource that allows you to access the app installation.<br>
+  # Set to true to enable ingress.<br>
+  # ref: <a href="https://kubernetes.io/docs/user-guide/ingress/">[link]</a>
+  enabled: false
 
 resources:
   limits:
@@ -109,6 +197,28 @@ autoscaling:
 # ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity">[link]</a>
 podAntiAffinityPreset: soft
 
+nodeAffinityPreset:
+  ## Node affinity type
+  ## Allowed values: soft, hard
+  ##
+  type: ""
+  ## Node label key to match
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## Node label values to match
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+
+# -- Affinity for pod assignment.<br>
+# Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set.<br>
+# ref: <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">[link]</a>
+affinity: {}
 
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
