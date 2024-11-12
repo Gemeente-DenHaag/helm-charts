@@ -229,18 +229,25 @@ volumes:
   # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
   - name: tmpfs-1
+    # -- Temporary emptyDir volume for /tmp.<br>
+    # Useful for storing transient files needed during runtime.
     emptyDir: {}
   - name: dmns
-    mountPath: /tempconfig/
+    # -- ConfigMap volume for DMN files.<br>
+    # Loads external configuration for decision model files used by the application.
+    configMap:
+      name: dmnfiles
   - name: configdir
-    mountPath: /camunda/configuration/resources/
+    # -- Temporary emptyDir volume for Camunda configuration resources.<br>
+    # Provides an empty volume for runtime configuration adjustments.
+    emptyDir: {}
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
-    # Ensures logging data is stored in a non-persistent volume.<br>
+    # Ensures logging data is stored in a non-persistent volume.
     emptyDir: {}
   - name: camunda-work
     # -- Temporary emptyDir volume for Camunda work files.<br>
-    # Used for transient data storage during application runtime.<br>
+    # Used for transient data storage during application runtime.
     emptyDir: {}
 
 volumeMounts:
@@ -259,18 +266,25 @@ volumeMounts:
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
   - mountPath: /tmp
+    # -- Mounts the tmpfs-1 volume to /tmp within the container.<br>
+    # Used for temporary, non-persistent storage in the /tmp directory.
     name: tmpfs-1
-  - name: configdir
-    emptyDir: {}
-  - name: dmns
-    configMap:
-      name: dmnfiles
+  - mountPath: /tempconfig
+    # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
+    # Provides external configuration files for decision model handling.
+    name: dmns
+  - mountPath: /camunda/configuration/resources/
+    # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
+    # Used for loading runtime configurations needed by the application.
+    name: configdir
   - mountPath: /camunda/logs
-    name: camunda-logs
     # -- Mounts the camunda-logs volume to the /camunda/logs directory in the container.<br>
+    # Ensures that logging data is stored temporarily for debugging and runtime checks.
+    name: camunda-logs
   - mountPath: /camunda/work
-    name: camunda-work
     # -- Mounts the camunda-work volume to the /camunda/work directory in the container.<br>
+    # Used for temporary work files generated and deleted during application runtime.
+    name: camunda-work
 
 persistence:
   enabled: false
