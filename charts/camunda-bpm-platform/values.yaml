@@ -206,9 +206,10 @@ extraIngress:
 resources:
   limits:
     cpu: 2
+    memory: 4Gi
   requests:
-    cpu: 500m
-    memory: 3Gi
+    cpu: 1
+    memory: 2Gi
 
 autoscaling:
   enabled: false
