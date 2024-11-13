@@ -92,6 +92,9 @@ spec:
           {{- if .Values.env }}
           env:
           {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 12 }}
+          {{- if .Values.extraEnv }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.extraEnv "context" $) | nindent 12 }}
+          {{- end }}
           {{- end }}
           {{- if .Values.envFrom }}
           envFrom: {{- include "common.tplvalues.render" (dict "value" .Values.envFrom "context" $) | nindent 12 }}
