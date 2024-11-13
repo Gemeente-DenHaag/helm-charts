@@ -1,4 +1,5 @@
 # helm-charts
+[camunda-bpm-platform](charts/camunda-bpm-platform/)\
 [dh-akv2k8s](charts/dh-akv2k8s/)\
 [dh-lib](charts/dh-lib/)\
 [dh-nl-portal-backend](charts/dh-nl-portal-backend/)\
