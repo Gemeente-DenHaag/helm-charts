@@ -237,7 +237,7 @@ volumes:
     # -- ConfigMap volume for DMN files.<br>
     # Loads external configuration for decision model files used by the application.
     configMap:
-      name: dmnfiles
+      name: camunda-bpm-platform-dmnfiles
   - name: configdir
     # -- Temporary emptyDir volume for Camunda configuration resources.<br>
     # Provides an empty volume for runtime configuration adjustments.
