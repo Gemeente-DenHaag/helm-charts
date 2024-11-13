@@ -2,7 +2,7 @@
 
 Den Haag generic application Helm chart
 
-![Version: 0.0.28](https://img.shields.io/badge/Version-0.0.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.0.29](https://img.shields.io/badge/Version-0.0.29-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -40,7 +40,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: nlportalbackend.denhaag.nl
+  hostname: mijn.denhaag.nl
 
 ```
 
@@ -330,6 +330,25 @@ envFrom:
 ```
 </details>
 ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core">[link]</a></td>
+		</tr>
+		<tr>
+			<td>extraEnv</td>
+			<td>list</td>
+			<td><pre lang="yaml">
+[]
+</pre>
+</td>
+			<td>An array to add extra env vars.
+
+<details>
+<summary>+Expand</summary>
+
+```yaml
+extraEnv:
+ - name: EXTRA_TEST_VAR
+   value: test
+```
+</details></td>
 		</tr>
 		<tr>
 			<td>extraObjects</td>

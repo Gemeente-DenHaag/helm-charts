@@ -482,6 +482,21 @@ affinity: {}
 # </details>
 env: []
 
+# -- (list) An array to add extra env vars.
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# extraEnv:
+#  - name: EXTRA_TEST_VAR
+#    value: test
+# ```
+# </details>
+extraEnv: []
+
 # -- (list) Array of sources to populate environment variables in the container from.
 # @notationType -- yaml
 # @raw
