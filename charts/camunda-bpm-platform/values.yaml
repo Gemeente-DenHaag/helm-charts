@@ -191,11 +191,11 @@ extraIngress:
 
 resources:
   limits:
-    cpu: 2
-    memory: 4Gi
+    cpu: 0.5
+    memory: 1.5Gi
   requests:
-    cpu: 1
-    memory: 2Gi
+    cpu: 0.5
+    memory: 1Gi
 
 autoscaling:
   enabled: false
@@ -253,7 +253,7 @@ volumeMounts:
   - mountPath: /tempconfig
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
-    name: camunda-bpm-platform-dmnfiles
+    name: camunda-bpm-platform-dmnfiles-zgw
   - mountPath: /camunda/configuration/resources/
     # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
     # Used for loading runtime configurations needed by the application.
@@ -405,7 +405,6 @@ args:
   # Configures application features (e.g., webapps, REST API, OAuth2 support).
   - '--webapps'
   - '--rest'
-  - '--webapps'
   - '--oauth2'
 
 livenessProbe:
