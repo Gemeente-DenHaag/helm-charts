@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   camunda-bpm-platform:
   - apiVersion: v2
+    created: "2024-11-18T08:07:59.338083034Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.12
+    description: A Helm chart to deploy camunda-bpm-platform to Kubernetes
+    digest: d6314e57d6b7995b2206df5b427806d5987cf890dce75a501c207e4ed41f9302
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    - email: kevin.kemkes@denhaag.nl
+      name: DenHaag
+    name: camunda-bpm-platform
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/camunda-bpm-platform-0.0.17/camunda-bpm-platform-0.0.17.tgz
+    version: 0.0.17
+  - apiVersion: v2
     created: "2024-11-14T14:17:42.114226082Z"
     dependencies:
     - name: dh-lib
@@ -1997,4 +2018,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-webapps-0.1.0/smartdocuments-webapps-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-14T14:17:42.114509922Z"
+generated: "2024-11-18T08:07:59.338319517Z"
