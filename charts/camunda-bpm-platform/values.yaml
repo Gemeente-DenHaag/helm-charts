@@ -84,7 +84,7 @@ initContainers:
     image: busybox
     command: ['sh', '-c', 'cp /tempconfig/* /camunda/configuration/resources/']
     volumeMounts:
-      - name: camunda-bpm-platform-dmnfiles        
+      - name: camunda-bpm-platform-dmn-files-zgw        
         mountPath: /tempconfig/
       - name: configdir
         mountPath: /camunda/configuration/resources/
@@ -215,11 +215,11 @@ envFrom: []
 volumes:
   # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
-  - name: camunda-bpm-platform-dmnfiles
+  - name: camunda-bpm-platform-dmn-files-zgw
     # -- ConfigMap volume for DMN files.<br>
     # Loads external configuration for decision model files used by the application.
     configMap:
-      name: camunda-bpm-platform-dmnfiles
+      name: camunda-bpm-platform-dmn-files-zgw
   - name: configdir
     # -- Temporary emptyDir volume for Camunda configuration resources.<br>
     # Provides an empty volume for runtime configuration adjustments.
@@ -253,7 +253,7 @@ volumeMounts:
   - mountPath: /tempconfig
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
-    name: camunda-bpm-platform-dmnfiles-zgw
+    name: camunda-bpm-platform-dmn-files-zgw
   - mountPath: /camunda/configuration/resources/
     # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
     # Used for loading runtime configurations needed by the application.
