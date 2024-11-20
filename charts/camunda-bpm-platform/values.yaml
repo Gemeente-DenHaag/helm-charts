@@ -215,6 +215,11 @@ envFrom: []
 volumes:
   # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
+  - name: camunda-bpm-platform-config
+    # -- ConfigMap volume for DMN files.<br>
+    # Loads external configuration for decision model files used by the application.
+    configMap:
+      name: camunda-bpm-platform-config
   - name: camunda-bpm-platform-dmn-files-zgw
     # -- ConfigMap volume for DMN files.<br>
     # Loads external configuration for decision model files used by the application.
@@ -250,6 +255,10 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
+  - mountPath: /camunda/configuration
+    # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
+    # Provides external configuration files for decision model handling.
+    name: camunda-bpm-platform-config
   - mountPath: /tempconfig
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
