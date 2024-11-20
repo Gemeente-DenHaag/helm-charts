@@ -88,10 +88,10 @@ initContainers:
       mountPath: /tempconfig/
     - name: configdir
       mountPath: /camunda/configuration/resources/
-    - name: other-config-volume
-      mountPath: /otherconfig/
-    - name: another-destination-volume
-      mountPath: /another/destination/
+    - name: camunda-bpm-platform-config
+      mountPath: /camunda/tempconfig/application
+    - name: appconfigdir
+      mountPath: /camunda/configuration/
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
@@ -229,6 +229,10 @@ volumes:
     # Loads external configuration for decision model files used by the application.
     configMap:
       name: camunda-bpm-platform-dmn-files-zgw
+  - name: appconfigdir
+    # -- Temporary emptyDir volume for Camunda configuration resources.<br>
+    # Provides an empty volume for runtime configuration adjustments.
+    emptyDir: {}
   - name: configdir
     # -- Temporary emptyDir volume for Camunda configuration resources.<br>
     # Provides an empty volume for runtime configuration adjustments.
@@ -263,6 +267,10 @@ volumeMounts:
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
     name: camunda-bpm-platform-config
+  - mountPath: /camunda/configuration/
+    # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
+    # Used for loading runtime configurations needed by the application.
+    name: appconfigdir
   - mountPath: /tempconfig/dmn
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
