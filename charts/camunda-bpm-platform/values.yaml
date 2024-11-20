@@ -80,14 +80,18 @@ initContainers:
   #     containerPort: 1234
   # ```
   # </details>
-  - name: copy-config
-    image: busybox
-    command: ['sh', '-c', 'cp /tempconfig/* /camunda/configuration/resources/']
-    volumeMounts:
-      - name: camunda-bpm-platform-dmn-files-zgw        
-        mountPath: /tempconfig/
-      - name: configdir
-        mountPath: /camunda/configuration/resources/
+- name: copy-config
+  image: busybox
+  command: ['sh', '-c', 'cp /tempconfig/dmn/* /camunda/configuration/resources/ && cp /tempconfig/application/* /camunda/configuration/']
+  volumeMounts:
+    - name: camunda-bpm-platform-dmn-files-zgw        
+      mountPath: /tempconfig/
+    - name: configdir
+      mountPath: /camunda/configuration/resources/
+    - name: other-config-volume
+      mountPath: /otherconfig/
+    - name: another-destination-volume
+      mountPath: /another/destination/
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
@@ -255,11 +259,11 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-  - mountPath: /camunda/configuration
+  - mountPath: /camunda/tempconfig/application
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
     name: camunda-bpm-platform-config
-  - mountPath: /tempconfig
+  - mountPath: /tempconfig/dmn
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
     name: camunda-bpm-platform-dmn-files-zgw
