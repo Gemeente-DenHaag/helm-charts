@@ -66,28 +66,22 @@ commonAnnotations: {}
 podAnnotations: {}
 
 initContainers:
-  # -- Add init containers to the Pod.
-  # @raw
-  # <details>
-  # <summary>+Expand</summary>
-  #
-  # ```yaml
-  # - name: your-image-name
-  #   image: your-image
-  #   imagePullPolicy: Always
-  #   ports:
-  #   - name: portname
-  #     containerPort: 1234
-  # ```
-  # </details>
-- name: copy-config
-  image: busybox
-  command: ['sh', '-c', 'cp /tempconfig/dmn/* /camunda/configuration/resources/ && cp /tempconfig/application/* /camunda/configuration/']
-  volumeMounts:
-    - name: camunda-bpm-platform-dmn-files-zgw        
-      mountPath: /tempconfig/dmn/
-    - name: camunda-bpm-platform-config
-      mountPath: /tempconfig/application
+  - name: copy-config
+    image: busybox
+    command:
+      - sh
+      - -c
+      - |
+        cp -ru /tempconfig/application/* /camunda/configuration/ && \
+        cp -ru /tempconfig/configuration/* /camunda/configuration/resources/
+    volumeMounts:
+      - name: camunda-bpm-platform-config
+        mountPath: /tempconfig/application
+      - name: camunda-bpm-platform-dmn-files-zgw
+        mountPath: /tempconfig/configuration
+      - name: configdir
+        mountPath: /camunda/configuration
+
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
@@ -216,15 +210,13 @@ volumes:
   # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
   - name: camunda-bpm-platform-config
-    # -- ConfigMap volume for DMN files.<br>
-    # Loads external configuration for decision model files used by the application.
     configMap:
       name: camunda-bpm-platform-config
   - name: camunda-bpm-platform-dmn-files-zgw
-    # -- ConfigMap volume for DMN files.<br>
-    # Loads external configuration for decision model files used by the application.
     configMap:
       name: camunda-bpm-platform-dmn-files-zgw
+  - name: configdir
+    emptyDir: {}
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
     # Ensures logging data is stored in a non-persistent volume.
@@ -235,6 +227,8 @@ volumes:
     emptyDir: {}
   - name: tomcat-tmp-dir 
     emptyDir: {}
+  - name: configdir
+    emptyDir: {} # Dit volume wordt gebruikt voor runtime configuraties
 
 volumeMounts:
   # -- (list) Array to add volume mounts (normally used with volumes).
@@ -251,22 +245,12 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-  - mountPath: /tempconfig/application
-    # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
-    # Provides external configuration files for decision model handling.
-    name: camunda-bpm-platform-config
-  - mountPath: /camunda/configuration
-    # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
-    # Used for loading runtime configurations needed by the application.
-    name: appconfigdir
-  - mountPath: /tempconfig/dmn
-    # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
-    # Provides external configuration files for decision model handling.
-    name: camunda-bpm-platform-dmn-files-zgw
-  - mountPath: /camunda/configuration/resources
-    # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
-    # Used for loading runtime configurations needed by the application.
-    name: configdir
+  - name: camunda-bpm-platform-config
+    mountPath: /tempconfig/application
+  - name: camunda-bpm-platform-dmn-files-zgw
+    mountPath: /tempconfig/configuration
+  - name: configdir
+    mountPath: /camunda/configuration
   - mountPath: /camunda/logs
     # -- Mounts the camunda-logs volume to the /camunda/logs directory in the container.<br>
     # Ensures that logging data is stored temporarily for debugging and runtime checks.
