@@ -72,16 +72,17 @@ initContainers:
       - sh
       - -c
       - |
-        cp -ru /tempconfigapp/* /camunda/configuration/ && \
-        cp -ru /tempconfigdmnzgw/* /camunda/configuration/resources/
+        cp /temp/dmns/* /camunda/configuration/resources/ &&
+        rm -f /camunda/configuration/production.yml &&
+        cp -f /temp/config/* /camunda/configuration/
     volumeMounts:
       - name: camunda-bpm-platform-dmn-files-zgw
-        mountPath: /tempconfigdmnzgw/
-      - name: camunda-bpm-platform-config
-        mountPath: /tempconfigapp/
-      - name: configdir
+        mountPath: /temp/dmns
+      - name: dmndir
         mountPath: /camunda/configuration/resources/
-      - name: configapp
+      - name: camunda-bpm-platform-config
+        mountPath: /temp/config
+      - name: configdir
         mountPath: /camunda/configuration/
 
 priorityClassName: ""
@@ -214,11 +215,11 @@ volumes:
       name: camunda-bpm-platform-config
   - name: camunda-bpm-platform-dmn-files-zgw
     configMap:
-      name: camunda-bpm-platform-dmn-files-zgw
+      name: camunda-bpm-platform-dmn-files-zgw      
+  - name: dmndir
+    emptyDir: {}
   - name: configdir
-    emptyDir: {}
-  - name: configdirapp
-    emptyDir: {}
+    emptyDir: {}    
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
     # Ensures logging data is stored in a non-persistent volume.
@@ -252,14 +253,14 @@ volumeMounts:
   - name: camunda-work
     mountPath: /camunda/work
   - name: camunda-bpm-platform-dmn-files-zgw
-    mountPath: /tempconfigdmnzgw/
+    mountPath: /temp/dmns
   - name: camunda-bpm-platform-config
-    mountPath: /tempconfigapp/
-  - name: configdir
+    mountPath: /temp/config
+  - name: dmndir
     mountPath: /camunda/configuration/resources/
-  - name: configdirapp
-    mountPath: /camunda/configuration/
-
+  - name: configdir
+    mountPath: /camunda/configuration/production.yml
+    subPath: production.yml
 persistence:
   enabled: false
   storageClass:
