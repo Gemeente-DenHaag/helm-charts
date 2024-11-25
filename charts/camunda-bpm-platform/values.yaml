@@ -72,24 +72,22 @@ initContainers:
       - sh
       - -c
       - |
-        cp -ru /tempconfig/application/* /camunda/configuration/ && \
-        cp -ru /tempconfig/configuration/* /camunda/configuration/resources/
+        cp -ru /tempconfigapp/* /camunda/configuration/ && \
+        cp -ru /tempconfigdmnzgw/* /camunda/configuration/resources/
     volumeMounts:
-      - name: camunda-bpm-platform-config
-        mountPath: /tempconfig/application
       - name: camunda-bpm-platform-dmn-files-zgw
-        mountPath: /tempconfig/configuration
+        mountPath: /tempconfigdmnzgw/
+      - name: camunda-bpm-platform-config
+        mountPath: /tempconfigapp/
       - name: configdir
-        mountPath: /camunda/configuration
+        mountPath: /camunda/configuration/resources/
+      - name: configapp
+        mountPath: /camunda/configuration/
+
 
 
 priorityClassName: ""
-# -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
-# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller 
-# to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
-dnsPolicy: ClusterFirst
-
-podSecurityContext:
+# -- Optionally, change this to Cluster
   # -- (object) Pod securityContext.<br>
   # @notationType -- yaml
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod">[link]</a>
@@ -217,6 +215,8 @@ volumes:
       name: camunda-bpm-platform-dmn-files-zgw
   - name: configdir
     emptyDir: {}
+  - name: configdirapp
+    emptyDir: {}
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
     # Ensures logging data is stored in a non-persistent volume.
@@ -243,22 +243,21 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-  - name: camunda-bpm-platform-config
-    mountPath: /tempconfig/application
-  - name: camunda-bpm-platform-dmn-files-zgw
-    mountPath: /tempconfig/configuration
-  - name: configdir
-    mountPath: /camunda/configuration
-  - mountPath: /camunda/logs
-    # -- Mounts the camunda-logs volume to the /camunda/logs directory in the container.<br>
-    # Ensures that logging data is stored temporarily for debugging and runtime checks.
-    name: camunda-logs
-  - mountPath: /camunda/work
-    # -- Mounts the camunda-work volume to the /camunda/work directory in the container.<br>
-    # Used for temporary work files generated and deleted during application runtime.
-    name: camunda-work
   - name: tomcat-tmp-dir
     mountPath: /tmp
+  - name: camunda-logs
+    mountPath: /camunda/logs
+  - name: camunda-work
+    mountPath: /camunda/work
+
+  - name: camunda-bpm-platform-dmn-files-zgw
+    mountPath: /tempconfigdmnzgw/
+  - name: camunda-bpm-platform-config
+    mountPath: /tempconfigapp/
+  - name: configdir
+    mountPath: /camunda/configuration/resources/
+  - name: configapp
+    mountPath: /camunda/configuration/
 
 persistence:
   enabled: false
