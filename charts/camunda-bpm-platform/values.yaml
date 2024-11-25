@@ -227,8 +227,6 @@ volumes:
     emptyDir: {}
   - name: tomcat-tmp-dir 
     emptyDir: {}
-  - name: configdir
-    emptyDir: {} # Dit volume wordt gebruikt voor runtime configuraties
 
 volumeMounts:
   # -- (list) Array to add volume mounts (normally used with volumes).
