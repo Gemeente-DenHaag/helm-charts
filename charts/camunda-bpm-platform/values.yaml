@@ -85,7 +85,12 @@ initContainers:
         mountPath: /camunda/configuration/
 
 priorityClassName: ""
-# -- Optionally, change this to Cluster
+# -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
+# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller 
+# to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
+dnsPolicy: ClusterFirst
+
+podSecurityContext:
   # -- (object) Pod securityContext.<br>
   # @notationType -- yaml
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod">[link]</a>
@@ -261,10 +266,6 @@ persistence:
   existingClaim: ""
   accessMode: ReadWriteMany
 
-startupProbe:
-  failureThreshold: 20
-  successThreshold: 1
-
 configMaps: {}
 secrets: {}
 syncAKV: {}
@@ -385,13 +386,6 @@ command:
   # -- Command to start the Camunda application.<br>
   # This is the main entrypoint command for the container.
   - './camunda.sh'
-
-args:
-  # -- Arguments passed to the Camunda start command.<br>
-  # Configures application features (e.g., webapps, REST API, OAuth2 support).
-  - '--webapps'
-  - '--rest'
-  - '--oauth2'
 
 livenessProbe:
   enabled: true
