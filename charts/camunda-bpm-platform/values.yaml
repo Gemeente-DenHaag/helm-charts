@@ -257,7 +257,7 @@ volumeMounts:
     mountPath: /tempconfigapp/
   - name: configdir
     mountPath: /camunda/configuration/resources/
-  - name: configapp
+  - name: configdirapp
     mountPath: /camunda/configuration/
 
 persistence:
