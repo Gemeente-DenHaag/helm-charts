@@ -4,8 +4,6 @@ kind: ConfigMap
 metadata:
   name: camunda-bpm-platform-config
 data:
-  default.yml: |
-    {{- .Values.configurationFiles.default | indent 4 }}
   production.yml: |
     {{- .Values.configurationFiles.production | indent 4 }}
 {{- end }}
