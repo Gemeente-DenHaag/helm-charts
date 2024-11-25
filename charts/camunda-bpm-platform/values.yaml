@@ -11,7 +11,7 @@ image:
   # -- Set image registry.
   registry: "crzgwpweu01.azurecr.io"
   # -- Set image repository.
-  repository: camunda/camunda-bpm-platform
+  repository: crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform
   # -- Set image tag.
   tag:
   # -- Set image fullImage. Can be used to set the complete URL.
@@ -85,11 +85,11 @@ initContainers:
   command: ['sh', '-c', 'cp /tempconfig/dmn/* /camunda/configuration/resources/ && cp /tempconfig/application/* /camunda/configuration/']
   volumeMounts:
     - name: camunda-bpm-platform-dmn-files-zgw        
-      mountPath: /tempconfig/
+      mountPath: /tempconfig/dmn/
     - name: configdir
       mountPath: /camunda/configuration/resources/
     - name: camunda-bpm-platform-config
-      mountPath: /camunda/tempconfig/application
+      mountPath: /tempconfig/application
     - name: appconfigdir
       mountPath: /camunda/configuration/
 
@@ -263,11 +263,11 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-  - mountPath: /camunda/tempconfig/application
+  - mountPath: /tempconfig/application
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
     name: camunda-bpm-platform-config
-  - mountPath: /camunda/configuration/
+  - mountPath: /camunda/configuration
     # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
     # Used for loading runtime configurations needed by the application.
     name: appconfigdir
@@ -275,7 +275,7 @@ volumeMounts:
     # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
     # Provides external configuration files for decision model handling.
     name: camunda-bpm-platform-dmn-files-zgw
-  - mountPath: /camunda/configuration/resources/
+  - mountPath: /camunda/configuration/resources
     # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
     # Used for loading runtime configurations needed by the application.
     name: configdir
