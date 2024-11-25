@@ -84,8 +84,6 @@ initContainers:
       - name: configapp
         mountPath: /camunda/configuration/
 
-
-
 priorityClassName: ""
 # -- Optionally, change this to Cluster
   # -- (object) Pod securityContext.<br>
@@ -121,11 +119,12 @@ containerSecurityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
-    - ALL
+      - ALL
   runAsNonRoot: true
   runAsUser: 1000
 
 containerPorts: []
+
 service:
   # -- Kubernetes service type and port number.
   type: ClusterIP
@@ -179,8 +178,6 @@ extraIngress:
   service:
     port: 8080
 
-
-
 resources:
   limits:
     cpu: 0.5
@@ -225,7 +222,7 @@ volumes:
     # -- Temporary emptyDir volume for Camunda work files.<br>
     # Used for transient data storage during application runtime.
     emptyDir: {}
-  - name: tomcat-tmp-dir 
+  - name: tomcat-tmp-dir
     emptyDir: {}
 
 volumeMounts:
@@ -249,7 +246,6 @@ volumeMounts:
     mountPath: /camunda/logs
   - name: camunda-work
     mountPath: /camunda/work
-
   - name: camunda-bpm-platform-dmn-files-zgw
     mountPath: /tempconfigdmnzgw/
   - name: camunda-bpm-platform-config
