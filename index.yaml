@@ -633,6 +633,27 @@ entries:
     version: 0.0.1
   dh-lib:
   - apiVersion: v2
+    created: "2024-11-29T10:46:28.220250293Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.20.x
+    description: A Helm library chart for Kubernetes
+    digest: 5f4b6d55e5cd2760bb772dda8f28d208f6f8b331f05377fdb04254895b581f53
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: dh-lib
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: library
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-lib-0.1.13/dh-lib-0.1.13.tgz
+    version: 0.1.13
+  - apiVersion: v2
     created: "2024-11-13T09:26:09.189449725Z"
     dependencies:
     - name: common
@@ -1027,6 +1048,27 @@ entries:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-nl-portal-frontend-0.1.1/dh-nl-portal-frontend-0.1.1.tgz
     version: 0.1.1
   generic:
+  - apiVersion: v2
+    created: "2024-11-29T10:46:28.394266335Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.1.x
+    description: Den Haag generic application Helm chart
+    digest: b08d3d215d172eb2f20fef42e62abbf63a3c536a09652ea9449ff5b139512cc7
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: generic
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.30/generic-0.0.30.tgz
+    version: 0.0.30
   - apiVersion: v2
     created: "2024-11-13T09:26:09.382192671Z"
     dependencies:
@@ -2249,4 +2291,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-webapps-0.1.0/smartdocuments-webapps-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-25T23:39:50.337768999Z"
+generated: "2024-11-29T10:46:28.394704885Z"
