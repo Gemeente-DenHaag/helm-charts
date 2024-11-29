@@ -11,7 +11,7 @@ image:
   # -- Set image registry.
   registry: "crzgwpweu01.azurecr.io"
   # -- Set image repository.
-  repository: camunda/camunda-bpm-platform
+  repository: crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform
   # -- Set image tag.
   tag:
   # -- Set image fullImage. Can be used to set the complete URL.
@@ -66,28 +66,24 @@ commonAnnotations: {}
 podAnnotations: {}
 
 initContainers:
-  # -- Add init containers to the Pod.
-  # @raw
-  # <details>
-  # <summary>+Expand</summary>
-  #
-  # ```yaml
-  # - name: your-image-name
-  #   image: your-image
-  #   imagePullPolicy: Always
-  #   ports:
-  #   - name: portname
-  #     containerPort: 1234
-  # ```
-  # </details>
   - name: copy-config
     image: busybox
-    command: ['sh', '-c', 'cp /tempconfig/* /camunda/configuration/resources/']
+    command:
+      - sh
+      - -c
+      - |
+        cp /temp/dmns/* /camunda/configuration/resources/ &&
+        rm -f /camunda/configuration/production.yml &&
+        cp -f /temp/config/* /camunda/configuration/
     volumeMounts:
-      - name: dmns
-        mountPath: /tempconfig/
-      - name: configdir
+      - name: camunda-bpm-platform-dmn-files-zgw
+        mountPath: /temp/dmns
+      - name: dmndir
         mountPath: /camunda/configuration/resources/
+      - name: camunda-bpm-platform-config
+        mountPath: /temp/config
+      - name: configdir
+        mountPath: /camunda/configuration/
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
@@ -129,11 +125,12 @@ containerSecurityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
-    - ALL
+      - ALL
   runAsNonRoot: true
   runAsUser: 1000
 
 containerPorts: []
+
 service:
   # -- Kubernetes service type and port number.
   type: ClusterIP
@@ -165,51 +162,35 @@ updateStrategy:
   type: RollingUpdate
 
 ingress:
-  enabled: false
-  certManager: false
-  pathType: Prefix
-  apiVersion: ""
-  hostname: ""
-  path: /*
-  ingressClassName: ""
-  annotations:
-    kubernetes.io/ingress.class: 'nginx'
-    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
-  tls: true
-  existingTlsSecret: ""
-  extraHosts: []
-  extraPaths: []
-  extraTls: []
   nginx:
-    configurationSnippet:
-    serverSnippet:
+    configurationSnippet: ""
+  ingressClassName: nginx
+  annotations:
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+  path: /*
+  pathType: Prefix
+  service:
+    port: 8080
 
 extraIngress:
-  enabled: false
-  nameSuffix: "-ext"
-  certManager: false
-  pathType: Prefix
-  apiVersion: ""
-  hostname: ""
-  path: /
-  pathType: Prefix
-  ingressClassName: ""
+  nginx:
+    configurationSnippet: ""
+  nameSuffix: "-ag"
+  ingressClassName: azure-application-gateway
   annotations:
-    kubernetes.io/ingress.class: 'azure/application-gateway'
-    appgw.ingress.kubernetes.io/ssl-redirect: 'true'
-  tls: true
-  existingTlsSecret:
-  extraHosts: []
-  extraPaths: []
-  extraTls: []
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+  path: /*
+  pathType: Prefix
+  service:
+    port: 8080
 
 resources:
   limits:
-    cpu: 2
-    memory: 4Gi
+    cpu: 0.5
+    memory: 1.5Gi
   requests:
-    cpu: 1
-    memory: 2Gi
+    cpu: 0.5
+    memory: 1Gi
 
 autoscaling:
   enabled: false
@@ -229,19 +210,16 @@ envFrom: []
 volumes:
   # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
-  - name: tmpfs-1
-    # -- Temporary emptyDir volume for /tmp.<br>
-    # Useful for storing transient files needed during runtime.
-    emptyDir: {}
-  - name: dmns
-    # -- ConfigMap volume for DMN files.<br>
-    # Loads external configuration for decision model files used by the application.
+  - name: camunda-bpm-platform-config
     configMap:
-      name: camunda-bpm-platform-dmnfiles
-  - name: configdir
-    # -- Temporary emptyDir volume for Camunda configuration resources.<br>
-    # Provides an empty volume for runtime configuration adjustments.
+      name: camunda-bpm-platform-config
+  - name: camunda-bpm-platform-dmn-files-zgw
+    configMap:
+      name: camunda-bpm-platform-dmn-files-zgw      
+  - name: dmndir
     emptyDir: {}
+  - name: configdir
+    emptyDir: {}    
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
     # Ensures logging data is stored in a non-persistent volume.
@@ -249,6 +227,8 @@ volumes:
   - name: camunda-work
     # -- Temporary emptyDir volume for Camunda work files.<br>
     # Used for transient data storage during application runtime.
+    emptyDir: {}
+  - name: tomcat-tmp-dir
     emptyDir: {}
 
 volumeMounts:
@@ -266,36 +246,26 @@ volumeMounts:
   # ```
   # </details>
   # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
-  - mountPath: /tmp
-    # -- Mounts the tmpfs-1 volume to /tmp within the container.<br>
-    # Used for temporary, non-persistent storage in the /tmp directory.
-    name: tmpfs-1
-  - mountPath: /tempconfig
-    # -- Mounts the dmns ConfigMap volume to /tempconfig.<br>
-    # Provides external configuration files for decision model handling.
-    name: dmns
-  - mountPath: /camunda/configuration/resources/
-    # -- Mounts the configdir volume to the /camunda/configuration/resources directory.<br>
-    # Used for loading runtime configurations needed by the application.
-    name: configdir
-  - mountPath: /camunda/logs
-    # -- Mounts the camunda-logs volume to the /camunda/logs directory in the container.<br>
-    # Ensures that logging data is stored temporarily for debugging and runtime checks.
-    name: camunda-logs
-  - mountPath: /camunda/work
-    # -- Mounts the camunda-work volume to the /camunda/work directory in the container.<br>
-    # Used for temporary work files generated and deleted during application runtime.
-    name: camunda-work
-
+  - name: tomcat-tmp-dir
+    mountPath: /tmp
+  - name: camunda-logs
+    mountPath: /camunda/logs
+  - name: camunda-work
+    mountPath: /camunda/work
+  - name: camunda-bpm-platform-dmn-files-zgw
+    mountPath: /temp/dmns
+  - name: camunda-bpm-platform-config
+    mountPath: /temp/config
+  - name: dmndir
+    mountPath: /camunda/configuration/resources/
+  - name: configdir
+    mountPath: /camunda/configuration/production.yml
+    subPath: production.yml
 persistence:
   enabled: false
   storageClass:
   existingClaim: ""
   accessMode: ReadWriteMany
-
-startupProbe:
-  failureThreshold: 20
-  successThreshold: 1
 
 configMaps: {}
 secrets: {}
@@ -417,14 +387,6 @@ command:
   # -- Command to start the Camunda application.<br>
   # This is the main entrypoint command for the container.
   - './camunda.sh'
-
-args:
-  # -- Arguments passed to the Camunda start command.<br>
-  # Configures application features (e.g., webapps, REST API, OAuth2 support).
-  - '--webapps'
-  - '--rest'
-  - '--webapps'
-  - '--oauth2'
 
 livenessProbe:
   enabled: true

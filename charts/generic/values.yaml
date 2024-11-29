@@ -32,6 +32,12 @@ name: ""
 # Unset when using hpa.
 replicaCount: 1
 
+# -- How many seconds a pod needs to be ready before killing the next, during update
+minReadySeconds: 0
+
+# -- Number of controller revisions to keep
+revisionHistoryLimitCount: 10
+
 # -- Specifies the application resource kind.
 appKind: Deployment
 
