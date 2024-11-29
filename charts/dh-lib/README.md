@@ -2,7 +2,7 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -947,6 +947,15 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>minReadySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+0
+</pre>
+</td>
+			<td>How many seconds a pod needs to be ready before killing the next, during update</td>
+		</tr>
+		<tr>
 			<td>name</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1212,6 +1221,15 @@ resources:
     memory: 128Mi
 ```
 </details></td>
+		</tr>
+		<tr>
+			<td>revisionHistoryLimitCount</td>
+			<td>int</td>
+			<td><pre lang="json">
+10
+</pre>
+</td>
+			<td>Number of controller revisions to keep</td>
 		</tr>
 		<tr>
 			<td>secrets</td>
