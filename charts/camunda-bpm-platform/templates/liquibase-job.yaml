@@ -1,7 +1,8 @@
+{{- if .Values.liquibase.changelog.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: liquibase-job
+  name: camunda-bpm-platform-liquibase-job
 spec:
   template:
     spec:
@@ -35,3 +36,4 @@ spec:
       - name: changelog
         configMap:
           name: camunda-bpm-platform-changelog
+{{- end }}
