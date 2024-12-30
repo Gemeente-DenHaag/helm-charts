@@ -75,7 +75,6 @@ initContainers:
         cp /temp/dmns/* /camunda/configuration/resources/ &&
         rm -f /camunda/configuration/production.yml &&
         cp -f /temp/config/* /camunda/configuration/
-        cp -f /temp/changelog/* /camunda/configuration/sql/liquibase/
     volumeMounts:
       - name: camunda-bpm-platform-dmn-files-zgw
         mountPath: /temp/dmns
@@ -83,12 +82,8 @@ initContainers:
         mountPath: /camunda/configuration/resources/
       - name: camunda-bpm-platform-config
         mountPath: /temp/config
-      - name: camunda-bpm-platform-changelog
-        mountPath: /temp/changelog/
       - name: configdir
         mountPath: /camunda/configuration/
-      - name: changelogdir
-        mountPath: /camunda/configuration/sql/liquibase/
 
 
 priorityClassName: ""
@@ -219,9 +214,6 @@ volumes:
   - name: camunda-bpm-platform-config
     configMap:
       name: camunda-bpm-platform-config
-  - name: camunda-bpm-platform-changelog
-    configMap:
-      name: camunda-bpm-platform-changelog
   - name: camunda-bpm-platform-dmn-files-zgw
     configMap:
       name: camunda-bpm-platform-dmn-files-zgw      
@@ -229,8 +221,6 @@ volumes:
     emptyDir: {}
   - name: configdir
     emptyDir: {}   
-  - name: changelogdir
-    emptyDir: {}  
   - name: camunda-logs
     # -- Temporary emptyDir volume for Camunda logs.<br>
     # Ensures logging data is stored in a non-persistent volume.
@@ -267,16 +257,11 @@ volumeMounts:
     mountPath: /temp/dmns
   - name: camunda-bpm-platform-config
     mountPath: /temp/config
-  - name: camunda-bpm-platform-changelog
-    mountPath: /temp/changelog
   - name: dmndir
     mountPath: /camunda/configuration/resources/
   - name: configdir
     mountPath: /camunda/configuration/production.yml
     subPath: production.yml
-  - name: changelogdir
-    mountPath: /camunda/configuration/sql/liquibase/camunda-changelog.xml
-    subPath: camunda-changelog.xml
 
 persistence:
   enabled: false
@@ -403,7 +388,7 @@ env:
 command:
   # -- Command to start the Camunda application.<br>
   # This is the main entrypoint command for the container.
-  - './camunda.sh'
+  - './camunda.sh --production'
 
 livenessProbe:
   enabled: true

@@ -4,6 +4,6 @@ kind: ConfigMap
 metadata:
   name: camunda-bpm-platform-changelog
 data:
-  camunda-changelog.xml: |
+  changelog.xml: |
     {{- .Values.configurationFiles.changelog | nindent 4 }}
 {{- end }}
