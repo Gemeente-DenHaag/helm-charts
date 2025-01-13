@@ -72,19 +72,18 @@ initContainers:
       - /bin/sh
       - -c
       - |
-
-        git clone https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-ZGW.git /temp/DMN-ZGW/
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-ZGW.git /temp/DMN-ZGW/
         cp -r /temp/DMN-ZGW/dmn/. /temp/dmn/
 
-        git clone https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-Algemeen.git /temp/DMN-GZAC-Algemeen/
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-Algemeen.git /temp/DMN-GZAC-Algemeen/
         cp -r /temp/DMN-GZAC-Algemeen/dmn/. /temp/dmn/
 
-        git clone https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-SD.git /temp/DMN-GZAC-SD/
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-SD.git /temp/DMN-GZAC-SD/
         cp -r /temp/DMN-GZAC-SD/dmn/. /temp/dmn/
 
-        git clone https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-FD.git /temp/DMN-GZAC-FD/
-        cp -r /temp/DMN-GZAC-FD/dmn/. /temp/dmn/   
-
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-FD.git /temp/DMN-GZAC-FD/
+        cp -r /temp/DMN-GZAC-FD/dmn/. /temp/dmn/
+        
     volumeMounts:
       - name: dmn-volume
         mountPath: /temp
@@ -94,6 +93,11 @@ initContainers:
           secretKeyRef:
             name: camunda-dmn-repo-github-secret
             key: github-token
+      - name: ENV_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+
   - name: copy-config  
     image: busybox
     command:
