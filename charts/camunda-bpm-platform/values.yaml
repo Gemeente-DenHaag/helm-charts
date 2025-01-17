@@ -24,11 +24,13 @@ image:
 
 # -- Specifies the application name (required to be set).
 name: "camunda-bpm-platform"
+# -- Set the number of replicas.
 replicaCount: 1
 
 # -- Specifies the application resource kind.
 appKind: Deployment
 
+# -- Specifies the pod labels.
 podLabels:
   public-access: allow
 
@@ -65,6 +67,8 @@ commonAnnotations: {}
 # ref: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">[link]</a>
 podAnnotations: {}
 
+# -- Init containers that run inside the pod before Camunda is started in the main container. Use this to pull DMN's from remote repositories or to copy configuration files like production.yaml.<br>
+# ref: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">[link]</a>
 initContainers:
   - name: clone-dmn-repositories
     image: alpine/git:v2.47.1
@@ -205,38 +209,85 @@ updateStrategy:
   type: RollingUpdate
 
 ingress:
+  # -- Configuration snippet for customizing Nginx Ingress behavior.
   nginx:
-    configurationSnippet: ""
+    configurationSnippet: ""  # Add specific Nginx configurations here.<br>
+
+  # -- Specifies the Ingress class for Kubernetes to use.<br>
+  # This helps specify which Ingress controller should handle this Ingress if multiple controllers are installed.
   ingressClassName: nginx
+
+  # -- Annotations for additional configuration options that are specific to the Ingress controller.<br>
+  # Annotations can enable specific functionality like SSL redirection.
   annotations:
-    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"  # Forces SSL redirect using Azure Application Gateway.<br>
+    # ref: <a href="https://docs.microsoft.com/en-us/azure/application-gateway/ssl-redirect">[link]</a>
+
+  # -- Define the path that this Ingress rule will apply to.<br>
+  # Using `/*` means this rule applies to all subpaths under the specified host.
   path: /*
+  
+  # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.
   pathType: Prefix
+
+  # -- Defines the service to which traffic should be routed.<br>
+  # Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.
   service:
-    port: 8080
+    port: 8080  # The service port to which the Ingress directs traffic.<br>
+    # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">[link]</a>
 
 extraIngress:
+  # -- Nginx specific configuration snippet for additional ingress behavior customization.
   nginx:
-    configurationSnippet: ""
+    configurationSnippet: ""  # Add specific Nginx configurations here.<br>
+
+  # -- Suffix to append to the ingress name, useful for distinguishing additional ingress resources.
   nameSuffix: "-ag"
+
+  # -- Specifies the class of the ingress controller.<br>
+  # This should match the class provided by the Azure Application Gateway.
   ingressClassName: azure-application-gateway
+
+  # -- Annotations for additional configuration options specific to the ingress controller.
   annotations:
-    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"  # Enforce SSL redirection using Azure Application Gateway.<br>
+    # ref: <a href="https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-annotations#tls-redirect">[link]</a>
+
+  # -- Define the path that this Ingress rule will apply to.<br>
+  # The `/*` indicates that this rule applies to all subpaths.
   path: /*
+  
+  # -- Specifies how the path is matched. 'Prefix' means matching is done based on a prefix.<br>
+  # This is the most common setting for general use.
   pathType: Prefix
+
+  # -- Defines the service to which traffic should be routed.<br>
   service:
-    port: 8080
+    port: 8080  # The service port to which the Ingress will send traffic.<br>
+    # Ensure corresponding service has this port exposed.
+
 
 resources:
+  # -- Define the resource limits for the container.
   limits:
-    cpu: 0.5
-    memory: 1.5Gi
+    cpu: 0.5  # Maximum amount of CPU the container can use.
+    memory: 1.5Gi  # Maximum amount of memory the container can use.<br>
+    # ref: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">[link]</a>
+
+  # -- Define the resource requests for the container.
   requests:
-    cpu: 0.5
-    memory: 1Gi
+    cpu: 0.5  # Amount of CPU the container requests for reliable scheduling.
+    memory: 1Gi  # Amount of memory the container requests for reliable scheduling.<br>
+    # ref: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits">[link]</a>
+
 
 autoscaling:
-  enabled: false
+  # -- Enable or disable horizontal pod autoscaling (HPA).
+  # HPA automatically scales the number of pods in a deployment, replication controller, 
+  # replica set, or stateful set based on observed CPU utilization (or, with custom metrics support, on some other application-provided metrics).
+  enabled: false  # Set to `true` to enable HPA.<br>
+  # ref: <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">[link]</a>
+
 
 nodeSelector: {}
 tolerations: []
@@ -251,27 +302,42 @@ nodeAffinityPreset:
 affinity: {}
 envFrom: []
 volumes:
-  # -- Array of volumes for the application.<br>
+  # -- Array of volumes for the application.
   # These volumes are mounted to enable data persistence and configuration loading.
+
+  # -- Volume sourced from a ConfigMap for Camunda BPM Platform configuration.
   - name: camunda-bpm-platform-config
     configMap:
-      name: camunda-bpm-platform-config  
+      name: camunda-bpm-platform-config  # The name of the ConfigMap to mount.<br>
+      # ref: <a href="https://kubernetes.io/docs/concepts/storage/volumes/#configmap">[link]</a>
+
+  # -- Temporary storage volume for DMN files, provides an empty directory that is erased when the pod is removed.
   - name: dmn-volume
-    emptyDir: {}
+    emptyDir: {}  # Useful for storing data that should not persist beyond the lifecycle of a pod.
+
+  # -- Temporary directory for storing DMN related files during runtime.
   - name: dmndir
     emptyDir: {}
+
+  # -- Temporary directory for dynamic configuration files during application runtime.
   - name: configdir
-    emptyDir: {}   
+    emptyDir: {}
+
+  # -- Temporary emptyDir volume for Camunda logs.
+  # Ensures logging data is stored in a non-persistent volume and is cleared when the pod is deleted.
   - name: camunda-logs
-    # -- Temporary emptyDir volume for Camunda logs.<br>
-    # Ensures logging data is stored in a non-persistent volume.
     emptyDir: {}
+
+  # -- Temporary storage volume for Camunda work files.
+  # Used for transient data storage that does not need to persist once the pod is terminated.
   - name: camunda-work
-    # -- Temporary emptyDir volume for Camunda work files.<br>
-    # Used for transient data storage during application runtime.
     emptyDir: {}
+
+  # -- Temporary directory for Tomcat temporary files used by Camunda.
+  # Helps isolate and manage temporary data used by the Tomcat server.
   - name: tomcat-tmp-dir
     emptyDir: {}
+
 
 volumeMounts:
   # -- (list) Array to add volume mounts (normally used with volumes).
@@ -432,37 +498,44 @@ command:
   - './camunda.sh --production'
 
 livenessProbe:
+  # -- Enable or disable the liveness probe.
   enabled: true
+  # -- HTTP GET method used by liveness probe to check health.
   httpGet:
-    path: /engine-rest/engine
-    port: 8080
-  initialDelaySeconds: 120
-  periodSeconds: 30
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
+    path: /engine-rest/engine  # The path that the probe requests.
+    port: 8080  # The port on which the probe contacts the container.
+  initialDelaySeconds: 120  # Delay before liveness probe is initiated.
+  periodSeconds: 30  # How often to perform the probe.
+  timeoutSeconds: 5  # When the probe times out.
+  failureThreshold: 3  # Number of times to retry the probe before giving up.
+  successThreshold: 1  # Minimum consecutive successes for the probe to be considered successful after having failed.
 
 readinessProbe:
+  # -- Enable or disable the readiness probe.
   enabled: true
+  # -- HTTP GET method used by readiness probe to check if the container is ready to handle traffic.
   httpGet:
-    path: /engine-rest/engine
-    port: 8080
-  initialDelaySeconds: 60
-  periodSeconds: 20
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
+    path: /engine-rest/engine  # The path that the probe requests.
+    port: 8080  # The port on which the probe contacts the container.
+  initialDelaySeconds: 60  # Delay before readiness probe is initiated.
+  periodSeconds: 20  # How often to perform the probe.
+  timeoutSeconds: 5  # When the probe times out.
+  failureThreshold: 3  # Number of times to retry the probe before considering it failed.
+  successThreshold: 1  # Minimum consecutive successes for the probe to be considered successful after having failed.
 
 startupProbe:
+  # -- Enable or disable the startup probe.
   enabled: true
+  # -- HTTP GET method used by startup probe to check if the application has started.
   httpGet:
-    path: /engine-rest/engine
-    port: 8080
-  initialDelaySeconds: 120
-  periodSeconds: 30
-  timeoutSeconds: 5
-  failureThreshold: 10
-  successThreshold: 1
+    path: /engine-rest/engine  # The path that the probe requests.
+    port: 8080  # The port on which the probe contacts the container.
+  initialDelaySeconds: 120  # Delay before startup probe is initiated.
+  periodSeconds: 30  # How often to perform the probe.
+  timeoutSeconds: 5  # When the probe times out.
+  failureThreshold: 10  # Number of times to retry the probe before considering it failed.
+  successThreshold: 1  # Minimum consecutive successes for the probe to be considered successful after having failed.
+
 
 camunda:
   # -- Configuration for Camunda-specific settings.<br>
