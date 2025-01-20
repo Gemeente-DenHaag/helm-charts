@@ -1,4 +1,4 @@
-# camunda-bpm-platform
+# ZGW Decision Rules Engine (ZGW-DRE)
 
 A Helm chart to deploy camunda-bpm-platform to Kubernetes
 
@@ -9,38 +9,56 @@ A Helm chart to deploy camunda-bpm-platform to Kubernetes
 ### Example values.yaml
 
 ```yaml
-name: camunda-bpm-platform
+global:
+  imageRegistry: "example.azurecr.io"
+  imagePullSecrets: []
+  storageClass: ""
+
 image:
-  repository: denhaag
+  registry: "example.azurecr.io"
+  repository: example.azurecr.io/camunda/camunda-bpm-platform
+  tag: latest
+  fullImage: []
+  pullSecrets: []
+  pullPolicy: Always
 
-podAnnotations:
-  test: "true"
+name: "camunda-bpm-platform-example"
+replicaCount: 1
+appKind: Deployment
 
-checksums:
-  - /secrets.yaml
+podLabels:
+  public-access: allow
 
-secrets:
-  env:
-    stringData:
-      TEST: this
+args: []
+nameOverride: ""
+fullnameOverride: ""
+hostAliases: []
+hostNetwork: false
 
-configMaps:
-  app:
-    data:
-      test: this
-      wow: cool
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+  automountServiceAccountToken: true
 
-envFrom:
-  - secretRef:
-      name: 'testsecret'
+commonLabels: {}
+commonAnnotations: {}
+podAnnotations: {}
 
-service:
-  port: 8000
-  targetPort: 80
+initContainers:
+- name: copy-config  
+    image: busybox
+    command:
+      - sh
+      - -c
+      - |
+        echo "Configuring..."
+    volumeMounts:
+      - name: dmn-volume
+        mountPath: /temp
+      - name: dmndir
+    password: "password"
 
-ingress:
-  enabled: true
-  hostname: camunda.denhaag.nl
 
 ```
 
@@ -50,7 +68,7 @@ To install the chart with the release name `camunda-bpm-platform`:
 
 ```console
 $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
-$ helm install camunda-bpm-platform denhaag/camunda-bpm-platform
+$ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" --set args[0]="--webapps" --set args[1]="--rest" --set args[2]="--oauth2" --set args[3]="--production" --set-file configurationFiles.production="./config/production.yml" --set-file configurationFiles.changelog="./camunda/config/authorization-changelog.xml" -f "./camunda/infra/values.yaml"
 ```
 
 ## Maintainers
