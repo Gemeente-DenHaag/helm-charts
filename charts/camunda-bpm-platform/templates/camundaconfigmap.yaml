@@ -1,4 +1,3 @@
-{{- if .Values.camundaConfigMap.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,4 +5,3 @@ metadata:
 data:
   production.yml: |
     {{- .Values.configurationFiles.production | indent 4 }}
-{{- end }}

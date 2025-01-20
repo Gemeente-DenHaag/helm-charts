@@ -1,8 +1,8 @@
-# ZGW Decision Rules Engine (ZGW-DRE)
+# camunda-bpm-platform
 
 A Helm chart to deploy camunda-bpm-platform to Kubernetes
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.0.35](https://img.shields.io/badge/Version-0.0.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -86,7 +86,7 @@ $ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.11 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.12 |
 
 
 ## Values
@@ -106,7 +106,7 @@ $ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" 
 {}
 </pre>
 </td>
-			<td>Affinity for pod assignment.<br> Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set.<br> ref: <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>appKind</td>
@@ -115,7 +115,7 @@ $ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" 
 "Deployment"
 </pre>
 </td>
-			<td>Specifies the application resource kind.</td>
+			<td>Specifies the application resource kind.<br></td>
 		</tr>
 		<tr>
 			<td>args</td>
@@ -124,53 +124,25 @@ $ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" 
 []
 </pre>
 </td>
-			<td>Override default container args (useful when using custom images)</td>
+			<td></td>
 		</tr>
 		<tr>
-			<td>automountServiceAccountToken</td>
+			<td>autoscaling.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
 false
 </pre>
 </td>
-			<td>Controls whether the container automatically mounts the ServiceAccount's API credentials.<br> In the pod/v1 this defaults to true, so also in this helm chart. recommended: false.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting">[link]</a></td>
+			<td>Enable or disable horizontal pod autoscaling (HPA).<br> HPA automatically scales the number of pods in a deployment, replication controller,  replica set, or stateful set based on observed CPU utilization (or, with custom metrics support, on some other application-provided metrics).</td>
 		</tr>
 		<tr>
-			<td>autoscaling</td>
-			<td>object</td>
-			<td><pre lang="yaml">
-enabled: false
-
+			<td>camunda.host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
 </pre>
 </td>
-			<td>Autoscaling configuration.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 10
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 80
-    - type: Resource
-      resource:
-       name: memory
-       target:
-          type: AverageValue
-          averageValue: 1800Mi
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 300
-```
-</details></td>
+			<td>Configuration for Camunda-specific settings.<br></td>
 		</tr>
 		<tr>
 			<td>checksums</td>
@@ -179,17 +151,16 @@ autoscaling:
 []
 </pre>
 </td>
-			<td>Array of templates paths to automatically adds checksum annotation for.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-checksums:
-  - secrets.yaml
-
-```
-</details></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>command[0]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"./camunda.sh --production"
+</pre>
+</td>
+			<td>Command to start the Camunda application.<br> This is the main entrypoint command for the container.</td>
 		</tr>
 		<tr>
 			<td>commonAnnotations</td>
@@ -198,7 +169,7 @@ checksums:
 {}
 </pre>
 </td>
-			<td>Add annotations to all the deployed resources.</td>
+			<td>Add annotations to all the deployed resources.<br></td>
 		</tr>
 		<tr>
 			<td>commonLabels</td>
@@ -207,40 +178,16 @@ checksums:
 {}
 </pre>
 </td>
-			<td>Add labels to all the deployed resources.</td>
+			<td>Add labels to all the deployed resources.<br></td>
 		</tr>
 		<tr>
 			<td>configMaps</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-map[]
+			<td><pre lang="json">
+{}
 </pre>
 </td>
-			<td>Populate сonfigMaps for the application.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-configMaps:
-  app:
-    data:
-      dbURL: {{ .Values.dbUser }}@{{ .Values.dbPassword }}:{{ .Values.dbPort }}
-```
-The above example will create a configMap with name common.names.fullname-app.
-
-```yaml
-configMaps:
-  '{{ include "app.fullname" . }}':
-    data:
-      test.xml: |-
-        <?xml version="1.0" encoding="UTF-8"?>
-        <configuration>
-          <property name="test"/>
-        </configuration>
-```
-The above example will create a configMap with name common.names.fullname.
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>containerPorts</td>
@@ -249,29 +196,34 @@ The above example will create a configMap with name common.names.fullname.
 []
 </pre>
 </td>
-			<td>Application container ports definitions (for use with service.ports).
-<details>
-<summary>+Expand</summary>
-
-```yaml
-containerPorts:
-  - name: http
-    containerPort: 8080
-    protocol: TCP
-```
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
-			<td>containerSecurityContext</td>
-			<td>object</td>
-			<td><pre lang="yaml">
-enabled: true
-readOnlyRootFilesystem: true
-allowPrivilegeEscalation: false
-
+			<td>containerSecurityContext.allowPrivilegeEscalation</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
 </pre>
 </td>
-			<td>Container security context.
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.capabilities.drop[0]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ALL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.enabled</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+%!s(bool=true)
+</pre>
+</td>
+			<td>Container security context.<br>
 <details>
 <summary>+Expand</summary>
 
@@ -289,155 +241,421 @@ containerSecurityContext:
 ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container">[link]</a></td>
 		</tr>
 		<tr>
+			<td>containerSecurityContext.readOnlyRootFilesystem</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>database.credentialsSecretEnabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>database.credentialsSecretKeys.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>database.credentialsSecretKeys.username</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>database.credentialsSecretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>database.driver</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Configuration for database settings.<br></td>
+		</tr>
+		<tr>
+			<td>database.url</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>dnsPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
 "ClusterFirst"
 </pre>
 </td>
-			<td>Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br> By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller  to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.</td>
+			<td>Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br> By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller.<br>  to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.<br></td>
 		</tr>
 		<tr>
-			<td>env</td>
+			<td>envFrom</td>
 			<td>list</td>
-			<td><pre lang="yaml">
+			<td><pre lang="json">
 []
 </pre>
 </td>
-			<td>An array to add env vars.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-env:
- - name: TEST_VAR
-   value: test
-```
-</details></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[0]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "name": "CAMUNDA_HOST_URL",
+  "value": "{{ .Values.camunda.host }}"
+}
+</pre>
+</td>
+			<td>Array of environment variables to configure application settings.<br> Customize values as needed for the target environment.</td>
+		</tr>
+		<tr>
+			<td>env[0].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.camunda.host }}"
+</pre>
+</td>
+			<td>URL for Camunda host.<br> Example: "http://camunda.example.com"</td>
+		</tr>
+		<tr>
+			<td>env[10].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_KEYCLOAKADMINURL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[10].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.host }}/admin/realms/{{ .Values.keycloak.realm }}"
+</pre>
+</td>
+			<td>Admin URL for Keycloak realm.<br> Example: "http://keycloak.example.com/admin/realms/myrealm"</td>
+		</tr>
+		<tr>
+			<td>env[11].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_CLIENTID"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[11].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.clientId }}"
+</pre>
+</td>
+			<td>Client ID for Keycloak integration.<br> Used by plugins to authenticate with Keycloak.</td>
+		</tr>
+		<tr>
+			<td>env[12].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_CLIENTSECRET"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[12].secretKeyRef</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "key": "{{ .Values.keycloak.clientSecret.key }}",
+  "name": "{{ .Values.keycloak.clientSecret.name }}"
+}
+</pre>
+</td>
+			<td>Client secret reference for Keycloak.<br> Uses Kubernetes secret reference.</td>
+		</tr>
+		<tr>
+			<td>env[13].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_USEGROUPPATHASCAMUNDAGROUPID"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[13].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td>Use Keycloak group path as Camunda group ID.<br> This setting maps Keycloak group paths to Camunda group IDs. Example: "true" or "false"</td>
+		</tr>
+		<tr>
+			<td>env[14].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_ADMINISTRATORGROUPNAME"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[14].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"camunda_admin"
+</pre>
+</td>
+			<td>Name of the administrator group in Keycloak.<br> Example: "camunda_admin"</td>
+		</tr>
+		<tr>
+			<td>env[15].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_DISABLESSLCERTIFICATEVALIDATION"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[15].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"false"
+</pre>
+</td>
+			<td>Disable SSL certificate validation for Keycloak integration.<br> Example: "true" or "false" Set this to "true" for testing environments where SSL validation is not required.</td>
+		</tr>
+		<tr>
+			<td>env[1].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"DB_DRIVER"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[1].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.database.driver }}"
+</pre>
+</td>
+			<td>Database driver class name.<br> Example: "org.postgresql.Driver"</td>
+		</tr>
+		<tr>
+			<td>env[2].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"DB_URL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[2].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.database.url }}"
+</pre>
+</td>
+			<td>JDBC URL for connecting to the database.<br> Example: "jdbc:postgresql://hostname:5432/dbname"</td>
+		</tr>
+		<tr>
+			<td>env[3].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"DB_USERNAME"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[3].valueFrom</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "secretKeyRef": {
+    "key": "{{ .Values.database.credentialsSecretKeys.username }}",
+    "name": "{{ .Values.database.credentialsSecretName}}"
+  }
+}
+</pre>
+</td>
+			<td>Database username from Kubernetes secret.<br> Configured via a secret key reference.</td>
+		</tr>
+		<tr>
+			<td>env[4].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"DB_PASSWORD"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[4].valueFrom</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "secretKeyRef": {
+    "key": "{{ .Values.database.credentialsSecretKeys.password }}",
+    "name": "{{ .Values.database.credentialsSecretName}}"
+  }
+}
+</pre>
+</td>
+			<td>Database password from Kubernetes secret.<br> Configured via a secret key reference.</td>
+		</tr>
+		<tr>
+			<td>env[5].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"KEYCLOAK_HOST"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[5].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.host }}"
+</pre>
+</td>
+			<td>URL for Keycloak host.<br> Example: "http://keycloak.example.com"</td>
+		</tr>
+		<tr>
+			<td>env[6].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"KEYCLOAK_REALM"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[6].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.realm }}"
+</pre>
+</td>
+			<td>Keycloak realm to be used for authentication.<br> This should match the configured realm in Keycloak.</td>
+		</tr>
+		<tr>
+			<td>env[7].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"KEYCLOAK_CLIENT_ID"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[7].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.clientId }}"
+</pre>
+</td>
+			<td>Keycloak client ID for the application.<br> Example: "my-app-client-id"</td>
+		</tr>
+		<tr>
+			<td>env[8].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"KEYCLOAK_CLIENT_SECRET"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[8].valueFrom</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "secretKeyRef": {
+    "key": "{{ .Values.keycloak.clientSecret.key }}",
+    "name": "{{ .Values.keycloak.clientSecret.name }}"
+  }
+}
+</pre>
+</td>
+			<td>Keycloak client secret reference.<br> Uses Kubernetes secret reference.</td>
+		</tr>
+		<tr>
+			<td>env[9].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"PLUGIN_IDENTITY_KEYCLOAK_KEYCLOAKISSUERURL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[9].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"{{ .Values.keycloak.host }}/realms/{{ .Values.keycloak.realm }}"
+</pre>
+</td>
+			<td>Issuer URL for Keycloak realm.<br> Example: "http://keycloak.example.com/realms/myrealm"</td>
 		</tr>
 		<tr>
 			<td>extraIngress.annotations</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-kubernetes.io/ingress.class: 'azure/application-gateway-ext'
-appgw.ingress.kubernetes.io/ssl-redirect: 'true'
-appgw.ingress.kubernetes.io/health-probe-status-codes: "403"
-
-</pre>
-</td>
-			<td>Ingress annotations done as key:value pairs.<br> For a full list of possible ingress annotations, please see<br> If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br> ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a></td>
-		</tr>
-		<tr>
-			<td>extraIngress.apiVersion</td>
-			<td>string</td>
 			<td><pre lang="json">
-""
+{}
 </pre>
 </td>
-			<td>Override API Version (automatically detected if not set).</td>
-		</tr>
-		<tr>
-			<td>extraIngress.certManager</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td>Set this to true in order to add the corresponding annotations for cert-manager.</td>
-		</tr>
-		<tr>
-			<td>extraIngress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td>Configure a second ingress resource that allows you to access the app installation.<br> Set to true to enable ingress.<br> ref: <a href="https://kubernetes.io/docs/user-guide/ingress/">[link]</a></td>
-		</tr>
-		<tr>
-			<td>extraIngress.existingTlsSecret</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Specify a tls secret which already exists. tls must be set to true.</td>
-		</tr>
-		<tr>
-			<td>extraIngress.extraHosts</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>The list of additional hostnames to be covered with this ingress record.<br>
-Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraHosts:
-- name: app.local
-  path: /
-```
-</details></td>
-		</tr>
-		<tr>
-			<td>extraIngress.extraPaths</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
-For example: The ALB ingress controller requires a special rule for handling SSL redirection.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraPaths:
-- path: /api/*
-  pathType: Prefix
-  backend:   
-    service:
-      name: '{{ include "common.names.fullname" . }}'
-      port:
-        name: app
-```
-</details></td>
-		</tr>
-		<tr>
-			<td>extraIngress.extraTls</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>The tls configuration for additional hostnames to be covered with this ingress record.<br>
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraTls:
-- hosts:
-    - app.local
-  secretName: app.local-tls
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">[link]</a></td>
-		</tr>
-		<tr>
-			<td>extraIngress.hostname</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>When the ingress is enabled, a host pointing to this will be created.</td>
+			<td>Annotations for additional configuration options specific to the ingress controller.<br></td>
 		</tr>
 		<tr>
 			<td>extraIngress.ingressClassName</td>
@@ -446,35 +664,36 @@ ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#t
 ""
 </pre>
 </td>
-			<td>Set the ingressclassname</td>
+			<td>Specifies the class of the ingress controller.<br> This should match the class provided by the Azure Application Gateway.<br></td>
 		</tr>
 		<tr>
 			<td>extraIngress.nameSuffix</td>
 			<td>string</td>
 			<td><pre lang="json">
-"-ext"
+""
 </pre>
 </td>
-			<td>Set the nameSuffix to extend the extraIngress name {{ include "common.names.fullname" . }}
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraIngress:
-  enabled: true
-  nameSuffix: "-ext"
-```
-</details></td>
+			<td>Suffix to append to the ingress name, useful for distinguishing additional ingress resources.<br></td>
+		</tr>
+		<tr>
+			<td>extraIngress.nginx</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "configurationSnippet": ""
+}
+</pre>
+</td>
+			<td>Nginx specific configuration snippet for additional ingress behavior customization.<br></td>
 		</tr>
 		<tr>
 			<td>extraIngress.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/api*"
+"/*"
 </pre>
 </td>
-			<td>The Path for the ingress controller.</td>
+			<td>Define the path that this Ingress rule will apply to.<br> The `/*` indicates that this rule applies to all subpaths.<br></td>
 		</tr>
 		<tr>
 			<td>extraIngress.pathType</td>
@@ -483,16 +702,18 @@ extraIngress:
 "Prefix"
 </pre>
 </td>
-			<td>Ingress Path type.</td>
+			<td>Specifies how the path is matched. 'Prefix' means matching is done based on a prefix.<br> This is the most common setting for general use.</td>
 		</tr>
 		<tr>
-			<td>extraIngress.tls</td>
-			<td>bool</td>
+			<td>extraIngress.service</td>
+			<td>object</td>
 			<td><pre lang="json">
-true
+{
+  "port": 8080
+}
 </pre>
 </td>
-			<td>Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br> TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}<br> You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.</td>
+			<td>Defines the service to which traffic should be routed.<br></td>
 		</tr>
 		<tr>
 			<td>extraObjects</td>
@@ -501,65 +722,7 @@ true
 []
 </pre>
 </td>
-			<td>Add extra list of kubernetes objects to deploy (value evaluted as a template).
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-- apiVersion: v1
-  kind: Pod
-  metadata:
-    name: nginx
-  spec:
-   containers:
-   - name: nginx
-     image: nginx:1.14.2
-     ports:
-     - containerPort: 80
-```
-The above example will create 1 extra object: pod
-</details></td>
-		</tr>
-		<tr>
-			<td>extraVolumeMounts</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>Array to add extra volume mounts (normally used with volumes).
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraVolumeMounts:
-  - mountPath: /tmp
-    name: tmpfs-2
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
-		</tr>
-		<tr>
-			<td>extraVolumes</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>Array to add extra volumes.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraVolumes:
-  - name: tmpfs-2
-    emptyDir: {}
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>fullnameOverride</td>
@@ -568,19 +731,44 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 ""
 </pre>
 </td>
-			<td>String to fully override common.names.fullname template.</td>
+			<td>String to fully override common.names.fullname template.<br></td>
 		</tr>
 		<tr>
-			<td>global</td>
+			<td>general.debug</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Enable or disable debug mode for the application.<br> Defaults to 'false' to prevent excessive logging in production.</td>
+		</tr>
+		<tr>
+			<td>global.imagePullSecrets</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.imageRegistry</td>
 			<td>object</td>
 			<td><pre lang="yaml">
-imageRegistry: ""
-imagePullSecrets: []
-storageClass: ""
+""
 
 </pre>
 </td>
 			<td>Global Docker image parameters.<br> Please, note that this will override the image parameters, including dependencies, configured to use the global value.<br> Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass.</td>
+		</tr>
+		<tr>
+			<td>global.storageClass</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>hostAliases</td>
@@ -607,16 +795,16 @@ false
 []
 </pre>
 </td>
-			<td>Set image fullImage. Can be used the set the complete url.</td>
+			<td>Set image fullImage. Can be used to set the complete URL.<br></td>
 		</tr>
 		<tr>
 			<td>image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"IfNotPresent"
+"Always"
 </pre>
 </td>
-			<td>Set image pullPolicy.<br> Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'<br> ref: <a href="https://kubernetes.io/docs/user-guide/images/#pre-pulling-images">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>image.pullSecrets</td>
@@ -634,16 +822,16 @@ false
 "crzgwpweu01.azurecr.io"
 </pre>
 </td>
-			<td>Set image registry.</td>
+			<td>Set image registry.<br></td>
 		</tr>
 		<tr>
 			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"zgw/camunda-bpm-platform"
+"crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform"
 </pre>
 </td>
-			<td>Set image repository.</td>
+			<td>Set image repository.<br></td>
 		</tr>
 		<tr>
 			<td>image.tag</td>
@@ -652,178 +840,47 @@ false
 null
 </pre>
 </td>
-			<td>Set image tag.</td>
+			<td>Set image tag.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.annotations</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-kubernetes.io/ingress.class: 'azure/application-gateway-int'
-appgw.ingress.kubernetes.io/ssl-redirect: 'true'
-appgw.ingress.kubernetes.io/health-probe-status-codes: "403"
-
-</pre>
-</td>
-			<td>Ingress annotations done as key:value pairs.<br> For a full list of possible ingress annotations, please see:<br> If certManager is set to true, annotation kubernetes.io/tls-acme: "true" will automatically be set.<br> ref: <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md">[link]</a></td>
-		</tr>
-		<tr>
-			<td>ingress.apiVersion</td>
-			<td>string</td>
 			<td><pre lang="json">
-""
+{
+  "appgw.ingress.kubernetes.io/ssl-redirect": "true"
+}
 </pre>
 </td>
-			<td>Override API Version (automatically detected if not set).</td>
-		</tr>
-		<tr>
-			<td>ingress.certManager</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td>Set this to true in order to add the corresponding annotations for cert-manager.</td>
-		</tr>
-		<tr>
-			<td>ingress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td>Configure the ingress resource that allows you to access the app installation.<br> Set to true to enable ingress.<br> ref: <a href="https://kubernetes.io/docs/user-guide/ingress/">[link]</a></td>
-		</tr>
-		<tr>
-			<td>ingress.existingTlsSecret</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Specify a tls secret which already exists. tls must be set to true.</td>
-		</tr>
-		<tr>
-			<td>ingress.extraHosts</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>The list of additional hostnames to be covered with this ingress record.
-Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraHosts:
-- name: app.local
-  path: /
-```
-</details></td>
-		</tr>
-		<tr>
-			<td>ingress.extraPaths</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>Any additional arbitrary paths that may need to be added to the ingress under the main host.
-For example: The ALB ingress controller requires a special rule for handling SSL redirection.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraPaths:
-- path: /api/*
-  pathType: Prefix
-  backend:   
-    service:
-      name: '{{ include "common.names.fullname" . }}'
-      port:
-        name: app
-```
-</details></td>
-		</tr>
-		<tr>
-			<td>ingress.extraTls</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-[]
-</pre>
-</td>
-			<td>The tls configuration for additional hostnames to be covered with this ingress record.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-extraTls:
-- hosts:
-    - app.local
-  secretName: app.local-tls
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">[link]</a></td>
-		</tr>
-		<tr>
-			<td>ingress.hostname</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>When the ingress is enabled, a host pointing to this will be created.</td>
+			<td>Annotations for additional configuration options that are specific to the Ingress controller.<br> Annotations can enable specific functionality like SSL redirection.</td>
 		</tr>
 		<tr>
 			<td>ingress.ingressClassName</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"nginx"
 </pre>
 </td>
-			<td>Set the ingressclassname</td>
+			<td>Specifies the Ingress class for Kubernetes to use.<br> This helps specify which Ingress controller should handle this Ingress if multiple controllers are installed.</td>
 		</tr>
 		<tr>
 			<td>ingress.nginx</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-configurationSnippet:
-serverSnippet:
-
+			<td><pre lang="json">
+{
+  "configurationSnippet": ""
+}
 </pre>
 </td>
-			<td>Adds location and server snippets annotations for ingress-nginx.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-nginx:
-  serverSnippet: |
-    ## Redirect mobile
-    set $agentflag 0;
-    if ($http_user_agent ~* "(Mobile)" ){
-      set $agentflag 1;
-    }
-    if ( $agentflag = 1 ) {
-      return 301 https://m.example.com;
-    }
-```
-</details>
-ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#configuration-snippet">[link]</a><br>
-ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet">[link]</a></td>
+			<td>Configuration snippet for customizing Nginx Ingress behavior.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/api*"
+"/*"
 </pre>
 </td>
-			<td>The Path for the ingress controller.</td>
+			<td>Define the path that this Ingress rule will apply to.<br> Using `/*` means this rule applies to all subpaths under the specified host.</td>
 		</tr>
 		<tr>
 			<td>ingress.pathType</td>
@@ -832,37 +889,72 @@ ref: <a href ="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-confi
 "Prefix"
 </pre>
 </td>
-			<td>Ingress Path type.</td>
+			<td>Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br></td>
 		</tr>
 		<tr>
-			<td>ingress.tls</td>
-			<td>bool</td>
+			<td>ingress.service</td>
+			<td>object</td>
 			<td><pre lang="json">
-true
+{
+  "port": 8080
+}
 </pre>
 </td>
-			<td>Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br> TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}.<br> You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.</td>
+			<td>Defines the service to which traffic should be routed.<br> Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.<br></td>
 		</tr>
 		<tr>
 			<td>initContainers</td>
-			<td>list</td>
+			<td>object</td>
 			<td><pre lang="json">
-[]
+{}
 </pre>
 </td>
-			<td>Add init containers to the Pod.
-<details>
-<summary>+Expand</summary>
-
-```yaml
-- name: your-image-name
-  image: your-image
-  imagePullPolicy: Always
-  ports:
-  - name: portname
-    containerPort: 1234
-```
-</details></td>
+			<td>Init containers that run inside the pod before Camunda is started in the main container. Use this to pull DMN's from remote repositories or to copy configuration files like production.yaml.<br> ref: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">[link]</a></td>
+		</tr>
+		<tr>
+			<td>keycloak.clientId</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>keycloak.clientSecret.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>keycloak.clientSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>keycloak.host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Configuration for Keycloak settings.<br></td>
+		</tr>
+		<tr>
+			<td>keycloak.realm</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>livenessProbe.enabled</td>
@@ -871,40 +963,34 @@ true
 true
 </pre>
 </td>
-			<td>Configure options for liveness probes.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a></td>
+			<td>Enable or disable the liveness probe.<br></td>
 		</tr>
 		<tr>
 			<td>livenessProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-2
+3
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>livenessProbe.httpGet.path</td>
-			<td>string</td>
+			<td>livenessProbe.httpGet</td>
+			<td>object</td>
 			<td><pre lang="json">
-"/api/v1/ping"
+{
+  "path": "/engine-rest/engine",
+  "port": 8080
+}
 </pre>
 </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>livenessProbe.httpGet.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
-</pre>
-</td>
-			<td></td>
+			<td>HTTP GET method used by liveness probe to check health.<br></td>
 		</tr>
 		<tr>
 			<td>livenessProbe.initialDelaySeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-60
+120
 </pre>
 </td>
 			<td></td>
@@ -943,7 +1029,7 @@ true
 "camunda-bpm-platform"
 </pre>
 </td>
-			<td>Specifies the application name (required to be set).</td>
+			<td>Specifies the application name (required to be set).<br></td>
 		</tr>
 		<tr>
 			<td>nameOverride</td>
@@ -952,32 +1038,34 @@ true
 ""
 </pre>
 </td>
-			<td>String to partially override common.names.fullname template (will maintain the release name).</td>
+			<td>String to partially override common.names.fullname template (will maintain the release name).<br></td>
 		</tr>
 		<tr>
-			<td>nodeAffinityPreset</td>
-			<td>object</td>
-			<td><pre lang="yaml">
-## Node affinity type
-## Allowed values: soft, hard
-##
-type: ""
-## Node label key to match
-## E.g.
-## key: "kubernetes.io/e2e-az-name"
-##
-key: ""
-## Node label values to match
-## E.g.
-## values:
-##   - e2e-az1
-##   - e2e-az2
-##
-values: []
-
+			<td>nodeAffinityPreset.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
 </pre>
 </td>
-			<td>Node affinity preset.<br> Allowed values: soft, hard.<br> ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity">[link]</a></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeAffinityPreset.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>nodeAffinityPreset.values</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>nodeSelector</td>
@@ -986,7 +1074,7 @@ values: []
 {}
 </pre>
 </td>
-			<td>The nodeSelector on Pods tells Kubernetes to schedule Pods on the nodes with matching labels.<br> ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>persistence.accessMode</td>
@@ -995,7 +1083,7 @@ values: []
 "ReadWriteMany"
 </pre>
 </td>
-			<td>Set accessMode for pvc.</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>persistence.enabled</td>
@@ -1004,7 +1092,7 @@ values: []
 false
 </pre>
 </td>
-			<td>Enable persistence using Persistent Volume Claims.<br> ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>persistence.existingClaim</td>
@@ -1013,25 +1101,7 @@ false
 ""
 </pre>
 </td>
-			<td>If you want to reuse an existing claim, you can pass the name of the PVC using  the existingClaim variable.</td>
-		</tr>
-		<tr>
-			<td>persistence.mountPath</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/data"
-</pre>
-</td>
-			<td>Set mountPath for pvc.</td>
-		</tr>
-		<tr>
-			<td>persistence.size</td>
-			<td>string</td>
-			<td><pre lang="json">
-"1Gi"
-</pre>
-</td>
-			<td>Set size for pvc.</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>persistence.storageClass</td>
@@ -1040,7 +1110,7 @@ false
 null
 </pre>
 </td>
-			<td>Application data Persistent Volume Storage Class.<br> If defined, storageClassName: <storageClass><br> If set to "-", storageClassName: "", which disables dynamic provisioning<br> If undefined (the default) or set to null, no storageClassName spec is set,<br> choosing the default provisioner. (gp2 on AWS, standard on GKE, AWS & OpenStack)</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>podAffinityPreset</td>
@@ -1049,7 +1119,7 @@ null
 ""
 </pre>
 </td>
-			<td>Pod affinity preset.<br> Allowed values: soft, hard.<br> ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>podAnnotations</td>
@@ -1067,43 +1137,81 @@ null
 "soft"
 </pre>
 </td>
-			<td>Pod anti-affinity preset.<br> Allowed values: soft, hard.<br> ref: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
-			<td>podDisruptionBudget</td>
-			<td>object</td>
-			<td><pre lang="yaml">
-enabled: false
-minAvailable: 1
-# maxUnavailable: 1
-
+			<td>podDisruptionBudget.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
 </pre>
 </td>
-			<td>PodDisruptionBudget configuration.</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podDisruptionBudget.minAvailable</td>
+			<td>int</td>
+			<td><pre lang="json">
+1
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>podLabels</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-public-access: allow
-
+			<td><pre lang="json">
+{
+  "public-access": "allow"
+}
 </pre>
 </td>
-			<td>Extra labels to add to Pod.</td>
+			<td>Specifies the pod labels.<br></td>
 		</tr>
 		<tr>
-			<td>podSecurityContext</td>
+			<td>podSecurityContext.enabled</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-enabled: true
-fsGroup: 1000
-runAsUser: 1000
-runAsGroup: 1000
-runAsNonRoot: true
-
+			<td><pre lang="yaml<br>">
+%!s(bool=true)
 </pre>
 </td>
 			<td>Pod securityContext.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod">[link]</a></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.fsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>podSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>priorityClassName</td>
@@ -1112,7 +1220,7 @@ runAsNonRoot: true
 ""
 </pre>
 </td>
-			<td>Add priorityClassName<br> ref: <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>readinessProbe.enabled</td>
@@ -1121,40 +1229,34 @@ runAsNonRoot: true
 true
 </pre>
 </td>
-			<td>Configure options for readiness probes.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a></td>
+			<td>Enable or disable the readiness probe.<br></td>
 		</tr>
 		<tr>
 			<td>readinessProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-20
+3
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>readinessProbe.httpGet.path</td>
-			<td>string</td>
+			<td>readinessProbe.httpGet</td>
+			<td>object</td>
 			<td><pre lang="json">
-"/api/v1/ping"
+{
+  "path": "/engine-rest/engine",
+  "port": 8080
+}
 </pre>
 </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>readinessProbe.httpGet.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
-</pre>
-</td>
-			<td></td>
+			<td>HTTP GET method used by readiness probe to check if the container is ready to handle traffic.<br></td>
 		</tr>
 		<tr>
 			<td>readinessProbe.initialDelaySeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-30
+60
 </pre>
 </td>
 			<td></td>
@@ -1193,40 +1295,31 @@ true
 1
 </pre>
 </td>
-			<td>Specfies the required replicas.<br> Unset when using hpa.</td>
+			<td>Set the number of replicas.<br></td>
 		</tr>
 		<tr>
-			<td>resources</td>
+			<td>resources.limits</td>
 			<td>object</td>
-			<td><pre lang="yaml">
-limits:
-    cpu: 2
-    memory: 3Gi
-requests:
-    cpu: 500m
-    memory: 3Gi
-
+			<td><pre lang="json">
+{
+  "cpu": 0.5,
+  "memory": "1.5Gi"
+}
 </pre>
 </td>
-			<td>Set resources for the Pod.
-We usually recommend not to specify default resources and to leave this as a conscious
-choice for the user. This also increases chances charts run on environments with little
-resources, such as Minikube. If you do want to specify resources, uncomment the following
-lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-resources:
-  limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
-```
-</details></td>
+			<td>Define the resource limits for the container.<br></td>
+		</tr>
+		<tr>
+			<td>resources.requests</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "cpu": 0.5,
+  "memory": "1Gi"
+}
+</pre>
+</td>
+			<td>Define the resource requests for the container.<br></td>
 		</tr>
 		<tr>
 			<td>secrets</td>
@@ -1235,24 +1328,7 @@ resources:
 {}
 </pre>
 </td>
-			<td>Populate secrets for the application.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-secrets:
-  db:
-    stringData:
-      DB_USER: '{{ .Values.dbUser }}'
-      DB_PASSWORD: '{{ .Values.dbPassword }}'
-  b64:
-    data:
-      DB_HOST: base64-encoded-value
-```
-The above example will create two secrets db and b64
-(prefixed with {{ template "app.fullname" $ }}-).
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>service.annotations</td>
@@ -1279,7 +1355,7 @@ The above example will create two secrets db and b64
 8080
 </pre>
 </td>
-			<td>Specify the default service port and targetPort.<br> Note: port or ports must be provided to enable service!<br></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>service.ports</td>
@@ -1288,19 +1364,7 @@ The above example will create two secrets db and b64
 []
 </pre>
 </td>
-			<td>Expose additional ports.
-<details>
-<summary>+Expand</summary>
-
-```yaml
-ports:
-- name: http
-  port: 80
-  targetPort: http
-- name: http
-  port: 8080
-```
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>service.targetPort</td>
@@ -1318,7 +1382,7 @@ ports:
 "ClusterIP"
 </pre>
 </td>
-			<td>Kubernetes service type and port number.</td>
+			<td>Kubernetes service type and port number.<br></td>
 		</tr>
 		<tr>
 			<td>serviceAccount.annotations</td>
@@ -1327,7 +1391,7 @@ ports:
 {}
 </pre>
 </td>
-			<td>Annotations to add to the service account.</td>
+			<td>Annotations to add to the service account.<br></td>
 		</tr>
 		<tr>
 			<td>serviceAccount.automountServiceAccountToken</td>
@@ -1336,7 +1400,7 @@ ports:
 true
 </pre>
 </td>
-			<td>Controls whether the container automatically mounts the ServiceAccount's API credentials.<br> In the serviceaccount/v1 this defaults to true, so also in this helm chart. recommended: false.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting">[link]</a></td>
+			<td>Controls whether the container automatically mounts the ServiceAccount's API credentials.<br> In the serviceaccount/v1 this defaults to true, so also in this Helm chart. recommended: false.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting">[link]</a></td>
 		</tr>
 		<tr>
 			<td>serviceAccount.create</td>
@@ -1345,7 +1409,7 @@ true
 false
 </pre>
 </td>
-			<td>Specifies whether a service account should be created.</td>
+			<td>Specifies whether a service account should be created.<br></td>
 		</tr>
 		<tr>
 			<td>serviceAccount.name</td>
@@ -1354,7 +1418,7 @@ false
 ""
 </pre>
 </td>
-			<td>The name of the service account to use.<br> If not set and create is true, a name is generated using the fullname template</td>
+			<td>The name of the service account to use.<br> If not set and create is true, a name is generated using the fullname template.<br></td>
 		</tr>
 		<tr>
 			<td>sidecar</td>
@@ -1363,70 +1427,43 @@ false
 {}
 </pre>
 </td>
-			<td>Add a simple sidecar to this deployment.
-<details>
-<summary>+Expand</summary>
-
-```yaml
-sidecar:
- name: netshoot
- repository: nicolaka/netshoot
- tag: latest
- args:
- - sleep
- - '999'
- containerSecurityContext:
-  enabled: false
-   runAsNonRoot: false
-   allowPrivilegeEscalation: true
-   capabilities:
-     add:
-     - NET_ADMIN
-     - NET_RAW
-```
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>startupProbe.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
-			<td>Configure options for startup probe.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a></td>
+			<td>Enable or disable the startup probe.<br></td>
 		</tr>
 		<tr>
 			<td>startupProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-20
+10
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>startupProbe.httpGet.path</td>
-			<td>string</td>
+			<td>startupProbe.httpGet</td>
+			<td>object</td>
 			<td><pre lang="json">
-"/api/v1/ping"
+{
+  "path": "/engine-rest/engine",
+  "port": 8080
+}
 </pre>
 </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>startupProbe.httpGet.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
-</pre>
-</td>
-			<td></td>
+			<td>HTTP GET method used by startup probe to check if the application has started.<br></td>
 		</tr>
 		<tr>
 			<td>startupProbe.initialDelaySeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-30
+120
 </pre>
 </td>
 			<td></td>
@@ -1435,7 +1472,7 @@ false
 			<td>startupProbe.periodSeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-20
+30
 </pre>
 </td>
 			<td></td>
@@ -1465,29 +1502,7 @@ false
 {}
 </pre>
 </td>
-			<td>Sync objects from Azure keyvault to Kubernetes as secrets or certificates.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-sync-1:
- vaultname: azurekeyvaltname # name of the azure keyvault
- objectname: test-secret # secretname stored in AKV
- objecttype: secret # objecttype in AKV
- output:
-   transform: # optional transformers executed in listed order
-   - trim # optional - trims empty space
-   - base64encode # optional - encode to base64
-   - base64decode # optional - decode from base64
-   secret:
-     name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
-     dataKey: TEST_SECRET #key to store in secret
-
-```
-The above example will create 1 secret in Kubernetes from Azure keyvault
-Supported vault object types: secret, certificate, key, multi-key-value-secret
-</details></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>tests.httpChecks.default</td>
@@ -1501,24 +1516,11 @@ false
 		<tr>
 			<td>tolerations</td>
 			<td>list</td>
-			<td><pre lang="yaml">
+			<td><pre lang="json">
 []
 </pre>
 </td>
-			<td>A list of Kubernetes Tolerations, if required.<br>
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-tolerations:
-  - key: foo.bar.com/role
-    operator: Equal
-    value: master
-    effect: NoSchedule
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#toleration-v1-core">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>topologySpreadConstraints</td>
@@ -1527,17 +1529,17 @@ ref: <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.2
 []
 </pre>
 </td>
-			<td>A list of Kubernetes TopologySpreadConstraints, if required.<br> ref: <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#topologyspreadconstraint-v1-core">[link]</a></td>
+			<td></td>
 		</tr>
 		<tr>
-			<td>updateStrategy</td>
+			<td>updateStrategy.type</td>
 			<td>object</td>
 			<td><pre lang="yaml">
-type: RollingUpdate
+RollingUpdate
 
 </pre>
 </td>
-			<td>Set up update strategy for installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to makesure the pods are destroyed first.
+			<td>Set up update strategy for installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pod to ensure the pods are destroyed first.
 <details>
 <summary>+Expand</summary>
 
@@ -1548,15 +1550,28 @@ updateStrategy:
    maxSurge: 25%
    maxUnavailable: 25%
 ```
-</details>
-ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy">[link]</a></td>
+</details></td>
 		</tr>
 		<tr>
-			<td>volumeMounts</td>
+			<td>volumeMounts[0]</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- mountPath: /tmp
-  name: tmpfs-1
+# -- (list) Array to add volume mounts (normally used with volumes).
+# @notationType -- yaml
+# @raw
+#
+# <details>
+# <summary>+Expand</summary>
+#
+# ```yaml
+# - mountPath: /parentdir/subdir
+#   name: storage
+#   subPath: dirUnderMountPath/subdir
+# ```
+# </details>
+# ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
+name: tomcat-tmp-dir
+mountPath: /tmp
 
 </pre>
 </td>
@@ -1574,26 +1589,207 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a></td>
 		</tr>
 		<tr>
-			<td>volumes</td>
-			<td>list</td>
-			<td><pre lang="yaml">
-- name: tmpfs-1
-  emptyDir: {}
-
+			<td>volumeMounts[1].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/camunda/logs"
 </pre>
 </td>
-			<td>Array to add volumes.
-
-<details>
-<summary>+Expand</summary>
-
-```yaml
-- name: storage
-  persistentVolumeClaim:
-    claimName: claimName
-```
-</details>
-ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/volume/#Volume">[link]</a></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[1].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"camunda-logs"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[2].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/camunda/work"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[2].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"camunda-work"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[3].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/temp"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[3].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"dmn-volume"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[4].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/temp/config"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[4].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"camunda-bpm-platform-config"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[5].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/camunda/configuration/resources/"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[5].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"dmndir"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[6].mountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/camunda/configuration/production.yml"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[6].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"configdir"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumeMounts[6].subPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"production.yml"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>volumes[0]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "configMap": {
+    "name": "camunda-bpm-platform-config"
+  },
+  "name": "camunda-bpm-platform-config"
+}
+</pre>
+</td>
+			<td>Volume sourced from a ConfigMap for Camunda BPM Platform configuration.<br></td>
+		</tr>
+		<tr>
+			<td>volumes[1]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "dmn-volume"
+}
+</pre>
+</td>
+			<td>Temporary storage volume for DMN files, provides an empty directory that is erased when the pod is removed.<br></td>
+		</tr>
+		<tr>
+			<td>volumes[2]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "dmndir"
+}
+</pre>
+</td>
+			<td>Temporary directory for storing DMN related files during runtime.<br></td>
+		</tr>
+		<tr>
+			<td>volumes[3]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "configdir"
+}
+</pre>
+</td>
+			<td>Temporary directory for dynamic configuration files during application runtime.<br></td>
+		</tr>
+		<tr>
+			<td>volumes[4]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "camunda-logs"
+}
+</pre>
+</td>
+			<td>Temporary emptyDir volume for Camunda logs.<br> Ensures logging data is stored in a non-persistent volume and is cleared when the pod is deleted.</td>
+		</tr>
+		<tr>
+			<td>volumes[5]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "camunda-work"
+}
+</pre>
+</td>
+			<td>Temporary storage volume for Camunda work files.<br> Used for transient data storage that does not need to persist once the pod is terminated.</td>
+		</tr>
+		<tr>
+			<td>volumes[6]</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "emptyDir": {},
+  "name": "tomcat-tmp-dir"
+}
+</pre>
+</td>
+			<td>Temporary directory for Tomcat temporary files used by Camunda.<br> Helps isolate and manage temporary data used by the Tomcat server.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1604,4 +1800,4 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

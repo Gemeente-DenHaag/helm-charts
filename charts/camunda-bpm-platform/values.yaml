@@ -8,13 +8,13 @@ global:
   storageClass: ""
 
 image:
-  # -- Set image registry.
+  # -- Set image registry.<br>
   registry: "crzgwpweu01.azurecr.io"
-  # -- Set image repository.
+  # -- Set image repository.<br>
   repository: crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform
-  # -- Set image tag.
+  # -- Set image tag.<br>
   tag:
-  # -- Set image fullImage. Can be used to set the complete URL.
+  # -- Set image fullImage. Can be used to set the complete URL.<br>
   fullImage: [] # use this from pipeline, includes registry, repo, and tag
   # -- Optionally specify an array of imagePullSecrets.<br>
   # Secrets must be manually created in the namespace.<br>
@@ -22,22 +22,22 @@ image:
   pullSecrets: []
   pullPolicy: Always
 
-# -- Specifies the application name (required to be set).
+# -- Specifies the application name (required to be set).<br>
 name: "camunda-bpm-platform"
-# -- Set the number of replicas.
+# -- Set the number of replicas.<br>
 replicaCount: 1
 
-# -- Specifies the application resource kind.
+# -- Specifies the application resource kind.<br>
 appKind: Deployment
 
-# -- Specifies the pod labels.
+# -- Specifies the pod labels.<br>
 podLabels:
   public-access: allow
 
 args: []
-# -- String to partially override common.names.fullname template (will maintain the release name).
+# -- String to partially override common.names.fullname template (will maintain the release name).<br>
 nameOverride: ""
-# -- String to fully override common.names.fullname template.
+# -- String to fully override common.names.fullname template.<br>
 fullnameOverride: ""
 # -- Deployment pod host aliases.<br>
 # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/">[link]</a>
@@ -47,21 +47,21 @@ hostAliases: []
 hostNetwork: false
 
 serviceAccount:
-  # -- Specifies whether a service account should be created.
+  # -- Specifies whether a service account should be created.<br>
   create: false
-  # -- Annotations to add to the service account.
+  # -- Annotations to add to the service account.<br>
   annotations: {}
   # -- The name of the service account to use.<br>
-  # If not set and create is true, a name is generated using the fullname template
+  # If not set and create is true, a name is generated using the fullname template.<br>
   name: ""
   # -- Controls whether the container automatically mounts the ServiceAccount's API credentials.<br>
   # In the serviceaccount/v1 this defaults to true, so also in this Helm chart. recommended: false.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting">[link]</a>
   automountServiceAccountToken: true
 
-# -- Add labels to all the deployed resources.
+# -- Add labels to all the deployed resources.<br>
 commonLabels: {}
-# -- Add annotations to all the deployed resources.
+# -- Add annotations to all the deployed resources.<br>
 commonAnnotations: {}
 # -- Pod annotations.<br>
 # ref: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">[link]</a>
@@ -69,78 +69,17 @@ podAnnotations: {}
 
 # -- Init containers that run inside the pod before Camunda is started in the main container. Use this to pull DMN's from remote repositories or to copy configuration files like production.yaml.<br>
 # ref: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">[link]</a>
-initContainers:
-  - name: clone-dmn-repositories
-    image: alpine/git:v2.47.1
-    command:
-      - /bin/sh
-      - -c
-      - |
-        echo "Cloning repositories and copying DMN files..."
-        mkdir -p /temp/dmn/
-
-        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-ZGW.git /temp/DMN-ZGW/
-        find /temp/DMN-ZGW/dmn/ -name 'zgw-*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
-
-        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-Algemeen.git /temp/DMN-GZAC-Algemeen/
-        find /temp/DMN-GZAC-Algemeen/dmn/ -name 'gzac-algemeen-*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
-
-        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-SD.git /temp/DMN-GZAC-SD/
-        find /temp/DMN-GZAC-SD/dmn/ -name 'gzac-sd-*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
-
-        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-GZAC-FD.git /temp/DMN-GZAC-FD/
-        find /temp/DMN-GZAC-FD/dmn/ -name 'gzac-fd-*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
-
-        echo "files in /temp/dmn:"
-        ls /temp/dmn/
-    volumeMounts:
-      - name: dmn-volume
-        mountPath: /temp
-    env:
-      - name: GITHUB_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: github-denhaag-zgw-token
-            key: github_token
-      - name: ENV_NAMESPACE
-        valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
-
-  - name: copy-config  
-    image: busybox
-    command:
-      - sh
-      - -c
-      - |
-        echo "files in /temp/dmn/"
-        ls /temp/dmn/
-
-        find /temp/dmn/ -name '*.dmn' -exec cp {} /camunda/configuration/resources/ \; 2>/dev/null
-        rm -f /camunda/configuration/production.yml
-        cp -f /temp/config/* /camunda/configuration/
-
-        echo "files in /camunda/configuration/resources/"
-        ls /camunda/configuration/resources/
-    volumeMounts:
-      - name: dmn-volume
-        mountPath: /temp
-      - name: dmndir
-        mountPath: /camunda/configuration/resources/
-      - name: camunda-bpm-platform-config
-        mountPath: /temp/config
-      - name: configdir
-        mountPath: /camunda/configuration/
+initContainers: {}
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
-# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller 
-# to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
+# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller.<br> 
+# to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.<br>
 dnsPolicy: ClusterFirst
 
 podSecurityContext:
   # -- (object) Pod securityContext.<br>
-  # @notationType -- yaml
+  # @notationType -- yaml<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod">[link]</a>
   enabled: true
   fsGroup: 1000
@@ -149,7 +88,7 @@ podSecurityContext:
   runAsNonRoot: true
 
 containerSecurityContext:
-  # -- (object) Container security context.
+  # -- (object) Container security context.<br>
   # @notationType -- yaml
   # @raw
   # <details>
@@ -179,7 +118,7 @@ containerSecurityContext:
 containerPorts: []
 
 service:
-  # -- Kubernetes service type and port number.
+  # -- Kubernetes service type and port number.<br>
   type: ClusterIP
   port: 8080
   targetPort: 8080
@@ -209,7 +148,7 @@ updateStrategy:
   type: RollingUpdate
 
 ingress:
-  # -- Configuration snippet for customizing Nginx Ingress behavior.
+  # -- Configuration snippet for customizing Nginx Ingress behavior.<br>
   nginx:
     configurationSnippet: ""  # Add specific Nginx configurations here.<br>
 
@@ -227,34 +166,32 @@ ingress:
   # Using `/*` means this rule applies to all subpaths under the specified host.
   path: /*
   
-  # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.
+  # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br>
   pathType: Prefix
 
   # -- Defines the service to which traffic should be routed.<br>
-  # Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.
+  # Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.<br>
   service:
     port: 8080  # The service port to which the Ingress directs traffic.<br>
     # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">[link]</a>
 
 extraIngress:
-  # -- Nginx specific configuration snippet for additional ingress behavior customization.
+  # -- Nginx specific configuration snippet for additional ingress behavior customization.<br>
   nginx:
     configurationSnippet: ""  # Add specific Nginx configurations here.<br>
 
-  # -- Suffix to append to the ingress name, useful for distinguishing additional ingress resources.
-  nameSuffix: "-ag"
+  # -- Suffix to append to the ingress name, useful for distinguishing additional ingress resources.<br>
+  nameSuffix: ""
 
   # -- Specifies the class of the ingress controller.<br>
-  # This should match the class provided by the Azure Application Gateway.
-  ingressClassName: azure-application-gateway
+  # This should match the class provided by the Azure Application Gateway.<br>
+  ingressClassName: ""
 
-  # -- Annotations for additional configuration options specific to the ingress controller.
-  annotations:
-    appgw.ingress.kubernetes.io/ssl-redirect: "true"  # Enforce SSL redirection using Azure Application Gateway.<br>
-    # ref: <a href="https://learn.microsoft.com/en-us/azure/application-gateway/ingress-controller-annotations#tls-redirect">[link]</a>
+  # -- Annotations for additional configuration options specific to the ingress controller.<br>
+  annotations: {}
 
   # -- Define the path that this Ingress rule will apply to.<br>
-  # The `/*` indicates that this rule applies to all subpaths.
+  # The `/*` indicates that this rule applies to all subpaths.<br>
   path: /*
   
   # -- Specifies how the path is matched. 'Prefix' means matching is done based on a prefix.<br>
@@ -268,13 +205,13 @@ extraIngress:
 
 
 resources:
-  # -- Define the resource limits for the container.
+  # -- Define the resource limits for the container.<br>
   limits:
     cpu: 0.5  # Maximum amount of CPU the container can use.
     memory: 1.5Gi  # Maximum amount of memory the container can use.<br>
     # ref: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">[link]</a>
 
-  # -- Define the resource requests for the container.
+  # -- Define the resource requests for the container.<br>
   requests:
     cpu: 0.5  # Amount of CPU the container requests for reliable scheduling.
     memory: 1Gi  # Amount of memory the container requests for reliable scheduling.<br>
@@ -282,7 +219,7 @@ resources:
 
 
 autoscaling:
-  # -- Enable or disable horizontal pod autoscaling (HPA).
+  # -- Enable or disable horizontal pod autoscaling (HPA).<br>
   # HPA automatically scales the number of pods in a deployment, replication controller, 
   # replica set, or stateful set based on observed CPU utilization (or, with custom metrics support, on some other application-provided metrics).
   enabled: false  # Set to `true` to enable HPA.<br>
@@ -302,38 +239,38 @@ nodeAffinityPreset:
 affinity: {}
 envFrom: []
 volumes:
-  # -- Array of volumes for the application.
+  # -- Array of volumes for the application.<br>
   # These volumes are mounted to enable data persistence and configuration loading.
 
-  # -- Volume sourced from a ConfigMap for Camunda BPM Platform configuration.
+  # -- Volume sourced from a ConfigMap for Camunda BPM Platform configuration.<br>
   - name: camunda-bpm-platform-config
     configMap:
       name: camunda-bpm-platform-config  # The name of the ConfigMap to mount.<br>
       # ref: <a href="https://kubernetes.io/docs/concepts/storage/volumes/#configmap">[link]</a>
 
-  # -- Temporary storage volume for DMN files, provides an empty directory that is erased when the pod is removed.
+  # -- Temporary storage volume for DMN files, provides an empty directory that is erased when the pod is removed.<br>
   - name: dmn-volume
     emptyDir: {}  # Useful for storing data that should not persist beyond the lifecycle of a pod.
 
-  # -- Temporary directory for storing DMN related files during runtime.
+  # -- Temporary directory for storing DMN related files during runtime.<br>
   - name: dmndir
     emptyDir: {}
 
-  # -- Temporary directory for dynamic configuration files during application runtime.
+  # -- Temporary directory for dynamic configuration files during application runtime.<br>
   - name: configdir
     emptyDir: {}
 
-  # -- Temporary emptyDir volume for Camunda logs.
+  # -- Temporary emptyDir volume for Camunda logs.<br>
   # Ensures logging data is stored in a non-persistent volume and is cleared when the pod is deleted.
   - name: camunda-logs
     emptyDir: {}
 
-  # -- Temporary storage volume for Camunda work files.
+  # -- Temporary storage volume for Camunda work files.<br>
   # Used for transient data storage that does not need to persist once the pod is terminated.
   - name: camunda-work
     emptyDir: {}
 
-  # -- Temporary directory for Tomcat temporary files used by Camunda.
+  # -- Temporary directory for Tomcat temporary files used by Camunda.<br>
   # Helps isolate and manage temporary data used by the Tomcat server.
   - name: tomcat-tmp-dir
     emptyDir: {}
@@ -391,7 +328,7 @@ tests:
 
 general:
   # -- Enable or disable debug mode for the application.<br>
-  # Defaults to 'false' to prevent excessive logging in production.<br>
+  # Defaults to 'false' to prevent excessive logging in production.
   debug: false
 
 env:
@@ -400,22 +337,22 @@ env:
 
   - name: CAMUNDA_HOST_URL
     # -- URL for Camunda host.<br>
-    # Example: "http://camunda.example.com"<br>
+    # Example: "http://camunda.example.com"
     value: "{{ .Values.camunda.host }}"
 
   - name: DB_DRIVER
     # -- Database driver class name.<br>
-    # Example: "org.postgresql.Driver"<br>
+    # Example: "org.postgresql.Driver"
     value: "{{ .Values.database.driver }}"
 
   - name: DB_URL
     # -- JDBC URL for connecting to the database.<br>
-    # Example: "jdbc:postgresql://hostname:5432/dbname"<br>
+    # Example: "jdbc:postgresql://hostname:5432/dbname"
     value: "{{ .Values.database.url }}"
 
   - name: DB_USERNAME
     # -- Database username from Kubernetes secret.<br>
-    # Configured via a secret key reference.<br>
+    # Configured via a secret key reference.
     valueFrom:
       secretKeyRef:
         name: "{{ .Values.database.credentialsSecretName}}"
@@ -423,7 +360,7 @@ env:
 
   - name: DB_PASSWORD
     # -- Database password from Kubernetes secret.<br>
-    # Configured via a secret key reference.<br>
+    # Configured via a secret key reference.
     valueFrom:
       secretKeyRef:
         name: "{{ .Values.database.credentialsSecretName}}"
@@ -431,22 +368,22 @@ env:
 
   - name: KEYCLOAK_HOST
     # -- URL for Keycloak host.<br>
-    # Example: "http://keycloak.example.com"<br>
+    # Example: "http://keycloak.example.com"
     value: "{{ .Values.keycloak.host }}"
 
   - name: KEYCLOAK_REALM
     # -- Keycloak realm to be used for authentication.<br>
-    # This should match the configured realm in Keycloak.<br>
+    # This should match the configured realm in Keycloak.
     value: "{{ .Values.keycloak.realm }}"
 
   - name: KEYCLOAK_CLIENT_ID
     # -- Keycloak client ID for the application.<br>
-    # Example: "my-app-client-id"<br>
+    # Example: "my-app-client-id"
     value: "{{ .Values.keycloak.clientId }}"
 
   - name: KEYCLOAK_CLIENT_SECRET
     # -- Keycloak client secret reference.<br>
-    # Uses Kubernetes secret reference.<br>
+    # Uses Kubernetes secret reference.
     valueFrom:
       secretKeyRef:
         name: "{{ .Values.keycloak.clientSecret.name }}"
@@ -454,41 +391,40 @@ env:
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_KEYCLOAKISSUERURL
     # -- Issuer URL for Keycloak realm.<br>
-    # Example: "http://keycloak.example.com/realms/myrealm"<br>
+    # Example: "http://keycloak.example.com/realms/myrealm"
     value: "{{ .Values.keycloak.host }}/realms/{{ .Values.keycloak.realm }}"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_KEYCLOAKADMINURL
     # -- Admin URL for Keycloak realm.<br>
-    # Example: "http://keycloak.example.com/admin/realms/myrealm"<br>
+    # Example: "http://keycloak.example.com/admin/realms/myrealm"
     value: "{{ .Values.keycloak.host }}/admin/realms/{{ .Values.keycloak.realm }}"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_CLIENTID
     # -- Client ID for Keycloak integration.<br>
-    # Used by plugins to authenticate with Keycloak.<br>
+    # Used by plugins to authenticate with Keycloak.
     value: "{{ .Values.keycloak.clientId }}"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_CLIENTSECRET
     # -- Client secret reference for Keycloak.<br>
-    # Uses Kubernetes secret reference.<br>
-    valueFrom:
-      secretKeyRef:
-        name: "{{ .Values.keycloak.clientSecret.name }}"
-        key: "{{ .Values.keycloak.clientSecret.key }}"
+    # Uses Kubernetes secret reference.
+    secretKeyRef:
+      name: "{{ .Values.keycloak.clientSecret.name }}"
+      key: "{{ .Values.keycloak.clientSecret.key }}"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_USEGROUPPATHASCAMUNDAGROUPID
     # -- Use Keycloak group path as Camunda group ID.<br>
-    # This setting maps Keycloak group paths to Camunda group IDs.<br>
-    # Example: "true" or "false"<br>
+    # This setting maps Keycloak group paths to Camunda group IDs.
+    # Example: "true" or "false"
     value: "true"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_ADMINISTRATORGROUPNAME
     # -- Name of the administrator group in Keycloak.<br>
-    # Example: "camunda_admin"<br>
+    # Example: "camunda_admin"
     value: "camunda_admin"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_DISABLESSLCERTIFICATEVALIDATION
     # -- Disable SSL certificate validation for Keycloak integration.<br>
-    # Example: "true" or "false"<br>
+    # Example: "true" or "false"
     # Set this to "true" for testing environments where SSL validation is not required.
     value: "false"
 
@@ -498,9 +434,9 @@ command:
   - './camunda.sh --production'
 
 livenessProbe:
-  # -- Enable or disable the liveness probe.
+  # -- Enable or disable the liveness probe.<br>
   enabled: true
-  # -- HTTP GET method used by liveness probe to check health.
+  # -- HTTP GET method used by liveness probe to check health.<br>
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
@@ -511,9 +447,9 @@ livenessProbe:
   successThreshold: 1  # Minimum consecutive successes for the probe to be considered successful after having failed.
 
 readinessProbe:
-  # -- Enable or disable the readiness probe.
+  # -- Enable or disable the readiness probe.<br>
   enabled: true
-  # -- HTTP GET method used by readiness probe to check if the container is ready to handle traffic.
+  # -- HTTP GET method used by readiness probe to check if the container is ready to handle traffic.<br>
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
@@ -524,9 +460,9 @@ readinessProbe:
   successThreshold: 1  # Minimum consecutive successes for the probe to be considered successful after having failed.
 
 startupProbe:
-  # -- Enable or disable the startup probe.
+  # -- Enable or disable the startup probe.<br>
   enabled: true
-  # -- HTTP GET method used by startup probe to check if the application has started.
+  # -- HTTP GET method used by startup probe to check if the application has started.<br>
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
