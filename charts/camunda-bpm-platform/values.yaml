@@ -407,9 +407,10 @@ env:
   - name: PLUGIN_IDENTITY_KEYCLOAK_CLIENTSECRET
     # -- Client secret reference for Keycloak.<br>
     # Uses Kubernetes secret reference.
-    secretKeyRef:
-      name: "{{ .Values.keycloak.clientSecret.name }}"
-      key: "{{ .Values.keycloak.clientSecret.key }}"
+    valueFrom:
+      secretKeyRef:
+        name: "{{ .Values.keycloak.clientSecret.name }}"
+        key: "{{ .Values.keycloak.clientSecret.key }}"
 
   - name: PLUGIN_IDENTITY_KEYCLOAK_USEGROUPPATHASCAMUNDAGROUPID
     # -- Use Keycloak group path as Camunda group ID.<br>
