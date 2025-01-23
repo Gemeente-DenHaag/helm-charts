@@ -1,70 +1,52 @@
-# camunda-bpm-platform
+# zgw-dre
 
-A Helm chart to deploy camunda-bpm-platform to Kubernetes
+A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to Kubernetes
 
-![Version: 0.0.35](https://img.shields.io/badge/Version-0.0.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.0.01](https://img.shields.io/badge/Version-0.0.01-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square) 
 
 ## Additional Information
 
 ### Example values.yaml
 
 ```yaml
-global:
-  imageRegistry: "example.azurecr.io"
-  imagePullSecrets: []
-  storageClass: ""
-
+name: zgw-dre
 image:
-  registry: "example.azurecr.io"
-  repository: example.azurecr.io/camunda/camunda-bpm-platform
-  tag: latest
-  fullImage: []
-  pullSecrets: []
-  pullPolicy: Always
+  repository: denhaag
 
-name: "camunda-bpm-platform-example"
-replicaCount: 1
-appKind: Deployment
+podAnnotations:
+  test: "true"
 
-podLabels:
-  public-access: allow
+checksums:
+  - /secrets.yaml
 
-args: []
-nameOverride: ""
-fullnameOverride: ""
-hostAliases: []
-hostNetwork: false
+secrets:
+  env:
+    stringData:
+      TEST: this
 
-serviceAccount:
-  create: false
-  annotations: {}
-  name: ""
-  automountServiceAccountToken: true
+configMaps:
+  app:
+    data:
+      test: this
+      wow: cool
 
-commonLabels: {}
-commonAnnotations: {}
-podAnnotations: {}
+envFrom:
+  - secretRef:
+      name: 'testsecret'
 
-initContainers:
-- name: copy-config  
-    image: busybox
-    command:
-      - sh
-      - -c
-      - |
-        echo "Configuring..."
-    volumeMounts:
-      - name: dmn-volume
-        mountPath: /temp
-      - name: dmndir
-    password: "password"
+service:
+  port: 8000
+  targetPort: 80
 
+ingress:
+  enabled: true
+  hostname: nlportalbackend.denhaag.nl
 
 ```
 
 ## Installing the Chart
 
-To install the chart with the release name `camunda-bpm-platform`:
+To install the chart with the release name `zgw-dre`:
 
 ```console
 $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
@@ -406,12 +388,14 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td>env[12].secretKeyRef</td>
+			<td>env[12].valueFrom</td>
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "key": "{{ .Values.keycloak.clientSecret.key }}",
-  "name": "{{ .Values.keycloak.clientSecret.name }}"
+  "secretKeyRef": {
+    "key": "{{ .Values.keycloak.clientSecret.key }}",
+    "name": "{{ .Values.keycloak.clientSecret.name }}"
+  }
 }
 </pre>
 </td>
@@ -828,7 +812,7 @@ false
 			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform"
+"crzgwpweu01.azurecr.io/camunda/zgw-dre"
 </pre>
 </td>
 			<td>Set image repository.<br></td>
@@ -1026,7 +1010,7 @@ true
 			<td>name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"camunda-bpm-platform"
+"zgw-dre"
 </pre>
 </td>
 			<td>Specifies the application name (required to be set).<br></td>
@@ -1655,7 +1639,7 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 			<td>volumeMounts[4].name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"camunda-bpm-platform-config"
+"zgw-dre-config"
 </pre>
 </td>
 			<td></td>
@@ -1711,9 +1695,9 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 			<td><pre lang="json">
 {
   "configMap": {
-    "name": "camunda-bpm-platform-config"
+    "name": "zgw-dre-config"
   },
-  "name": "camunda-bpm-platform-config"
+  "name": "zgw-dre-config"
 }
 </pre>
 </td>
