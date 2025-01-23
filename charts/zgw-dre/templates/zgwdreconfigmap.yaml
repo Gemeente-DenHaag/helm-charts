@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: camunda-bpm-platform-config
+  name: zgw-dre-config
 data:
   production.yml: |
     {{- .Values.configurationFiles.production | indent 4 }}

@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: camunda-bpm-platform-liquibase-job
+  name: zgw-dre-liquibase-job
 spec:
   template:
     spec:
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: changelog
         configMap:
-          name: camunda-bpm-platform-changelog
+          name: zgw-dre-liquibase-changelog
 {{- end }}

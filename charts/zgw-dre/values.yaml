@@ -11,7 +11,7 @@ image:
   # -- Set image registry.<br>
   registry: "crzgwpweu01.azurecr.io"
   # -- Set image repository.<br>
-  repository: crzgwpweu01.azurecr.io/camunda/camunda-bpm-platform
+  repository: crzgwpweu01.azurecr.io/camunda/zgw-dre
   # -- Set image tag.<br>
   tag:
   # -- Set image fullImage. Can be used to set the complete URL.<br>
@@ -23,7 +23,7 @@ image:
   pullPolicy: Always
 
 # -- Specifies the application name (required to be set).<br>
-name: "camunda-bpm-platform"
+name: "zgw-dre"
 # -- Set the number of replicas.<br>
 replicaCount: 1
 
@@ -243,9 +243,9 @@ volumes:
   # These volumes are mounted to enable data persistence and configuration loading.
 
   # -- Volume sourced from a ConfigMap for Camunda BPM Platform configuration.<br>
-  - name: camunda-bpm-platform-config
+  - name: zgw-dre-config
     configMap:
-      name: camunda-bpm-platform-config  # The name of the ConfigMap to mount.<br>
+      name: zgw-dre-config  # The name of the ConfigMap to mount.<br>
       # ref: <a href="https://kubernetes.io/docs/concepts/storage/volumes/#configmap">[link]</a>
 
   # -- Temporary storage volume for DMN files, provides an empty directory that is erased when the pod is removed.<br>
@@ -299,7 +299,7 @@ volumeMounts:
     mountPath: /camunda/work
   - name: dmn-volume
     mountPath: /temp
-  - name: camunda-bpm-platform-config
+  - name: zgw-dre-config
     mountPath: /temp/config
   - name: dmndir
     mountPath: /camunda/configuration/resources/
