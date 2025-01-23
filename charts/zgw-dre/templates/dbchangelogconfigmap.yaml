@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: camunda-bpm-platform-changelog
+  name: zgw-dre-liquibase-changelog
 data:
   changelog.xml: |
     {{- .Values.configurationFiles.changelog | nindent 4 }}
