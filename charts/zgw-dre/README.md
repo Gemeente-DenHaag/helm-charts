@@ -9,38 +9,80 @@ A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to
 ### Example values.yaml
 
 ```yaml
-name: zgw-dre
 image:
-  repository: denhaag
+  registry: yourregistry.azurecr.io
+  repository: folder/naam
+  tag: 7.22.0
+  pullPolicy: Always
 
-podAnnotations:
-  test: "true"
+general:
+  debug: true
 
-checksums:
-  - /secrets.yaml
+keycloak:
+  realm: "yourrealm"
+  clientId: "yourclient"
+  clientSecret:
+    name: yoursecret
+    key: YOUR_KEY
+  host: "https://auth.yourserver.nl"
 
-secrets:
-  env:
-    stringData:
-      TEST: this
+camunda:
+  host: "https://camunda.yourserver.nl"
 
-configMaps:
-  app:
-    data:
-      test: this
-      wow: cool
-
-envFrom:
-  - secretRef:
-      name: 'testsecret'
-
-service:
-  port: 8000
-  targetPort: 80
+database:
+  driver: yourdbdriver
+  credentialsSecretName: yoursecret
+  credentialsSecretEnabled: true
+  credentialsSecretKeys:
+    username: DB_USERNAME
+    password: DB_PASSWORD
+  url: jdbc:postgresql://yourdbserver.postgres.database.azure.com:5432/yourdb
 
 ingress:
   enabled: true
-  hostname: nlportalbackend.denhaag.nl
+  tls: true
+  existingTlsSecret: yourtlssecret
+  hostname: camunda.yourserver.nl
+  extraIngress:
+    enabled: true
+    tls: true
+    nginx:
+      configurationSnippet: ""
+    nameSuffix: "-suffix"
+    ingressClassName: youringressGatewayClass
+    annotations:
+      youringress.kubernetes.io/ssl-redirect: "true"
+
+extraEnv:
+  - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
+    value: "false"
+  - name: CAMUNDA_BPM_RUN_AUTH_CREATE_USER
+    value: "false"
+  - name: CAMUNDA_BPM_IDENTITY_SERVICE_READ_ONLY
+    value: "true"
+  - name: CAMUNDA_BPM_AUTODEPLOYMENTENABLED
+    value: "true"
+  - name: CAMUNDA_BPM_RUN_AUTH_ENABLED
+    value: "true"
+  - name: CAMUNDA_BPM_RUN_AUTH_PROVIDER
+    value: "keycloak"
+  - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
+    value: "true"
+
+syncAKV:
+  yourtoken:
+    vaultname: yourvault
+    objectname: yourobject
+    objecttype: multi-key-value-secret
+    contenttype: application/x-yaml
+    output:
+      secret:
+        name: "yourtoken-name"
+
+liquibase:
+  changelog:
+    enabled: true
+
 
 ```
 
