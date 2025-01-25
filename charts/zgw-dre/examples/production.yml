@@ -1,0 +1,104 @@
+# This configuration is intended for production use and was created with respect to the security guide.
+# The provided links to documentation guides for each property will give more information about the purpose of each property.
+# security guide: https://docs.camunda.org/manual/latest/user-guide/security/
+
+camunda.bpm:
+# https://docs.camunda.org/manual/latest/user-guide/security/#http-header-security-in-webapps
+# https://docs.camunda.org/manual/latest/webapps/shared-options/header-security/
+  webapp:
+    csrf:
+      enable-same-site-cookie: true
+      same-site-cookie-option: STRICT
+    header-security:
+      hsts-disabled: false
+      content-security-policy-value: base-uri 'self';
+        default-src 'self' 'unsafe-inline' 'unsafe-eval';
+        img-src 'self' data:;
+        block-all-mixed-content;
+        form-action 'self';
+        frame-ancestors 'none';
+        object-src 'none';
+        sandbox
+          allow-forms
+          allow-scripts
+          allow-same-origin
+          allow-popups
+    
+
+# https://docs.camunda.org/manual/latest/user-guide/security/#authorization
+# https://docs.camunda.org/manual/latest/user-guide/process-engine/authorization-service/
+  authorization.enabled: true
+
+  generic-properties.properties:
+# https://docs.camunda.org/manual/latest/user-guide/security/#variable-values-from-untrusted-sources
+    deserialization-type-validation-enabled: false
+
+# https://docs.camunda.org/manual/latest/user-guide/security/#password-policy
+# https://docs.camunda.org/manual/latest/user-guide/process-engine/password-policy/
+    enable-password-policy: true
+
+  run:
+# https://docs.camunda.org/manual/latest/user-guide/security/#authentication
+# https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/#authentication
+    auth.enabled: true
+
+server:
+
+# https://docs.camunda.org/manual/latest/user-guide/security/#http-header-security-in-webapps
+# https://docs.camunda.org/manual/latest/webapps/shared-options/header-security/
+  servlet.session.cookie:
+    secure: true
+    http-only: true
+
+# https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/#logging
+# https://docs.camunda.org/manual/latest/user-guide/logging/#process-engine
+logging:
+   level.root: INFO
+   file: logs/camunda-bpm-run.log
+
+spring.datasource:
+  url: ${DB_URL}
+  driver-class-name: org.postgresql.Driver
+  username: ${DB_USERNAME}
+  password: ${DB_PASSWORD}
+  
+# Camunda Keycloak Identity Provider Plugin
+# Externalized Keycloak configuration
+keycloak:
+  # Keycloak access for the Identity Provider plugin.
+  host: ${KEYCLOAK_HOST}
+  realm: ${KEYCLOAK_REALM:zgw-ad}
+  # Keycloak Camunda Identity Client
+  client.id: ${KEYCLOAK_CLIENT_ID}
+  client.secret: ${KEYCLOAK_CLIENT_SECRET}
+plugin.identity.keycloak:
+  keycloakIssuerUrl: ${keycloak.host}/auth/realms/${keycloak.realm}
+  keycloakAdminUrl: ${keycloak.host}/auth/admin/realms/${keycloak.realm}
+  clientId: ${keycloak.client.id}
+  clientSecret: ${keycloak.client.secret}
+  useEmailAsCamundaUserId: false
+  useUsernameAsCamundaUserId: true
+  useGroupPathAsCamundaGroupId: true
+  administratorGroupName: camunda_admin
+  disableSSLCertificateValidation: false
+
+# Spring Boot Security OAuth2 SSO
+spring.security.oauth2:
+  client:
+    registration:
+      keycloak:
+        provider: keycloak
+        client-id: ${keycloak.client.id}
+        client-secret: ${keycloak.client.secret}
+        authorization-grant-type: authorization_code
+        redirect-uri: "${CAMUNDA_HOST_URL}/{action}/oauth2/code/{registrationId}"
+        scope: openid, profile, email
+    provider:
+      keycloak:
+        issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+        authorization-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/auth
+        user-info-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/userinfo
+        token-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/token
+        jwk-set-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/certs
+        user-name-attribute: preferred_username
+
