@@ -164,7 +164,7 @@ ingress:
 
   # -- Define the path that this Ingress rule will apply to.<br>
   # Using `/*` means this rule applies to all subpaths under the specified host.
-  path: /*
+  path: /
   
   # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br>
   pathType: Prefix
