@@ -2483,6 +2483,29 @@ entries:
   zgw-dre:
   - apiVersion: v2
     appVersion: 7.22.0
+    created: "2025-01-27T18:57:32.734072099Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.12
+    description: A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine
+      (ZGW-DRE) to Kubernetes
+    digest: de96e6732c60115078ca827e85f6b84868733c7de9db6bfa2c2a468bbc915c90
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    - email: kevin.kemkes@denhaag.nl
+      name: DenHaag
+    name: zgw-dre
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-1.0.1/zgw-dre-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 7.22.0
     created: "2025-01-27T11:02:36.73064483Z"
     dependencies:
     - name: dh-lib
@@ -2527,4 +2550,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-01-27T11:02:36.730877866Z"
+generated: "2025-01-27T18:57:32.734359084Z"
