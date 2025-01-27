@@ -107,7 +107,7 @@ containerSecurityContext:
   # </details>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container">[link]</a>
   enabled: true
-  readOnlyRootFilesystem: false
+  readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -159,12 +159,12 @@ ingress:
   # -- Annotations for additional configuration options that are specific to the Ingress controller.<br>
   # Annotations can enable specific functionality like SSL redirection.
   annotations:
-    appgw.ingress.kubernetes.io/ssl-redirect: "true"  # Forces SSL redirect using Azure Application Gateway.<br>
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'  # Forces SSL redirect.<br>
     # ref: <a href="https://docs.microsoft.com/en-us/azure/application-gateway/ssl-redirect">[link]</a>
 
   # -- Define the path that this Ingress rule will apply to.<br>
   # Using `/*` means this rule applies to all subpaths under the specified host.
-  path: /*
+  path: /
   
   # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br>
   pathType: Prefix
