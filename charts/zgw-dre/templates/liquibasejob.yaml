@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
       - name: liquibase
-        image: liquibase/liquibase:4.30
+        image: "{{ .Values.liquibase.image }}"
         env:
         - name: DB_USERNAME
           valueFrom:
