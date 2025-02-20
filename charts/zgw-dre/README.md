@@ -11,7 +11,7 @@ A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to
 ```yaml
 image:
   registry: yourregistry.azurecr.io
-  repository: folder/naam
+  repository: path/name
   tag: 7.22.0
   pullPolicy: Always
 
