@@ -9,9 +9,9 @@ global:
 
 image:
   # -- Set image registry.<br>
-  registry: "crzgwpweu01.azurecr.io"
+  registry: ""
   # -- Set image repository.<br>
-  repository: crzgwpweu01.azurecr.io/camunda/zgw-dre
+  repository: ""
   # -- Set image tag.<br>
   tag:
   # -- Set image fullImage. Can be used to set the complete URL.<br>
