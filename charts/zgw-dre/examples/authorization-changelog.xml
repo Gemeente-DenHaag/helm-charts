@@ -18,7 +18,7 @@
 
     Of course you can use more complex workflows for maintaining liquibase changesets but this may be the easiest way for people who just start out :)
      -->
-    <changeSet author="Beheer (generated)" id="1734022384980-3">
+    <changeSet author="Beheer (generated)" id="1734022384980-1">
         <delete tableName="act_ru_authorization"/>
         <insert tableName="act_ru_authorization">
             <column name="id_" value="7794a83e-983e-11ef-8e73-9295f51028ea"/>
