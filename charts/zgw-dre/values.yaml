@@ -502,6 +502,8 @@ database:
     password: ""
 
 liquibase:
-  image: ""
+  # -- Configuration for liquibase job.<br>
+  image: "" # The liquibase image and version that you would like to use
   changelog:
+    # Enable the liquibase job
     enabled: true
