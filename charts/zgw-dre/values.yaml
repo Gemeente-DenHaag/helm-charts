@@ -155,6 +155,8 @@ ingress:
   # -- Specifies the Ingress class for Kubernetes to use.<br>
   # This helps specify which Ingress controller should handle this Ingress if multiple controllers are installed.
   ingressClassName: nginx
+  hostname: ""
+  existingTlsSecret: ""
 
   # -- Annotations for additional configuration options that are specific to the Ingress controller.<br>
   # Annotations can enable specific functionality like SSL redirection.
@@ -186,6 +188,8 @@ extraIngress:
   # -- Specifies the class of the ingress controller.<br>
   # This should match the class provided by the Azure Application Gateway.<br>
   ingressClassName: ""
+  hostname: ""
+  existingTlsSecret: ""
 
   # -- Annotations for additional configuration options specific to the ingress controller.<br>
   annotations: {}
@@ -496,3 +500,8 @@ database:
   credentialsSecretKeys:
     username: ""
     password: ""
+
+liquibase:
+  image: ""
+  changelog:
+    enabled: true
