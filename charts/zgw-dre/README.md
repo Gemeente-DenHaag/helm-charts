@@ -9,49 +9,34 @@ A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to
 ### Example values.yaml
 
 ```yaml
-image:
-  registry: yourregistry.azurecr.io
-  repository: path/name
-  tag: 7.22.0
-  pullPolicy: Always
-
 general:
   debug: true
 
-keycloak:
-  realm: "yourrealm"
-  clientId: "yourclient"
-  clientSecret:
-    name: yoursecret
-    key: YOUR_KEY
-  host: "https://auth.yourserver.nl"
-
-camunda:
-  host: "https://camunda.yourserver.nl"
-
-database:
-  driver: yourdbdriver
-  credentialsSecretName: yoursecret
-  credentialsSecretEnabled: true
-  credentialsSecretKeys:
-    username: DB_USERNAME
-    password: DB_PASSWORD
-  url: jdbc:postgresql://yourdbserver.postgres.database.azure.com:5432/yourdb
+image:
+  registry: yourregistry.azurecr.io
+  # -- Set image repository.
+  repository: path/name
+  # -- Set image tag.
+  tag: 7.22.0
+  pullPolicy: Always
 
 ingress:
   enabled: true
   tls: true
-  existingTlsSecret: yourtlssecret
-  hostname: camunda.yourserver.nl
-  extraIngress:
-    enabled: true
-    tls: true
-    nginx:
-      configurationSnippet: ""
-    nameSuffix: "-suffix"
-    ingressClassName: youringressGatewayClass
-    annotations:
-      youringress.kubernetes.io/ssl-redirect: "true"
+  existingTlsSecret: your-tls-secret
+  hostname: camunda.yourdomain.nl
+
+extraIngress:
+  enabled: true
+  tls: true
+  nginx:
+     configurationSnippet: ""
+  nameSuffix: "-suffix"
+  ingressClassName: azure-application-gateway
+  annotations:
+    youringress.kubernetes.io/ssl-redirect: "true"
+  existingTlsSecret: your-tls-secret
+  hostname: camunda.yourdomain.nl
 
 extraEnv:
   - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
@@ -69,20 +54,99 @@ extraEnv:
   - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
     value: "true"
 
+liquibase:
+  image: yourregistry.azurecr.io/liquibase/liquibase:4.30
+  changelog:
+    enabled: true
+
+keycloak:
+  realm: "yourrealm"
+  clientId: "yourclient"
+  clientSecret:
+    name: yoursecret
+    key: YOUR_KEY
+  host: "https://authn.yourdomain.nl"
+
+camunda:
+  host: "https://camunda.yourdomain.nl"
+
+database:
+  driver: org.postgresql.Driver
+  credentialsSecretName: yoursecret
+  credentialsSecretEnabled: true
+  credentialsSecretKeys:
+    username: DB_USERNAME
+    password: DB_PASSWORD
+  url: jdbc:postgresql://yourdbserver.postgres.database.azure.com:5432/yourdb
+
 syncAKV:
-  yourtoken:
+  your-secret:
     vaultname: yourvault
-    objectname: yourobject
+    objectname: your-object
     objecttype: multi-key-value-secret
     contenttype: application/x-yaml
     output:
       secret:
-        name: "yourtoken-name"
+        name: "your-secret-name"
+  github-yourproject-token:
+    vaultname: yourvault
+    objectname: github-yourproject-token
+    objecttype: multi-key-value-secret
+    contenttype: application/x-yaml
+    output:
+      secret:
+        name: "github-yourproject-token"
 
-liquibase:
-  changelog:
-    enabled: true
+initContainers:
+  - name: init-dmn-productionyml
+    image: yourregistry.azurecr.io/alpine/git:v2.47.1
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "Cloning repositories and copying DMN files..."
 
+        mkdir -p /temp/dmn/
+
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/yourorg/DMN-REPO1.git /temp/DMN-REPO1/
+        find /temp/DMN-REPO1/dmn/ -name '*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
+
+        git clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/yourorg/DMN-REPO2.git /temp/DMN-REPO2/
+        find /temp/DMN-REPO2/dmn/ -name '*.dmn' -exec cp {} /temp/dmn/ \; 2>/dev/null
+
+        echo "Files in /temp/dmn:"
+        ls /temp/dmn/
+
+        echo "Copying DMN files to /camunda/config/resources/"
+        find /temp/dmn/ -name '*.dmn' -exec cp {} /camunda/config/resources/ \; 2>/dev/null
+
+        echo "Cleaning up and copying config files to /camunda/config/"
+        rm -f /camunda/config/production.yml
+        cp -f /temp/config/* /camunda/config/
+
+        echo "Files in /camunda/config/resources/"
+        ls /camunda/config/resources/
+
+    volumeMounts:
+      - name: dmn-volume
+        mountPath: /temp
+      - name: dmndir
+        mountPath: /camunda/config/resources/
+      - name: yourproject-config
+        mountPath: /temp/config
+      - name: configdir
+        mountPath: /camunda/config/
+
+    env:
+      - name: GITHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: github-yourproject-token
+            key: github_token
+      - name: ENV_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
 
 ```
 
