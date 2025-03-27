@@ -4,6 +4,7 @@ kind: Job
 metadata:
   name: zgw-dre-liquibase-job
 spec:
+  ttlSecondsAfterFinished: "{{ .Values.liquibase.job.ttlSecondsAfterFinished }}"
   template:
     spec:
       containers:
