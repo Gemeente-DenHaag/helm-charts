@@ -32,6 +32,9 @@ name: "gzac-sd-zgw-frontend"
 # Unset when using hpa.
 replicaCount: 1
 
+# -- How many seconds a pod needs to be ready before killing the next, during update
+minReadySeconds: 10
+
 # -- Specifies the application resource kind.
 appKind: Deployment
 
@@ -259,6 +262,9 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: 'azure/application-gateway-int'
     appgw.ingress.kubernetes.io/ssl-redirect: 'true'
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}.<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
@@ -380,6 +386,9 @@ extraIngress:
   annotations:
     kubernetes.io/ingress.class: 'azure/application-gateway-ext'
     appgw.ingress.kubernetes.io/ssl-redirect: 'true'
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.

@@ -32,6 +32,9 @@ name: "smartdocuments-webapps"
 # Unset when using hpa.
 replicaCount: 1
 
+# -- How many seconds a pod needs to be ready before killing the next, during update
+minReadySeconds: 10
+
 # -- Specifies the application resource kind.
 appKind: Deployment
 
@@ -259,6 +262,9 @@ ingress:
     appgw.ingress.kubernetes.io/ssl-redirect: 'true'
     appgw.ingress.kubernetes.io/health-probe-path: /smartcontrol/SmartControl/Login.jsp
     appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}.<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
@@ -382,6 +388,9 @@ extraIngress:
     appgw.ingress.kubernetes.io/ssl-redirect: 'true'
     appgw.ingress.kubernetes.io/health-probe-path: /smartcontrol/SmartControl/Login.jsp
     appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
   # -- Enable TLS configuration for the hostname defined at ingress.hostname parameter.<br>
   # TLS certificates will be retrieved from a TLS secret with name: {{- printf "%s-tls" .Values.ingress.hostname }}<br>
   # You can use the ingress.secrets parameter to create this TLS secret or relay on cert-manager to create it.
