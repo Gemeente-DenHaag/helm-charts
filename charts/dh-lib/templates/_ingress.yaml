@@ -13,6 +13,9 @@ metadata:
     {{- if .Values.ingress.annotations }}
     {{- include "common.tplvalues.render" (dict "value" .Values.ingress.annotations "context" $) | nindent 4 }}
     {{- end }}
+    {{- if .Values.ingress.extraAnnotations }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.ingress.extraAnnotations "context" $) | nindent 4 }}
+    {{- end }}
     {{- if .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
     {{- end }}
@@ -72,6 +75,9 @@ metadata:
     {{- include "app.ingress.annotations" . | nindent 4 }}
     {{- if .Values.extraIngress.annotations }}
     {{- include "common.tplvalues.render" (dict "value" .Values.extraIngress.annotations "context" $) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.extraIngress.extraAnnotations }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.extraIngress.extraAnnotations "context" $) | nindent 4 }}
     {{- end }}
     {{- if .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
