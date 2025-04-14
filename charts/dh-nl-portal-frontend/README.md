@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-frontend to Kubernetes
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -40,7 +40,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: nlportalbackend.denhaag.nl
+  hostname: dh-nl-portal-frontend.denhaag.nl
 
 ```
 
@@ -305,8 +305,8 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 			<td><pre lang="yaml">
 - name: TZ
   value: Europe/Amsterdam
-- name: KEYCLOAK_URL
-  value: '{{ .Values.config.KEYCLOAK_URL }}'
+- name: OIDC_URL
+  value: '{{ .Values.config.OIDC_URL }}'
 - name: NGINX_ENVSUBST_OUTPUT_DIR
   value: /tmp/nginx/conf.d
 
@@ -679,7 +679,7 @@ false
 			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"zgw/klantportaal"
+"zgw/dh-nl-portal-frontend"
 </pre>
 </td>
 			<td>Set image repository.</td>
@@ -996,7 +996,7 @@ true
 			<td>name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"klantportaal"
+"dh-nl-portal-frontend"
 </pre>
 </td>
 			<td>Specifies the application name (required to be set).</td>
