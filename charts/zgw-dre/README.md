@@ -2,87 +2,45 @@
 
 A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to Kubernetes
 
-![Version: 0.0.01](https://img.shields.io/badge/Version-0.0.01-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square) 
+![Version: 1.0.5](https://img.shields.io/badge/Version-1.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square) 
 
 ## Additional Information
 
 ### Example values.yaml
 
 ```yaml
+name: zgw-dre
 image:
-  registry: yourregistry.azurecr.io
-  repository: folder/naam
-  tag: 7.22.0
-  pullPolicy: Always
+  repository: denhaag
 
-general:
-  debug: true
+podAnnotations:
+  test: "true"
 
-keycloak:
-  realm: "yourrealm"
-  clientId: "yourclient"
-  clientSecret:
-    name: yoursecret
-    key: YOUR_KEY
-  host: "https://auth.yourserver.nl"
+checksums:
+  - /secrets.yaml
 
-camunda:
-  host: "https://camunda.yourserver.nl"
+secrets:
+  env:
+    stringData:
+      TEST: this
 
-database:
-  driver: yourdbdriver
-  credentialsSecretName: yoursecret
-  credentialsSecretEnabled: true
-  credentialsSecretKeys:
-    username: DB_USERNAME
-    password: DB_PASSWORD
-  url: jdbc:postgresql://yourdbserver.postgres.database.azure.com:5432/yourdb
+configMaps:
+  app:
+    data:
+      test: this
+      wow: cool
+
+envFrom:
+  - secretRef:
+      name: 'testsecret'
+
+service:
+  port: 8000
+  targetPort: 80
 
 ingress:
   enabled: true
-  tls: true
-  existingTlsSecret: yourtlssecret
-  hostname: camunda.yourserver.nl
-  extraIngress:
-    enabled: true
-    tls: true
-    nginx:
-      configurationSnippet: ""
-    nameSuffix: "-suffix"
-    ingressClassName: youringressGatewayClass
-    annotations:
-      youringress.kubernetes.io/ssl-redirect: "true"
-
-extraEnv:
-  - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
-    value: "false"
-  - name: CAMUNDA_BPM_RUN_AUTH_CREATE_USER
-    value: "false"
-  - name: CAMUNDA_BPM_IDENTITY_SERVICE_READ_ONLY
-    value: "true"
-  - name: CAMUNDA_BPM_AUTODEPLOYMENTENABLED
-    value: "true"
-  - name: CAMUNDA_BPM_RUN_AUTH_ENABLED
-    value: "true"
-  - name: CAMUNDA_BPM_RUN_AUTH_PROVIDER
-    value: "keycloak"
-  - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
-    value: "true"
-
-syncAKV:
-  yourtoken:
-    vaultname: yourvault
-    objectname: yourobject
-    objecttype: multi-key-value-secret
-    contenttype: application/x-yaml
-    output:
-      secret:
-        name: "yourtoken-name"
-
-liquibase:
-  changelog:
-    enabled: true
-
+  hostname: nlportalbackend.denhaag.nl
 
 ```
 
@@ -92,7 +50,7 @@ To install the chart with the release name `zgw-dre`:
 
 ```console
 $ helm repo add denhaag https://gemeente-denhaag.github.io/helm-charts/
-$ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" --set args[0]="--webapps" --set args[1]="--rest" --set args[2]="--oauth2" --set args[3]="--production" --set-file configurationFiles.production="./config/production.yml" --set-file configurationFiles.changelog="./camunda/config/authorization-changelog.xml" -f "./camunda/infra/values.yaml"
+$ helm install zgw-dre denhaag/zgw-dre
 ```
 
 ## Maintainers
@@ -110,7 +68,7 @@ $ helm upgrade --install camunda-bpm-platform . --set command[0]="./camunda.sh" 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.12 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
 
 
 ## Values
@@ -268,7 +226,7 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 			<td>containerSecurityContext.readOnlyRootFilesystem</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td></td>
@@ -684,6 +642,15 @@ false
 			<td>Annotations for additional configuration options specific to the ingress controller.<br></td>
 		</tr>
 		<tr>
+			<td>extraIngress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
+		</tr>
+		<tr>
 			<td>extraIngress.ingressClassName</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -873,11 +840,20 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "appgw.ingress.kubernetes.io/ssl-redirect": "true"
+  "nginx.ingress.kubernetes.io/force-ssl-redirect": "true"
 }
 </pre>
 </td>
 			<td>Annotations for additional configuration options that are specific to the Ingress controller.<br> Annotations can enable specific functionality like SSL redirection.</td>
+		</tr>
+		<tr>
+			<td>ingress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.ingressClassName</td>
@@ -903,7 +879,7 @@ null
 			<td>ingress.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/*"
+"/"
 </pre>
 </td>
 			<td>Define the path that this Ingress rule will apply to.<br> Using `/*` means this rule applies to all subpaths under the specified host.</td>
@@ -1047,6 +1023,15 @@ true
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>minReadySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+10
+</pre>
+</td>
+			<td>How many seconds a pod needs to be ready before killing the next, during update</td>
 		</tr>
 		<tr>
 			<td>name</td>
@@ -1826,4 +1811,4 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
+Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
