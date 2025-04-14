@@ -1,5 +1,4 @@
 # helm-charts
-[camunda-bpm-platform](charts/camunda-bpm-platform/)\
 [dh-akv2k8s](charts/dh-akv2k8s/)\
 [dh-lib](charts/dh-lib/)\
 [dh-nl-portal-backend](charts/dh-nl-portal-backend/)\
@@ -12,4 +11,5 @@
 [gzac-sd-zgw-backend](charts/gzac-sd-zgw-backend/)\
 [gzac-sd-zgw-frontend](charts/gzac-sd-zgw-frontend/)\
 [smartdocuments-docengine](charts/smartdocuments-docengine/)\
-[smartdocuments-webapps](charts/smartdocuments-webapps/)
+[smartdocuments-webapps](charts/smartdocuments-webapps/)\
+[zgw-dre](charts/zgw-dre/)\
