@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zgw-dre-config
+data:
+  production.yml: |
+    {{- .Values.configurationFiles.production | indent 4 }}

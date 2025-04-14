@@ -1,0 +1,40 @@
+{{- if .Values.liquibase.changelog.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zgw-dre-liquibase-job
+spec:
+  ttlSecondsAfterFinished: {{ .Values.liquibase.job.ttlSecondsAfterFinished | int }}
+  template:
+    spec:
+      containers:
+      - name: liquibase
+        image: "{{ .Values.liquibase.image }}"
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Values.database.credentialsSecretName }}"
+              key: "{{ .Values.database.credentialsSecretKeys.username }}"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Values.database.credentialsSecretName }}"
+              key: "{{ .Values.database.credentialsSecretKeys.password }}"
+        command:
+        - liquibase
+        - --changeLogFile=changelog.xml
+        - "--searchPath=/liquibase/changelog"
+        - --url={{ .Values.database.url }}
+        - --username=$(DB_USERNAME)
+        - --password=$(DB_PASSWORD)
+        - update
+        volumeMounts:
+        - name: changelog
+          mountPath: /liquibase/changelog
+      restartPolicy: OnFailure
+      volumes:
+      - name: changelog
+        configMap:
+          name: zgw-dre-liquibase-changelog
+{{- end }}
