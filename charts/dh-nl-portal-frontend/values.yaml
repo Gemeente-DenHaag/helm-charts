@@ -12,7 +12,7 @@ image:
   # -- Set image registry.
   registry: "crzgwpweu01.azurecr.io"
   # -- Set image repository.
-  repository: "zgw/klantportaal"
+  repository: "zgw/dh-nl-portal-frontend"
   # -- Set image tag.
   tag: 
   # -- Set image fullImage. Can be used the set the complete url.
@@ -27,7 +27,7 @@ image:
   pullSecrets: []
 
 # -- Specifies the application name (required to be set).
-name: "klantportaal"
+name: "dh-nl-portal-frontend"
 
 # -- Specfies the required replicas.<br>
 # Unset when using hpa.
@@ -589,8 +589,8 @@ affinity: {}
 env:
   - name: TZ
     value: Europe/Amsterdam
-  - name: KEYCLOAK_URL
-    value: '{{ .Values.config.KEYCLOAK_URL }}'
+  - name: OIDC_URL
+    value: '{{ .Values.config.OIDC_URL }}'
   - name: NGINX_ENVSUBST_OUTPUT_DIR
     value: /tmp/nginx/conf.d
 
