@@ -67,7 +67,7 @@ $ helm install smartdocuments-webapps denhaag/smartdocuments-webapps
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
 
 
 ## Values

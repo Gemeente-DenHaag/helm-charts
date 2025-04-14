@@ -68,7 +68,7 @@ $ helm install dh-nl-portal-backend denhaag/dh-nl-portal-backend
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
 
 
 ## Values

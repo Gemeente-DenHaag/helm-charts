@@ -68,7 +68,7 @@ $ helm install zgw-dre denhaag/zgw-dre
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
 
 
 ## Values
