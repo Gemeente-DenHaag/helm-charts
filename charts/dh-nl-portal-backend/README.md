@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -68,7 +68,7 @@ $ helm install dh-nl-portal-backend denhaag/dh-nl-portal-backend
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.11 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
 
 
 ## Values
@@ -382,6 +382,15 @@ null
 			<td>Specify a tls secret which already exists. tls must be set to true.</td>
 		</tr>
 		<tr>
+			<td>extraIngress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
+		</tr>
+		<tr>
 			<td>extraIngress.extraHosts</td>
 			<td>list</td>
 			<td><pre lang="yaml">
@@ -601,7 +610,7 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/config-and-sto
 imageRegistry: ""
 imagePullSecrets: []
 storageClass: ""
-keycloakUrl: "https://keycloak-zgw.test.denhaag.nl"
+keycloakUrl: ""
 
 </pre>
 </td>
@@ -727,6 +736,15 @@ true
 </pre>
 </td>
 			<td>Specify a tls secret which already exists. tls must be set to true.</td>
+		</tr>
+		<tr>
+			<td>ingress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.extraHosts</td>
@@ -959,6 +977,15 @@ true
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>minReadySeconds</td>
+			<td>int</td>
+			<td><pre lang="json">
+10
+</pre>
+</td>
+			<td>How many seconds a pod needs to be ready before killing the next, during update</td>
 		</tr>
 		<tr>
 			<td>name</td>

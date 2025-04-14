@@ -2,7 +2,7 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -396,6 +396,15 @@ null
 			<td>Specify a tls secret which already exists. tls must be set to true.</td>
 		</tr>
 		<tr>
+			<td>extraIngress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
+		</tr>
+		<tr>
 			<td>extraIngress.extraHosts</td>
 			<td>list</td>
 			<td><pre lang="yaml">
@@ -729,6 +738,15 @@ false
 </pre>
 </td>
 			<td>Specify a tls secret which already exists. tls must be set to true.</td>
+		</tr>
+		<tr>
+			<td>ingress.extraAnnotations</td>
+			<td>object</td>
+			<td><pre lang="yaml">
+map[]
+</pre>
+</td>
+			<td>Extra ingress annotations done as key:value pairs.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.extraHosts</td>
