@@ -2,7 +2,7 @@
 
 A Helm chart to deploy smartdocuments-docengine to Kubernetes
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -67,7 +67,7 @@ $ helm install smartdocuments-docengine denhaag/smartdocuments-docengine
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
 
 
 ## Values
