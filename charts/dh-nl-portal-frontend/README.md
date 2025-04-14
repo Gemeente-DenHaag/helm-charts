@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-frontend to Kubernetes
 
-![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -68,7 +68,7 @@ $ helm install dh-nl-portal-frontend denhaag/dh-nl-portal-frontend
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
 
 
 ## Values

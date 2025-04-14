@@ -2,7 +2,7 @@
 
 A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to Kubernetes
 
-![Version: 1.0.7](https://img.shields.io/badge/Version-1.0.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square) 
+![Version: 1.0.8](https://img.shields.io/badge/Version-1.0.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -68,7 +68,7 @@ $ helm install zgw-dre denhaag/zgw-dre
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.14 |
+| https://gemeente-denhaag.github.io/helm-charts | dh-lib | 0.1.15 |
 
 
 ## Values
