@@ -27,6 +27,9 @@ name: "zgw-dre"
 # -- Set the number of replicas.<br>
 replicaCount: 1
 
+# -- How many seconds a pod needs to be ready before killing the next, during update
+minReadySeconds: 10
+
 # -- Specifies the application resource kind.<br>
 appKind: Deployment
 
@@ -161,7 +164,9 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'  # Forces SSL redirect.<br>
     # ref: <a href="https://docs.microsoft.com/en-us/azure/application-gateway/ssl-redirect">[link]</a>
-
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
   # -- Define the path that this Ingress rule will apply to.<br>
   # Using `/*` means this rule applies to all subpaths under the specified host.
   path: /
@@ -189,6 +194,9 @@ extraIngress:
 
   # -- Annotations for additional configuration options specific to the ingress controller.<br>
   annotations: {}
+  # -- (object) Extra ingress annotations done as key:value pairs.<br>
+  # @notationType -- yaml
+  extraAnnotations: {}
 
   # -- Define the path that this Ingress rule will apply to.<br>
   # The `/*` indicates that this rule applies to all subpaths.<br>
