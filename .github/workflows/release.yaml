@@ -34,9 +34,9 @@ jobs:
 
       - name: 'Run chart-releaser'
         # if: github.ref_name == 'main'
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts
         env:
-          # CR_SKIP_EXISTING: true
+          CR_SKIP_EXISTING: true
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
