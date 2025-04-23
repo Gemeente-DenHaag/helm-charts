@@ -3038,6 +3038,46 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd-zgw-frontend-0.1.1/gzac-sd-zgw-frontend-0.1.1.tgz
     version: 0.1.1
+  gzac-sd2-zgw-backend:
+  - apiVersion: v2
+    created: "2025-04-23T10:40:36.74421317Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy gzac-sd2-zgw-backend to Kubernetes
+    digest: 72530106a0e290dadb35ab45c53b34a639216c2598064ee0784d5ebfdab58a34
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: gzac-sd2-zgw-backend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd2-zgw-backend-0.1.0/gzac-sd2-zgw-backend-0.1.0.tgz
+    version: 0.1.0
+  gzac-sd2-zgw-frontend:
+  - apiVersion: v2
+    created: "2025-04-23T10:40:36.926974119Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy gzac-sd2-zgw-frontend to Kubernetes
+    digest: bacebaad402ce54a4e6abe0febd8e865072e3d77d8d50fa82f51138850a7225a
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: gzac-sd2-zgw-frontend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd2-zgw-frontend-0.1.0/gzac-sd2-zgw-frontend-0.1.0.tgz
+    version: 0.1.0
   smartdocuments-docengine:
   - apiVersion: v2
     created: "2025-04-14T18:50:18.398137031Z"
@@ -3537,4 +3577,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-04-14T18:50:18.750025443Z"
+generated: "2025-04-23T10:40:36.927349369Z"
