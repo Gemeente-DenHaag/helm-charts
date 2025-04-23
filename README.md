@@ -10,6 +10,8 @@
 [gzac-fd-zgw-frontend](charts/gzac-fd-zgw-frontend/)\
 [gzac-sd-zgw-backend](charts/gzac-sd-zgw-backend/)\
 [gzac-sd-zgw-frontend](charts/gzac-sd-zgw-frontend/)\
+[gzac-sd2-zgw-backend](charts/gzac-sd2-zgw-backend/)\
+[gzac-sd2-zgw-frontend](charts/gzac-sd2-zgw-frontend/)\
 [smartdocuments-docengine](charts/smartdocuments-docengine/)\
 [smartdocuments-webapps](charts/smartdocuments-webapps/)\
-[zgw-dre](charts/zgw-dre/)\
+[zgw-dre](charts/zgw-dre/)
