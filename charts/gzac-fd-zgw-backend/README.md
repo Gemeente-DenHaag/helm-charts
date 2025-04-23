@@ -2,7 +2,7 @@
 
 A Helm chart to deploy gzac-fd-zgw-backend to Kubernetes
 
-![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
 
 ## Additional Information
 
@@ -176,7 +176,7 @@ checksums:
 			<td>command</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.war"]
+["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/opt/app/valtimo.war"]
 
 </pre>
 </td>
