@@ -2,7 +2,7 @@
 
 A Helm chart to deploy gzac-alg-zgw-backend to Kubernetes
 
-![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -101,7 +101,15 @@ $ helm install gzac-alg-zgw-backend denhaag/gzac-alg-zgw-backend
 			<td>args</td>
 			<td>list</td>
 			<td><pre lang="json">
-[]
+[
+  "java",
+  "-XX:MinRAMPercentage=20.0",
+  "-XX:MaxRAMPercentage=80.0",
+  "-XshowSettings:vm",
+  "-Djava.security.egd=file:/dev/./urandom",
+  "-jar",
+  "/app.war"
+]
 </pre>
 </td>
 			<td>Override default container args (useful when using custom images)</td>
@@ -175,8 +183,7 @@ checksums:
 			<td>command</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.war"]
-
+[]
 </pre>
 </td>
 			<td>Override default container command (useful when using custom images)</td>
