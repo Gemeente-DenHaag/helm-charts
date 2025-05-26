@@ -43,7 +43,7 @@ appKind: Deployment
 command: []
 
 # -- Override default container args (useful when using custom images)
-args: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar",/opt/app/valtimo.war"]
+args: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/valtimo.war"]
 
 # -- String to partially override common.names.fullname template (will maintain the release name).
 nameOverride: ""
