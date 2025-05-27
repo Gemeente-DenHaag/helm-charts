@@ -2,7 +2,7 @@
 
 A Helm chart to deploy gzac-sd2-zgw-backend to Kubernetes
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -1175,25 +1175,7 @@ true
 			<td>readinessProbe.failureThreshold</td>
 			<td>int</td>
 			<td><pre lang="json">
-20
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>readinessProbe.httpGet.path</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/api/v1/ping"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>readinessProbe.httpGet.port</td>
-			<td>int</td>
-			<td><pre lang="json">
-8080
+400
 </pre>
 </td>
 			<td></td>
@@ -1211,7 +1193,7 @@ true
 			<td>readinessProbe.periodSeconds</td>
 			<td>int</td>
 			<td><pre lang="json">
-20
+1
 </pre>
 </td>
 			<td></td>
@@ -1221,6 +1203,15 @@ true
 			<td>int</td>
 			<td><pre lang="json">
 1
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>readinessProbe.tcpSocket.port</td>
+			<td>int</td>
+			<td><pre lang="json">
+8080
 </pre>
 </td>
 			<td></td>

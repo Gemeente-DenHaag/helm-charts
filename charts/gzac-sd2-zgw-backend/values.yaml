@@ -711,14 +711,21 @@ readinessProbe:
   # -- Configure options for readiness probes.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
   enabled: true
-  httpGet:
-    path: /api/v1/ping
+  # httpGet:
+  #   path: /api/v1/ping
+  #   port: 8080
+  # initialDelaySeconds: 30
+  # periodSeconds: 20
+  # timeoutSeconds: 5
+  # failureThreshold: 20
+  # successThreshold: 1
+  tcpSocket:
     port: 8080
   initialDelaySeconds: 30
-  periodSeconds: 20
   timeoutSeconds: 5
-  failureThreshold: 20
+  periodSeconds: 1
   successThreshold: 1
+  failureThreshold: 400
 startupProbe:
   # -- Configure options for startup probe.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
