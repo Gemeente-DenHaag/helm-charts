@@ -3211,6 +3211,25 @@ entries:
     version: 0.1.1
   gzac-sd2-zgw-backend:
   - apiVersion: v2
+    created: "2025-05-27T09:19:20.727288404Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy gzac-sd2-zgw-backend to Kubernetes
+    digest: 56ddbed221627d419885f8fc30f6623322d3fda78bddbc0a6e931e84e44f6b07
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: gzac-sd2-zgw-backend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/gzac-sd2-zgw-backend-0.1.1/gzac-sd2-zgw-backend-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2025-04-23T10:40:36.74421317Z"
     dependencies:
     - name: dh-lib
@@ -3748,4 +3767,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-05-27T09:17:40.133408001Z"
+generated: "2025-05-27T09:19:20.728761751Z"
