@@ -170,7 +170,7 @@ ingress:
   # -- Define the path that this Ingress rule will apply to.<br>
   # Using `/*` means this rule applies to all subpaths under the specified host.
   path: /
-  
+
   # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br>
   pathType: Prefix
 
@@ -201,7 +201,7 @@ extraIngress:
   # -- Define the path that this Ingress rule will apply to.<br>
   # The `/*` indicates that this rule applies to all subpaths.<br>
   path: /*
-  
+
   # -- Specifies how the path is matched. 'Prefix' means matching is done based on a prefix.<br>
   # This is the most common setting for general use.
   pathType: Prefix
@@ -449,7 +449,7 @@ livenessProbe:
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
-  initialDelaySeconds: 120  # Delay before liveness probe is initiated.
+  initialDelaySeconds: 60  # Delay before liveness probe is initiated.
   periodSeconds: 30  # How often to perform the probe.
   timeoutSeconds: 5  # When the probe times out.
   failureThreshold: 3  # Number of times to retry the probe before giving up.
@@ -462,7 +462,7 @@ readinessProbe:
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
-  initialDelaySeconds: 60  # Delay before readiness probe is initiated.
+  initialDelaySeconds: 30  # Delay before readiness probe is initiated.
   periodSeconds: 20  # How often to perform the probe.
   timeoutSeconds: 5  # When the probe times out.
   failureThreshold: 3  # Number of times to retry the probe before considering it failed.
@@ -470,12 +470,12 @@ readinessProbe:
 
 startupProbe:
   # -- Enable or disable the startup probe.<br>
-  enabled: true
+  enabled: false
   # -- HTTP GET method used by startup probe to check if the application has started.<br>
   httpGet:
     path: /engine-rest/engine  # The path that the probe requests.
     port: 8080  # The port on which the probe contacts the container.
-  initialDelaySeconds: 120  # Delay before startup probe is initiated.
+  initialDelaySeconds: 30  # Delay before startup probe is initiated.
   periodSeconds: 30  # How often to perform the probe.
   timeoutSeconds: 5  # When the probe times out.
   failureThreshold: 10  # Number of times to retry the probe before considering it failed.
