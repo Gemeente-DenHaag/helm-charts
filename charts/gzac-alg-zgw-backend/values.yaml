@@ -40,10 +40,10 @@ appKind: Deployment
 
 # -- (list) Override default container command (useful when using custom images)
 # @notationType -- yaml
-command: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar","/app.war"]
+command: []
 
 # -- Override default container args (useful when using custom images)
-args: []
+args: ["java","-XX:MinRAMPercentage=20.0","-XX:MaxRAMPercentage=80.0","-XshowSettings:vm","-Djava.security.egd=file:/dev/./urandom","-jar","/app.war"]
 
 # -- String to partially override common.names.fullname template (will maintain the release name).
 nameOverride: ""
