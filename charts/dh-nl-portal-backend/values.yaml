@@ -716,7 +716,8 @@ livenessProbe:
   # -- Configure options for liveness probes.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
   enabled: true
-  tcpSocket:
+  httpGet:
+    path: /metrics/health/liveness
     port: 8080
   initialDelaySeconds: 30
   periodSeconds: 30
@@ -727,18 +728,20 @@ readinessProbe:
   # -- Configure options for readiness probes.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
   enabled: true
-  tcpSocket:
+  httpGet:
+    path: /actuator/health/readiness
     port: 8080
   initialDelaySeconds: 30
   periodSeconds: 30
   timeoutSeconds: 5
-  failureThreshold: 6
+  failureThreshold: 4
   successThreshold: 1
 startupProbe:
   # -- Configure options for startup probe.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
   enabled: false
-  tcpSocket:
+  httpGet:
+    path: /actuator/health/readiness
     port: 8080
   initialDelaySeconds: 10
   periodSeconds: 20
