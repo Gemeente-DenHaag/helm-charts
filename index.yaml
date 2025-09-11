@@ -3599,6 +3599,25 @@ entries:
     version: 0.1.0
   wordpress:
   - apiVersion: v2
+    created: "2025-09-11T19:14:50.286246002Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy wordpress to Kubernetes
+    digest: 0f03109752398042b19c5a0003647fe459ee7a35c2211b15c3a68d2de38fcd4d
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: wordpress
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/wordpress-0.0.3/wordpress-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
     created: "2025-09-11T14:56:24.563085805Z"
     dependencies:
     - name: dh-lib
@@ -3890,4 +3909,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-09-11T14:56:24.563445918Z"
+generated: "2025-09-11T19:14:50.28663309Z"
