@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -1061,7 +1061,7 @@ values: []
 			<td>persistence.accessMode</td>
 			<td>string</td>
 			<td><pre lang="json">
-"ReadWriteOnce"
+"ReadWriteMany"
 </pre>
 </td>
 			<td>Set accessMode for pvc.</td>
@@ -1070,7 +1070,7 @@ values: []
 			<td>persistence.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Enable persistence using Persistent Volume Claims.<br> ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a></td>

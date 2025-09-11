@@ -716,7 +716,7 @@ extraVolumeMounts: []
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a>
-  enabled: false
+  enabled: true
   # -- Application data Persistent Volume Storage Class.<br>
   # If defined, storageClassName: <storageClass><br>
   # If set to "-", storageClassName: "", which disables dynamic provisioning<br>
@@ -727,7 +727,7 @@ persistence:
   # the existingClaim variable.
   existingClaim: ""
   # -- Set accessMode for pvc.
-  accessMode: ReadWriteOnce
+  accessMode: ReadWriteMany
   # -- Set size for pvc.
   size: 10Gi
   # -- Set mountPath for pvc.
