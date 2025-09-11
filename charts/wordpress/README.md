@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -156,9 +156,7 @@ autoscaling:
 			<td>checksums</td>
 			<td>list</td>
 			<td><pre lang="json">
-[
-  "configmaps.yaml"
-]
+[]
 </pre>
 </td>
 			<td>Array of templates paths to automatically adds checksum annotation for.
@@ -204,13 +202,7 @@ checksums:
 			<td>configMaps</td>
 			<td>object</td>
 			<td><pre lang="yaml">
-'{{ include "app.fullname" . }}':
-    data:
-        config.js: |-
-            {{- range $k, $v := .Values.config }}
-            window.{{ $k}} = '{{ include "common.tplvalues.render" (dict "value" $v "context" $) }}';
-            {{- end }}
-
+map[]
 </pre>
 </td>
 			<td>Populate сonfigMaps for the application.
@@ -307,13 +299,7 @@ ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-
 			<td>env</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-- name: TZ
-  value: Europe/Amsterdam
-- name: OIDC_URL
-  value: "{{ .Values.config.OIDC_URL }}"
-- name: NGINX_ENVSUBST_OUTPUT_DIR
-  value: /tmp/nginx/conf.d
-
+[]
 </pre>
 </td>
 			<td>An array to add env vars.
@@ -1070,7 +1056,7 @@ values: []
 			<td>persistence.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Enable persistence using Persistent Volume Claims.<br> ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a></td>

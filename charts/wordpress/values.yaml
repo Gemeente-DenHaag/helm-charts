@@ -594,13 +594,7 @@ affinity: {}
 #    value: test
 # ```
 # </details>
-env:
-  - name: TZ
-    value: Europe/Amsterdam
-  - name: OIDC_URL
-    value: "{{ .Values.config.OIDC_URL }}"
-  - name: NGINX_ENVSUBST_OUTPUT_DIR
-    value: /tmp/nginx/conf.d
+env: []
 
 # -- Array of sources to populate environment variables in the container from.
 # @raw
@@ -716,7 +710,7 @@ extraVolumeMounts: []
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a>
-  enabled: true
+  enabled: false
   # -- Application data Persistent Volume Storage Class.<br>
   # If defined, storageClassName: <storageClass><br>
   # If set to "-", storageClassName: "", which disables dynamic provisioning<br>
@@ -800,13 +794,7 @@ startupProbe:
 # ```
 # The above example will create a configMap with name common.names.fullname.
 # </details>
-configMaps:
-  '{{ include "app.fullname" . }}':
-    data:
-      config.js: |-
-        {{- range $k, $v := .Values.config }}
-        window.{{ $k}} = '{{ include "common.tplvalues.render" (dict "value" $v "context" $) }}';
-        {{- end }}
+configMaps: {}
 
 # -- Populate secrets for the application.
 # @raw
@@ -874,8 +862,7 @@ podDisruptionBudget:
 #
 # ```
 # </details>
-checksums:
-  - configmaps.yaml
+checksums: []
 
 # -- Add extra list of kubernetes objects to deploy (value evaluted as a template).
 # @raw
