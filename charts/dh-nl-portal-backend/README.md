@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -936,7 +936,7 @@ true
 			<td>livenessProbe.httpGet.path</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/metrics/health/liveness"
+"/actuator/health/liveness"
 </pre>
 </td>
 			<td></td>

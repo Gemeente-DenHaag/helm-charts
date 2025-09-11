@@ -717,7 +717,7 @@ livenessProbe:
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes">[link]</a>
   enabled: true
   httpGet:
-    path: /metrics/health/liveness
+    path: /actuator/health/liveness
     port: 8080
   initialDelaySeconds: 30
   periodSeconds: 30
