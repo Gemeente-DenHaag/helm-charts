@@ -631,9 +631,9 @@ volumes:
   - name: cert-mysql-volume
     secret:
       secretName: wordpress-db-cert
-  - name: wp-pvc
-    persistentVolumeClaim:
-      claimName: wordpress
+  # - name: wp-pvc
+  #   persistentVolumeClaim:
+  #     claimName: wordpress
   - name: run-apache
     emptyDir: {}
   - name: log-apache
@@ -661,9 +661,9 @@ volumeMounts:
   - name: cert-mysql-volume
     mountPath: /cert
     readOnly: true
-  - name: wp-pvc
+  - name: wordpress
     mountPath: /var/www/html/wp-content-pvc
-    subPath: wordpress/wp-content
+    # subPath: wordpress/wp-content
   - name: run-apache
     mountPath: /var/run/apache2
   - name: log-apache
@@ -710,7 +710,7 @@ extraVolumeMounts: []
 persistence:
   # -- Enable persistence using Persistent Volume Claims.<br>
   # ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a>
-  enabled: false
+  enabled: true
   # -- Application data Persistent Volume Storage Class.<br>
   # If defined, storageClassName: <storageClass><br>
   # If set to "-", storageClassName: "", which disables dynamic provisioning<br>
@@ -725,7 +725,7 @@ persistence:
   # -- Set size for pvc.
   size: 10Gi
   # -- Set mountPath for pvc.
-  mountPath: /data
+  mountPath: /var/www/html/wp-content-pvc
 
 livenessProbe:
   # -- Configure options for liveness probes.<br>
