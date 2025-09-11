@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -1056,7 +1056,7 @@ values: []
 			<td>persistence.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Enable persistence using Persistent Volume Claims.<br> ref: <a href="https://kubernetes.io/docs/user-guide/persistent-volumes/">[link]</a></td>
@@ -1074,7 +1074,7 @@ false
 			<td>persistence.mountPath</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/data"
+"/var/www/html/wp-content-pvc"
 </pre>
 </td>
 			<td>Set mountPath for pvc.</td>
@@ -1633,9 +1633,9 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 - name: cert-mysql-volume
   mountPath: /cert
   readOnly: true
-- name: wp-pvc
+- name: wordpress
   mountPath: /var/www/html/wp-content-pvc
-  subPath: wordpress/wp-content
+  # subPath: wordpress/wp-content
 - name: run-apache
   mountPath: /var/run/apache2
 - name: log-apache
@@ -1669,9 +1669,9 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 - name: cert-mysql-volume
   secret:
     secretName: wordpress-db-cert
-- name: wp-pvc
-  persistentVolumeClaim:
-    claimName: wordpress
+# - name: wp-pvc
+#   persistentVolumeClaim:
+#     claimName: wordpress
 - name: run-apache
   emptyDir: {}
 - name: log-apache
