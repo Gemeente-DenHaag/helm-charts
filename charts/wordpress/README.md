@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.6](https://img.shields.io/badge/Version-0.0.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -930,9 +930,9 @@ true
 		</tr>
 		<tr>
 			<td>livenessProbe.httpGet.port</td>
-			<td>string</td>
+			<td>int</td>
 			<td><pre lang="json">
-"app"
+80
 </pre>
 </td>
 			<td></td>
@@ -1200,9 +1200,9 @@ true
 		</tr>
 		<tr>
 			<td>readinessProbe.httpGet.port</td>
-			<td>string</td>
+			<td>int</td>
 			<td><pre lang="json">
-"app"
+80
 </pre>
 </td>
 			<td></td>
@@ -1481,9 +1481,9 @@ false
 		</tr>
 		<tr>
 			<td>startupProbe.httpGet.port</td>
-			<td>string</td>
+			<td>int</td>
 			<td><pre lang="json">
-"app"
+80
 </pre>
 </td>
 			<td></td>
