@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -1633,9 +1633,9 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 - name: cert-mysql-volume
   mountPath: /cert
   readOnly: true
-- name: wordpress
-  mountPath: /var/www/html/wp-content-pvc
-  # subPath: wordpress/wp-content
+# - name: wordpress
+#   mountPath: /var/www/html/wp-content-pvc
+# subPath: wordpress/wp-content
 - name: run-apache
   mountPath: /var/run/apache2
 - name: log-apache

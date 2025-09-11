@@ -661,8 +661,8 @@ volumeMounts:
   - name: cert-mysql-volume
     mountPath: /cert
     readOnly: true
-  - name: wordpress
-    mountPath: /var/www/html/wp-content-pvc
+  # - name: wordpress
+  #   mountPath: /var/www/html/wp-content-pvc
     # subPath: wordpress/wp-content
   - name: run-apache
     mountPath: /var/run/apache2
