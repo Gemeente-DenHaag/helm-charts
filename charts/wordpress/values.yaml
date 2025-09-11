@@ -733,7 +733,7 @@ livenessProbe:
   enabled: true
   httpGet:
     path: /wp-login.php
-    port: app
+    port: 80
     scheme: HTTP
   initialDelaySeconds: 60
   periodSeconds: 10
@@ -746,7 +746,7 @@ readinessProbe:
   enabled: true
   httpGet:
     path: /wp-login.php
-    port: app
+    port: 80
     scheme: HTTP
   initialDelaySeconds: 30
   periodSeconds: 30
@@ -759,7 +759,7 @@ startupProbe:
   enabled: false
   httpGet:
     path: /wp-login.php
-    port: app
+    port: 80
     scheme: HTTP
   initialDelaySeconds: 5
   periodSeconds: 30
