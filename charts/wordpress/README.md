@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.6](https://img.shields.io/badge/Version-0.0.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.7](https://img.shields.io/badge/Version-0.0.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -156,7 +156,9 @@ autoscaling:
 			<td>checksums</td>
 			<td>list</td>
 			<td><pre lang="json">
-[]
+[
+  "configmaps.yaml"
+]
 </pre>
 </td>
 			<td>Array of templates paths to automatically adds checksum annotation for.
@@ -202,7 +204,15 @@ checksums:
 			<td>configMaps</td>
 			<td>object</td>
 			<td><pre lang="yaml">
-map[]
+'{{ include "app.fullname" . }}':
+    data:
+        uploads.ini: |-
+            file_uploads = On
+            memory_limit = 256M
+            upload_max_filesize = 128M
+            post_max_size = 128M
+            max_execution_time = 300
+
 </pre>
 </td>
 			<td>Populate сonfigMaps for the application.
@@ -1633,6 +1643,9 @@ ref: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployme
 - name: cert-mysql-volume
   mountPath: /cert
   readOnly: true
+- name: wp-php-config-volume
+  mountPath: /usr/local/etc/php/conf.d/uploads.ini
+  subPath: uploads.ini
 # - name: wordpress
 #   mountPath: /var/www/html/wp-content-pvc
 # subPath: wordpress/wp-content
@@ -1669,6 +1682,9 @@ ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resou
 - name: cert-mysql-volume
   secret:
     secretName: wordpress-db-cert
+- name: wp-php-config-volume
+  configMap:
+    name: '{{ include "app.fullname" . }}'
 # - name: wp-pvc
 #   persistentVolumeClaim:
 #     claimName: wordpress
