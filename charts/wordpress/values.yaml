@@ -631,6 +631,9 @@ volumes:
   - name: cert-mysql-volume
     secret:
       secretName: wordpress-db-cert
+  - name: wp-php-config-volume
+    configMap:
+      name: '{{ include "app.fullname" . }}'
   # - name: wp-pvc
   #   persistentVolumeClaim:
   #     claimName: wordpress
@@ -661,6 +664,9 @@ volumeMounts:
   - name: cert-mysql-volume
     mountPath: /cert
     readOnly: true
+  - name: wp-php-config-volume
+    mountPath: /usr/local/etc/php/conf.d/uploads.ini
+    subPath: uploads.ini
   # - name: wordpress
   #   mountPath: /var/www/html/wp-content-pvc
     # subPath: wordpress/wp-content
@@ -794,7 +800,15 @@ startupProbe:
 # ```
 # The above example will create a configMap with name common.names.fullname.
 # </details>
-configMaps: {}
+configMaps:
+  '{{ include "app.fullname" . }}':
+    data:
+      uploads.ini: |-
+        file_uploads = On
+        memory_limit = 256M
+        upload_max_filesize = 128M
+        post_max_size = 128M
+        max_execution_time = 300
 
 # -- Populate secrets for the application.
 # @raw
@@ -862,7 +876,8 @@ podDisruptionBudget:
 #
 # ```
 # </details>
-checksums: []
+checksums:
+  - configmaps.yaml
 
 # -- Add extra list of kubernetes objects to deploy (value evaluted as a template).
 # @raw
