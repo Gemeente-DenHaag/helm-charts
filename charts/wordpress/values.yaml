@@ -611,7 +611,9 @@ env: []
 # ```
 # </details>
 # ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envfromsource-v1-core">[link]</a>
-envFrom: []
+envFrom:
+  - secretRef:
+      name: '{{ include "app.fullname" . }}'
 
 # -- (list) Array to add volumes.
 # @notationType -- yaml

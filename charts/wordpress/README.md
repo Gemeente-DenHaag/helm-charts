@@ -2,7 +2,7 @@
 
 A Helm chart to deploy wordpress to Kubernetes
 
-![Version: 0.0.7](https://img.shields.io/badge/Version-0.0.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.8](https://img.shields.io/badge/Version-0.0.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -328,7 +328,13 @@ env:
 			<td>envFrom</td>
 			<td>list</td>
 			<td><pre lang="json">
-[]
+[
+  {
+    "secretRef": {
+      "name": "{{ include \"app.fullname\" . }}"
+    }
+  }
+]
 </pre>
 </td>
 			<td>Array of sources to populate environment variables in the container from.
