@@ -9,13 +9,13 @@ global:
 
 image:
   # -- Set image registry.<br>
-  registry: "crzgwpweu01.azurecr.io"
+  registry: ""
   # -- Set image repository.<br>
-  repository: crzgwpweu01.azurecr.io/camunda/zgw-dre
+  repository: ""
   # -- Set image tag.<br>
   tag:
   # -- Set image fullImage. Can be used to set the complete URL.<br>
-  fullImage: [] # use this from pipeline, includes registry, repo, and tag
+  fullImage: "" # use this from pipeline, includes registry, repo, and tag
   # -- Optionally specify an array of imagePullSecrets.<br>
   # Secrets must be manually created in the namespace.<br>
   # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/">[link]</a>
@@ -34,8 +34,7 @@ minReadySeconds: 10
 appKind: Deployment
 
 # -- Specifies the pod labels.<br>
-podLabels:
-  public-access: allow
+podLabels: {}
 
 args: []
 # -- String to partially override common.names.fullname template (will maintain the release name).<br>
@@ -72,7 +71,7 @@ podAnnotations: {}
 
 # -- Init containers that run inside the pod before Camunda is started in the main container. Use this to pull DMN's from remote repositories or to copy configuration files like production.yaml.<br>
 # ref: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">[link]</a>
-initContainers: {}
+initContainers: []
 
 priorityClassName: ""
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
@@ -148,69 +147,11 @@ updateStrategy:
   #    maxUnavailable: 25%
   # ```
   # </details>
-  type: RollingUpdate
+  type: ""
 
-ingress:
-  # -- Configuration snippet for customizing Nginx Ingress behavior.<br>
-  nginx:
-    configurationSnippet: ""  # Add specific Nginx configurations here.<br>
+ingress: {}
 
-  # -- Specifies the Ingress class for Kubernetes to use.<br>
-  # This helps specify which Ingress controller should handle this Ingress if multiple controllers are installed.
-  ingressClassName: nginx
-
-  # -- Annotations for additional configuration options that are specific to the Ingress controller.<br>
-  # Annotations can enable specific functionality like SSL redirection.
-  annotations:
-    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'  # Forces SSL redirect.<br>
-    # ref: <a href="https://docs.microsoft.com/en-us/azure/application-gateway/ssl-redirect">[link]</a>
-  # -- (object) Extra ingress annotations done as key:value pairs.<br>
-  # @notationType -- yaml
-  extraAnnotations: {}
-  # -- Define the path that this Ingress rule will apply to.<br>
-  # Using `/*` means this rule applies to all subpaths under the specified host.
-  path: /
-
-  # -- Specifies how the path is matched. 'Prefix' means matching is done on a path prefix, split by '/'.<br>
-  pathType: Prefix
-
-  # -- Defines the service to which traffic should be routed.<br>
-  # Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.<br>
-  service:
-    port: 8080  # The service port to which the Ingress directs traffic.<br>
-    # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">[link]</a>
-
-extraIngress:
-  # -- Nginx specific configuration snippet for additional ingress behavior customization.<br>
-  nginx:
-    configurationSnippet: ""  # Add specific Nginx configurations here.<br>
-
-  # -- Suffix to append to the ingress name, useful for distinguishing additional ingress resources.<br>
-  nameSuffix: ""
-
-  # -- Specifies the class of the ingress controller.<br>
-  # This should match the class provided by the Azure Application Gateway.<br>
-  ingressClassName: ""
-
-  # -- Annotations for additional configuration options specific to the ingress controller.<br>
-  annotations: {}
-  # -- (object) Extra ingress annotations done as key:value pairs.<br>
-  # @notationType -- yaml
-  extraAnnotations: {}
-
-  # -- Define the path that this Ingress rule will apply to.<br>
-  # The `/*` indicates that this rule applies to all subpaths.<br>
-  path: /*
-
-  # -- Specifies how the path is matched. 'Prefix' means matching is done based on a prefix.<br>
-  # This is the most common setting for general use.
-  pathType: Prefix
-
-  # -- Defines the service to which traffic should be routed.<br>
-  service:
-    port: 8080  # The service port to which the Ingress will send traffic.<br>
-    # Ensure corresponding service has this port exposed.
-
+extraIngress: {}
 
 resources:
   # -- Define the resource limits for the container.<br>
@@ -437,6 +378,8 @@ env:
     # Set this to "true" for testing environments where SSL validation is not required.
     value: "false"
 
+extraEnv: []
+
 command:
   # -- Command to start the Camunda application.<br>
   # This is the main entrypoint command for the container.
@@ -494,12 +437,19 @@ keycloak:
   clientSecret:
     name: ""
     key: ""
-
+    
+liquibase:
+  # -- Configuration for liquibase settings.<br>
+  changelog:
+    enabled: false
+  image: "liquibase/liquibase:4.30"
+  job:
+    ttlSecondsAfterFinished: 600
+    
 database:
   # -- Configuration for database settings.<br>
   driver: ""
   url: ""
-  credentialsSecretEnabled: false
   credentialsSecretName: ""
   credentialsSecretKeys:
     username: ""
