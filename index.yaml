@@ -3331,6 +3331,25 @@ entries:
     version: 0.1.0
   smartdocuments-docengine:
   - apiVersion: v2
+    created: "2025-09-15T18:34:27.26434424Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy smartdocuments-docengine to Kubernetes
+    digest: 0e91d43b08789ebe89a72b1797d6c16cbcc6649c9819ec414c7ea854027ba835
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: smartdocuments-docengine
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-docengine-0.1.8/smartdocuments-docengine-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
     created: "2025-04-14T18:50:18.398137031Z"
     dependencies:
     - name: dh-lib
@@ -4004,4 +4023,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-09-13T15:22:35.870526666Z"
+generated: "2025-09-15T18:34:27.264687745Z"
