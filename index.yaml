@@ -3465,6 +3465,25 @@ entries:
     version: 0.1.0
   smartdocuments-webapps:
   - apiVersion: v2
+    created: "2025-09-15T18:41:19.384470312Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy smartdocuments-webapps to Kubernetes
+    digest: 6a65957a2daa360c93509fd6bc29c71364f848b38fbf7f895a87def66b548c79
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: smartdocuments-webapps
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/smartdocuments-webapps-0.1.8/smartdocuments-webapps-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
     created: "2025-04-14T18:50:18.574513685Z"
     dependencies:
     - name: dh-lib
@@ -4023,4 +4042,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2025-09-15T18:34:27.264687745Z"
+generated: "2025-09-15T18:41:19.384782299Z"
