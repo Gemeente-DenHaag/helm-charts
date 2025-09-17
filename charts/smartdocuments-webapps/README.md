@@ -2,7 +2,7 @@
 
 A Helm chart to deploy smartdocuments-webapps to Kubernetes
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -378,7 +378,6 @@ ref: <a href="https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernet
 kubernetes.io/ingress.class: "azure/application-gateway-ext"
 appgw.ingress.kubernetes.io/ssl-redirect: "true"
 appgw.ingress.kubernetes.io/health-probe-path: /smartcontrol/SmartControl/Login.jsp
-# appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
 
 </pre>
 </td>
@@ -726,7 +725,6 @@ null
 kubernetes.io/ingress.class: "azure/application-gateway-int"
 appgw.ingress.kubernetes.io/ssl-redirect: "true"
 appgw.ingress.kubernetes.io/health-probe-path: /smartcontrol/SmartControl/Login.jsp
-appgw.ingress.kubernetes.io/health-probe-status-codes: "401"
 
 </pre>
 </td>
