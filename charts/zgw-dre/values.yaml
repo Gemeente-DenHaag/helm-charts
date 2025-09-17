@@ -37,7 +37,7 @@ appKind: Deployment
 podLabels:
   public-access: allow
 
-args: []
+args: ["--webapps", "--rest", "--oauth2", "--production"]
 # -- String to partially override common.names.fullname template (will maintain the release name).<br>
 nameOverride: ""
 # -- String to fully override common.names.fullname template.<br>
