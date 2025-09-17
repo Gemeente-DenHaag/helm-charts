@@ -503,6 +503,21 @@ env:
     # Set this to "true" for testing environments where SSL validation is not required.
     value: "false"
 
+  - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
+    value: "false"
+  - name: CAMUNDA_BPM_RUN_AUTH_CREATE_USER
+    value: "false"
+  - name: CAMUNDA_BPM_IDENTITY_SERVICE_READ_ONLY
+    value: "true"
+  - name: CAMUNDA_BPM_AUTODEPLOYMENTENABLED
+    value: "true"
+  - name: CAMUNDA_BPM_RUN_AUTH_ENABLED
+    value: "true"
+  - name: CAMUNDA_BPM_RUN_AUTH_PROVIDER
+    value: "keycloak"
+  - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
+    value: "true"
+
 command:
   # -- Command to start the Camunda application.<br>
   # This is the main entrypoint command for the container.
@@ -571,26 +586,6 @@ database:
     username: "DB_USERNAME"
     password: "DB_PASSWORD"
 
-# -- (list) Additional environment variables to extend/override application configuration.<br>
-# @notationType -- yaml
-extraEnv:
-  - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
-    value: "false"
-  - name: CAMUNDA_BPM_RUN_AUTH_CREATE_USER
-    value: "false"
-  - name: CAMUNDA_BPM_IDENTITY_SERVICE_READ_ONLY
-    value: "true"
-  - name: CAMUNDA_BPM_AUTODEPLOYMENTENABLED
-    value: "true"
-  - name: CAMUNDA_BPM_RUN_AUTH_ENABLED
-    value: "true"
-  - name: CAMUNDA_BPM_RUN_AUTH_PROVIDER
-    value: "keycloak"
-  - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
-    value: "true"
-
-# -- (object) Liquibase job settings for schema migrations.<br>
-# @notationType -- yaml
 liquibase:
   # -- Liquibase container image.<br>
   image: crzgwpweu01.azurecr.io/liquibase/liquibase:4.30
