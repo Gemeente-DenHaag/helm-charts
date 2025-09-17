@@ -236,7 +236,9 @@ ingress:
   service:
     port: 8080  # The service port to which the Ingress directs traffic.<br>
     # ref: <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">[link]</a>
+  # -- Enable the creation of an Ingress resource.<br>
   enabled: true
+  # -- Enable TLS for the Ingress (requires certs/secret depending on controller).<br>
   tls: true
 
 extraIngress:
@@ -270,7 +272,9 @@ extraIngress:
   service:
     port: 8080  # The service port to which the Ingress will send traffic.<br>
     # Ensure corresponding service has this port exposed.
+  # -- Enable the additional (secondary) Ingress resource.<br>
   enabled: false
+  # -- Enable TLS for the additional Ingress.<br>
   tls: true
 
 
@@ -567,6 +571,8 @@ database:
     username: "DB_USERNAME"
     password: "DB_PASSWORD"
 
+# -- (list) Additional environment variables to extend/override application configuration.<br>
+# @notationType -- yaml
 extraEnv:
   - name: CAMUNDA_BPM_RUN_EXAMPLE_ENABLED
     value: "false"
@@ -583,9 +589,14 @@ extraEnv:
   - name: CAMUNDA_BPM_AUTHORIZATION_ENABLED
     value: "true"
 
+# -- (object) Liquibase job settings for schema migrations.<br>
+# @notationType -- yaml
 liquibase:
+  # -- Liquibase container image.<br>
   image: crzgwpweu01.azurecr.io/liquibase/liquibase:4.30
   changelog:
+    # -- Enable running the Liquibase changelog during install/upgrade.<br>
     enabled: true
   job:
+    # -- TTL (seconds) to keep the Job after completion; empty to disable TTL cleanup.<br>
     ttlSecondsAfterFinished: "" # to ensure that ArgoCD does not sync job after finishing
