@@ -589,6 +589,3 @@ liquibase:
   changelog:
     # -- Enable running the Liquibase changelog during install/upgrade.<br>
     enabled: true
-  job:
-    # -- TTL (seconds) to keep the Job after completion; empty to disable TTL cleanup.<br>
-    ttlSecondsAfterFinished: "" # to ensure that ArgoCD does not sync job after finishing
