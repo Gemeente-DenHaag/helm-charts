@@ -588,4 +588,4 @@ liquibase:
   changelog:
     enabled: true
   job:
-    ttlSecondsAfterFinished: 900
+    ttlSecondsAfterFinished: "" # to ensure that ArgoCD does not sync job after finishing
