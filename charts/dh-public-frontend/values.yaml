@@ -643,7 +643,7 @@ volumes:
 # </details>
 # ref: <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#volumes-2">[link]</a>
 volumeMounts:
-  - mountPath: /usr/share/nginx/html/assets/config.js
+  - mountPath: /usr/share/nginx/html/config.js
     name: config-js-vol
     subPath: config.js
   - mountPath: /tmp
