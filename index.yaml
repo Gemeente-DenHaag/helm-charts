@@ -1490,6 +1490,31 @@ entries:
     version: 0.1.1
   dh-public-frontend:
   - apiVersion: v2
+    created: "2026-02-02T14:59:22.329278077Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy dh-public-frontend to Kubernetes
+    digest: bc569eb4c9cdb650beadb0465817afcad9473fe04f063ffc0950ec81ef9ed4ca
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: kevin.kemkes@denhaag.nl
+      name: DenHaag
+    - email: jan.brekelmans@denhaag.nl
+      name: DenHaag
+    - email: thijs.vanson@denhaag.nl
+      name: DenHaag
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: dh-public-frontend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-public-frontend-0.1.2/dh-public-frontend-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     created: "2026-02-02T14:30:53.978019982Z"
     dependencies:
     - name: dh-lib
@@ -4269,4 +4294,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2026-02-02T14:30:53.978452154Z"
+generated: "2026-02-02T14:59:22.329570303Z"
