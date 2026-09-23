@@ -56,12 +56,12 @@ app: no-secrets-data-or-stringdata
 {{- end -}}
 {{- end -}}
 
-{{/* Validate that configMaps have data given */}}
+{{/* Validate that configMaps have data or binaryData given */}}
 {{- define "app.validateValues.noConfigMapsData" -}}
 {{- range $_, $values := .Values.configMaps -}}
-{{- if not $values.data -}}
+{{- if and (not $values.data) (not $values.binaryData) -}}
 app: no-configmaps-data
-    Each item of .configMaps must have data field. Please
+    Each item of .configMaps must have data or binaryData field. Please
     check the input configuration.
 {{- end -}}
 {{- end -}}

@@ -2,7 +2,7 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.15](https://img.shields.io/badge/Version-0.1.15-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.16](https://img.shields.io/badge/Version-0.1.16-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 ## Additional Information
 
@@ -29,6 +29,8 @@ configMaps:
     data:
       test: this
       wow: cool
+    binaryData:
+      binary: base64-encoded-value
 
 envFrom:
   - secretRef:
@@ -230,6 +232,13 @@ configMaps:
         </configuration>
 ```
 The above example will create a configMap with name common.names.fullname.
+
+```yaml
+configMaps:
+  app:
+    binaryData:
+      binary: base64-encoded-value
+```
 </details></td>
 		</tr>
 		<tr>

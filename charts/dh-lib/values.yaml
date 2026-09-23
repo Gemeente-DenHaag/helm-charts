@@ -762,6 +762,13 @@ startupProbe:
 #         </configuration>
 # ```
 # The above example will create a configMap with name common.names.fullname.
+#
+# ```yaml
+# configMaps:
+#   app:
+#     binaryData:
+#       binary: base64-encoded-value
+# ```
 # </details>
 configMaps: {}
 
