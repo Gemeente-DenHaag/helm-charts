@@ -23,4 +23,8 @@ metadata:
 data:
   {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 2 }}
 {{- end }}
+{{- with $values.binaryData }}
+binaryData:
+  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 2 }}
+{{- end }}
 {{- end }}

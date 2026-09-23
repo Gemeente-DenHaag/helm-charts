@@ -2,7 +2,7 @@
 
 Den Haag generic application Helm chart
 
-![Version: 0.0.30](https://img.shields.io/badge/Version-0.0.30-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) 
+![Version: 0.0.31](https://img.shields.io/badge/Version-0.0.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -29,6 +29,8 @@ configMaps:
     data:
       test: this
       wow: cool
+    binaryData:
+      binary: base64-encoded-value
 
 envFrom:
   - secretRef:
@@ -230,6 +232,13 @@ configMaps:
         </configuration>
 ```
 The above example will create a configMap with name common.names.fullname.
+
+```yaml
+configMaps:
+  app:
+    binaryData:
+      binary: base64-encoded-value
+```
 </details></td>
 		</tr>
 		<tr>
