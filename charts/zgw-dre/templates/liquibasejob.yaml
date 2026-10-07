@@ -9,6 +9,10 @@ spec:
       containers:
       - name: liquibase
         image: "{{ .Values.liquibase.image }}"
+        {{- with .Values.liquibase.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         env:
         - name: DB_USERNAME
           valueFrom:

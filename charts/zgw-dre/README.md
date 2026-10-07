@@ -2,7 +2,7 @@
 
 A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to Kubernetes
 
-![Version: 1.0.9](https://img.shields.io/badge/Version-1.0.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square)
+![Version: 1.1.6](https://img.shields.io/badge/Version-1.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square)
 
 ## Additional Information
 
@@ -99,10 +99,37 @@ $ helm install zgw-dre denhaag/zgw-dre
 			<td>Specifies the application resource kind.<br></td>
 		</tr>
 		<tr>
-			<td>args</td>
-			<td>list</td>
+			<td>args[0]</td>
+			<td>string</td>
 			<td><pre lang="json">
-[]
+"--webapps"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>args[1]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"--rest"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>args[2]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"--oauth2"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>args[3]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"--production"
 </pre>
 </td>
 			<td></td>
@@ -138,10 +165,10 @@ false
 			<td>command[0]</td>
 			<td>string</td>
 			<td><pre lang="json">
-"./camunda.sh --production"
+"./camunda.sh"
 </pre>
 </td>
-			<td>Command to start the Camunda application.<br> This is the main entrypoint command for the container.</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>commonAnnotations</td>
@@ -252,7 +279,7 @@ true
 			<td>database.credentialsSecretEnabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td></td>
@@ -261,7 +288,7 @@ false
 			<td>database.credentialsSecretKeys.password</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"DB_PASSWORD"
 </pre>
 </td>
 			<td></td>
@@ -270,7 +297,7 @@ false
 			<td>database.credentialsSecretKeys.username</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"DB_USERNAME"
 </pre>
 </td>
 			<td></td>
@@ -279,7 +306,7 @@ false
 			<td>database.credentialsSecretName</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"zgw-dre"
 </pre>
 </td>
 			<td></td>
@@ -288,7 +315,7 @@ false
 			<td>database.driver</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"org.postgresql.Driver"
 </pre>
 </td>
 			<td>Configuration for database settings.<br></td>
@@ -455,6 +482,78 @@ false
 			<td>Disable SSL certificate validation for Keycloak integration.<br> Example: "true" or "false" Set this to "true" for testing environments where SSL validation is not required.</td>
 		</tr>
 		<tr>
+			<td>env[16].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_RUN_EXAMPLE_ENABLED"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[16].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"false"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[17].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_RUN_AUTH_CREATE_USER"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[17].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"false"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[18].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_IDENTITY_SERVICE_READ_ONLY"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[18].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[19].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_AUTODEPLOYMENTENABLED"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[19].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>env[1].name</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -471,6 +570,60 @@ false
 </pre>
 </td>
 			<td>Database driver class name.<br> Example: "org.postgresql.Driver"</td>
+		</tr>
+		<tr>
+			<td>env[20].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_RUN_AUTH_ENABLED"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[20].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[21].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_RUN_AUTH_PROVIDER"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[21].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"keycloak"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[22].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"CAMUNDA_BPM_AUTHORIZATION_ENABLED"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>env[22].value</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>env[2].name</td>
@@ -635,10 +788,21 @@ false
 			<td>extraIngress.annotations</td>
 			<td>object</td>
 			<td><pre lang="json">
-{}
+{
+  "appgw.ingress.kubernetes.io/ssl-redirect": "true"
+}
 </pre>
 </td>
 			<td>Annotations for additional configuration options specific to the ingress controller.<br></td>
+		</tr>
+		<tr>
+			<td>extraIngress.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Enable the additional (secondary) Ingress resource.<br></td>
 		</tr>
 		<tr>
 			<td>extraIngress.extraAnnotations</td>
@@ -653,7 +817,7 @@ map[]
 			<td>extraIngress.ingressClassName</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"azure-application-gateway"
 </pre>
 </td>
 			<td>Specifies the class of the ingress controller.<br> This should match the class provided by the Azure Application Gateway.<br></td>
@@ -662,7 +826,7 @@ map[]
 			<td>extraIngress.nameSuffix</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"-ag"
 </pre>
 </td>
 			<td>Suffix to append to the ingress name, useful for distinguishing additional ingress resources.<br></td>
@@ -706,6 +870,15 @@ map[]
 </pre>
 </td>
 			<td>Defines the service to which traffic should be routed.<br></td>
+		</tr>
+		<tr>
+			<td>extraIngress.tls</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable TLS for the additional Ingress.<br></td>
 		</tr>
 		<tr>
 			<td>extraObjects</td>
@@ -820,7 +993,7 @@ false
 			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"crzgwpweu01.azurecr.io/camunda/zgw-dre"
+"zgw/zgw-dre"
 </pre>
 </td>
 			<td>Set image repository.<br></td>
@@ -839,11 +1012,22 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "nginx.ingress.kubernetes.io/force-ssl-redirect": "true"
+  "nginx.ingress.kubernetes.io/affinity": "cookie",
+  "nginx.ingress.kubernetes.io/force-ssl-redirect": "true",
+  "nginx.ingress.kubernetes.io/session-cookie-path": "/"
 }
 </pre>
 </td>
 			<td>Annotations for additional configuration options that are specific to the Ingress controller.<br> Annotations can enable specific functionality like SSL redirection.</td>
+		</tr>
+		<tr>
+			<td>ingress.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable the creation of an Ingress resource.<br></td>
 		</tr>
 		<tr>
 			<td>ingress.extraAnnotations</td>
@@ -904,10 +1088,66 @@ map[]
 			<td>Defines the service to which traffic should be routed.<br> Ensure the service is defined in the same namespace as the Ingress and is reachable by the Ingress controller.<br></td>
 		</tr>
 		<tr>
-			<td>initContainers</td>
-			<td>object</td>
+			<td>ingress.tls</td>
+			<td>bool</td>
 			<td><pre lang="json">
-{}
+true
+</pre>
+</td>
+			<td>Enable TLS for the Ingress (requires certs/secret depending on controller).<br></td>
+		</tr>
+		<tr>
+			<td>initContainers</td>
+			<td>list</td>
+			<td><pre lang="json">
+[
+  {
+    "command": [
+      "/bin/sh",
+      "-c",
+      "echo \"Cloning repositories and copying DMN files...\"\n\nmkdir -p /temp/dmn/\n\ngit clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-ZGW.git /temp/DMN-ZGW/\nfind /temp/DMN-ZGW/dmn/ -name 'zgw-*.dmn' -exec cp {} /temp/dmn/ \\; 2\u003e/dev/null\n\ngit clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-ALG.git /temp/DMN-ALG/\nfind /temp/DMN-ALG/dmn/ -name 'alg-*.dmn' -exec cp {} /temp/dmn/ \\; 2\u003e/dev/null\n\ngit clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-SD.git /temp/DMN-SD/\nfind /temp/DMN-SD/dmn/ -name 'sd-*.dmn' -exec cp {} /temp/dmn/ \\; 2\u003e/dev/null\n\ngit clone -b $ENV_NAMESPACE https://$GITHUB_TOKEN@github.com/Gemeente-DenHaag/DMN-FD.git /temp/DMN-FD/\nfind /temp/DMN-FD/dmn/ -name 'fd-*.dmn' -exec cp {} /temp/dmn/ \\; 2\u003e/dev/null\n\necho \"files in /temp/dmn:\"\nls /temp/dmn/\n\necho \"Copying DMN files to /camunda/configuration/resources/\"\nfind /temp/dmn/ -name '*.dmn' -exec cp {} /camunda/configuration/resources/ \\; 2\u003e/dev/null\n\necho \"Cleaning up and copying config files to /camunda/configuration/\"\nrm -f /camunda/configuration/production.yml\ncp -f /temp/config/* /camunda/configuration/\n\necho \"files in /camunda/configuration/resources/\"\nls /camunda/configuration/resources/\n"
+    ],
+    "env": [
+      {
+        "name": "GITHUB_TOKEN",
+        "valueFrom": {
+          "secretKeyRef": {
+            "key": "github_token",
+            "name": "github-denhaag-zgw-token"
+          }
+        }
+      },
+      {
+        "name": "ENV_NAMESPACE",
+        "valueFrom": {
+          "fieldRef": {
+            "fieldPath": "metadata.namespace"
+          }
+        }
+      }
+    ],
+    "image": "crzgwpweu01.azurecr.io/alpine/git:v2.49.0",
+    "name": "init-dmn-productionyml",
+    "volumeMounts": [
+      {
+        "mountPath": "/temp",
+        "name": "dmn-volume"
+      },
+      {
+        "mountPath": "/camunda/configuration/resources/",
+        "name": "dmndir"
+      },
+      {
+        "mountPath": "/temp/config",
+        "name": "zgw-dre-config"
+      },
+      {
+        "mountPath": "/camunda/configuration/",
+        "name": "configdir"
+      }
+    ]
+  }
+]
 </pre>
 </td>
 			<td>Init containers that run inside the pod before Camunda is started in the main container. Use this to pull DMN's from remote repositories or to copy configuration files like production.yaml.<br> ref: <a href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/">[link]</a></td>
@@ -916,7 +1156,7 @@ map[]
 			<td>keycloak.clientId</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"camunda-client"
 </pre>
 </td>
 			<td></td>
@@ -925,7 +1165,7 @@ map[]
 			<td>keycloak.clientSecret.key</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"KEYCLOAK_CLIENT_CAMUNDA"
 </pre>
 </td>
 			<td></td>
@@ -934,7 +1174,7 @@ map[]
 			<td>keycloak.clientSecret.name</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"zgw-dre"
 </pre>
 </td>
 			<td></td>
@@ -952,10 +1192,37 @@ map[]
 			<td>keycloak.realm</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"zgw-ad"
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>liquibase.changelog.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable running the Liquibase changelog during install/upgrade.<br></td>
+		</tr>
+		<tr>
+			<td>liquibase.image</td>
+			<td>string</td>
+			<td><pre lang="json">
+"crzgwpweu01.azurecr.io/liquibase/liquibase:4.30"
+</pre>
+</td>
+			<td>Liquibase container image.<br></td>
+		</tr>
+		<tr>
+			<td>liquibase.securityContext</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Security context for the Liquibase container.<br> ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container">[link]</a></td>
 		</tr>
 		<tr>
 			<td>livenessProbe.enabled</td>
