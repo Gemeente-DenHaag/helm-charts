@@ -587,6 +587,9 @@ database:
 liquibase:
   # -- Liquibase container image.<br>
   image: crzgwpweu01.azurecr.io/liquibase/liquibase:4.30
+  # -- Security context for the Liquibase container.<br>
+  # ref: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container">[link]</a>
+  securityContext: {}
   changelog:
     # -- Enable running the Liquibase changelog during install/upgrade.<br>
     enabled: true
