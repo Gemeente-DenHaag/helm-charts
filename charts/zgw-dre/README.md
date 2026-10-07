@@ -2,7 +2,7 @@
 
 A Helm chart to deploy the Zaakgericht Werken Decision Rules Engine (ZGW-DRE) to Kubernetes
 
-![Version: 1.1.6](https://img.shields.io/badge/Version-1.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square)
+![Version: 1.1.7](https://img.shields.io/badge/Version-1.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.22.0](https://img.shields.io/badge/AppVersion-7.22.0-informational?style=flat-square)
 
 ## Additional Information
 
