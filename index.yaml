@@ -1093,6 +1093,27 @@ entries:
     version: 0.1.0
   dh-nl-portal-backend:
   - apiVersion: v2
+    created: "2026-10-08T13:27:04.426017155Z"
+    dependencies:
+    - name: dh-lib
+      repository: https://gemeente-denhaag.github.io/helm-charts
+      version: 0.1.15
+    description: A Helm chart to deploy dh-nl-portal-backend to Kubernetes
+    digest: b8634d533453824213bdfda49d6d38e42c0cd0ee2a4373eab981672460d896fe
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    - email: ruben.van.duyneveldt@syntouch.nl
+      name: DenHaag
+    name: dh-nl-portal-backend
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-nl-portal-backend-0.1.14/dh-nl-portal-backend-0.1.14.tgz
+    version: 0.1.14
+  - apiVersion: v2
     created: "2025-09-11T09:49:01.369376968Z"
     dependencies:
     - name: dh-lib
@@ -4407,4 +4428,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2026-10-07T16:46:39.197448329Z"
+generated: "2026-10-08T13:27:04.426349319Z"
