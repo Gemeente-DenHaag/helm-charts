@@ -2,7 +2,7 @@
 
 A Helm chart to deploy dh-nl-portal-backend to Kubernetes
 
-![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -176,7 +176,7 @@ checksums:
 			<td>command</td>
 			<td>list</td>
 			<td><pre lang="yaml">
-["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/opt/app.jar"]
+["java", "-XX:MinRAMPercentage=20.0", "-XX:MaxRAMPercentage=80.0", "-XshowSettings:vm", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app/app.jar"]
 
 </pre>
 </td>
