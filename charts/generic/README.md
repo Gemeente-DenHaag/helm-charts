@@ -2,7 +2,7 @@
 
 Den Haag generic application Helm chart
 
-![Version: 0.0.31](https://img.shields.io/badge/Version-0.0.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.0.32](https://img.shields.io/badge/Version-0.0.32-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 ## Additional Information
 
@@ -561,7 +561,7 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 extraPaths:
 - path: /api/*
   pathType: Prefix
-  backend:   
+  backend:
     service:
       name: '{{ include "common.names.fullname" . }}'
       port:

@@ -47,6 +47,14 @@ spec:
       nodePort: {{ .nodePort }}
       {{- end }}
     {{- end }}
+  {{- if eq .Values.service.type "ClusterIP" }}
+  sessionAffinity: {{ .Values.service.sessionAffinity | default "None" }}
+  {{- end }}
+  {{- if and (eq .Values.service.sessionAffinity "ClientIP") (.Values.service.sessionAffinityConfig) (.Values.service.sessionAffinityConfig.clientIP) }}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.service.sessionAffinityConfig.clientIP.timeoutSeconds | default 10800 }}
+  {{- end }}
   selector: {{- include "common.labels.matchLabels" . | nindent 4 }}
 {{- end -}}
 {{- end -}}

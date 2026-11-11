@@ -13,7 +13,7 @@ image:
   # -- Set image repository.
   repository: ""
   # -- Set image tag.
-  tag: 
+  tag:
   # -- Set image fullImage. Can be used the set the complete url.
   fullImage: [] # use this from pipeline, includes registry, repo and tag
   # -- Set image pullPolicy.<br>
@@ -115,7 +115,7 @@ initContainers: []
 priorityClassName: ""
 
 # -- Optionally, change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.<br>
-# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller 
+# By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
 # to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
 dnsPolicy: ClusterFirst
 
@@ -304,7 +304,7 @@ ingress:
   # extraPaths:
   # - path: /api/*
   #   pathType: Prefix
-  #   backend:    
+  #   backend:
   #     service:
   #       name: '{{ include "common.names.fullname" . }}'
   #       port:
@@ -357,7 +357,7 @@ ingress:
 # -- (object) Set resources for the Pod.
 # @notationType -- yaml
 # @raw
-# We usually recommend not to specify default resources and to leave this as a conscious 
+# We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
@@ -563,7 +563,7 @@ persistence:
   # If undefined (the default) or set to null, no storageClassName spec is set,<br>
   # choosing the default provisioner. (gp2 on AWS, standard on GKE, AWS & OpenStack)
   storageClass:
-  # -- If you want to reuse an existing claim, you can pass the name of the PVC using 
+  # -- If you want to reuse an existing claim, you can pass the name of the PVC using
   # the existingClaim variable.
   existingClaim: ""
   # -- Set accessMode for pvc.
@@ -672,12 +672,12 @@ secrets: {}
 #  vaultname: azurekeyvaltname # name of the azure keyvault
 #  objectname: test-secret # secretname stored in AKV
 #  objecttype: secret # objecttype in AKV
-#  output: 
+#  output:
 #    transform: # optional transformers executed in listed order
 #    - trim # optional - trims empty space
 #    - base64encode # optional - encode to base64
 #    - base64decode # optional - decode from base64
-#    secret: 
+#    secret:
 #      name: testsecret # secretname to create in kubernetes or use '{{ include "app.fullname" . }}' as value
 #      dataKey: TEST_SECRET #key to store in secret
 #
