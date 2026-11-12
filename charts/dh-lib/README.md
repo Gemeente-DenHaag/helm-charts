@@ -2,7 +2,7 @@
 
 A Helm library chart for Kubernetes
 
-![Version: 0.1.16](https://img.shields.io/badge/Version-0.1.16-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
+![Version: 0.1.17](https://img.shields.io/badge/Version-0.1.17-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square)
 
 ## Additional Information
 
@@ -450,7 +450,7 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 extraPaths:
 - path: /api/*
   pathType: Prefix
-  backend:   
+  backend:
     service:
       name: '{{ include "common.names.fullname" . }}'
       port:
@@ -794,7 +794,7 @@ For example: The ALB ingress controller requires a special rule for handling SSL
 extraPaths:
 - path: /api/*
   pathType: Prefix
-  backend:   
+  backend:
     service:
       name: '{{ include "common.names.fullname" . }}'
       port:
