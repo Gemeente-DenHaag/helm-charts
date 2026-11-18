@@ -822,6 +822,27 @@ entries:
     version: 0.0.1
   dh-lib:
   - apiVersion: v2
+    created: "2026-11-18T12:46:21.183252694Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.20.x
+    description: A Helm library chart for Kubernetes
+    digest: e5f658ee83c6c8a888b6b89930cbe97bdcade688eab553c59a354809ef0a599b
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: dh-lib
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: library
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-lib-0.1.17/dh-lib-0.1.17.tgz
+    version: 0.1.17
+  - apiVersion: v2
     created: "2026-09-23T19:51:13.406780283Z"
     dependencies:
     - name: common
@@ -1632,6 +1653,27 @@ entries:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/dh-public-frontend-0.1.0/dh-public-frontend-0.1.0.tgz
     version: 0.1.0
   generic:
+  - apiVersion: v2
+    created: "2026-11-18T12:46:21.533540702Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 2.1.x
+    description: Den Haag generic application Helm chart
+    digest: 51bfdf2aee5f3954eabc01d6dacfb42107dcea5770d585679345c747f5a372d6
+    icon: https://www.denhaag.nl/static/denhaagrestylepresentation/images/DH-NL-Rgb-CS6.svg
+    maintainers:
+    - email: menno.slingerland@denhaag.nl
+      name: DenHaag
+    name: generic
+    sources:
+    - https://github.com/Gemeente-DenHaag/helm-charts
+    type: application
+    urls:
+    - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/generic-0.0.32/generic-0.0.32.tgz
+    version: 0.0.32
   - apiVersion: v2
     created: "2026-09-23T19:38:09.190108309Z"
     dependencies:
@@ -4428,4 +4470,4 @@ entries:
     urls:
     - https://github.com/Gemeente-DenHaag/helm-charts/releases/download/zgw-dre-0.0.01/zgw-dre-0.0.01.tgz
     version: 0.0.01
-generated: "2026-10-08T13:27:04.426349319Z"
+generated: "2026-11-18T12:46:22.261723026Z"
